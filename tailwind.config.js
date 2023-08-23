@@ -49,7 +49,7 @@ module.exports = {
         secondary: "var(--color-secondary)",
       },
       fontFamily: {
-        body: ["Raleway"],
+        body: ["Jost"],
       },
     },
   },
