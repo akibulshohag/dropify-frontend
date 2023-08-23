@@ -15,16 +15,13 @@ const Navbar = () => {
     imageInput.onchange = async (e) => {
       const file = e.target.files[0];
       const base64Image = await convertToBase64(file);
-      if(base64Image){
+      if (base64Image) {
         try {
-          let data ={
-            image:base64Image,
-          }
-           let res = await postRequest('file-service/upload-image',data)
-
-        } catch (error) {
-          
-        }
+          let data = {
+            image: base64Image,
+          };
+          let res = await postRequest("file-service/upload-image", data);
+        } catch (error) {}
       }
     };
     imageInput.click();
@@ -61,9 +58,9 @@ const Navbar = () => {
           </div>
         </div>
         <div className="text-[25px] text-tahiti-600 flex mr-5">
-          <FiShoppingCart className="mr-4 cursor-pointer"/>
-          <FiHeart className="mr-4 cursor-pointer"/>
-          <FiUser className="cursor-pointer"/>
+          <FiShoppingCart className="mr-4 cursor-pointer" />
+          <FiHeart className="mr-4 cursor-pointer" />
+          <FiUser className="cursor-pointer" />
         </div>
       </div>
     </div>
