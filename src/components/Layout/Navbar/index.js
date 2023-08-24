@@ -28,36 +28,36 @@ const Navbar = () => {
   };
 
   return (
-    <div className="h-[65px] bg-tahiti-200 fixed inset-0">
-      <div className="px-4 flex items-center justify-between h-full">
+    <div className="h-[65px] bg-tahiti-100 fixed inset-0 xs:h-[95px]">
+      <div className="px-4 grid grid-cols-12 items-center h-full xs:grid-cols-4">
         {/* <div className="w-32 h-10 relative">
            <Image src="/assets/logo/logo.png" fill priority alt='logo'/>
          </div> */}
-        <div className="text-[25px] font-extrabold text-tahiti-600 font-serif">
+        <div className="text-[25px] font-extrabold text-tahiti-600 font-serif col-span-4 xs:col-span-1">
           Dropify
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center  col-span-5 xs:order-3">
           <button
             onClick={handleCameraClick}
-            className="text-[25px] w-12 flex items-center justify-center bg-white h-9 rounded-l-2xl cursor-pointer"
+            className="text-[25px] w-14 flex items-center justify-center bg-white h-10 rounded-l-3xl cursor-pointer xs:h-9"
           >
-            <BsFillCameraFill className="text-tahiti-400" />
+            <BsFillCameraFill className="text-tahiti-800 ml-1" />
           </button>
           <div className="relative">
             <div>
               <input
                 placeholder="Search by keyword link"
-                className="h-9 w-[600px] lg:w-[600px] md:w-[400px]  text-black  px-3 bg-white outline-none placeholder:text-black placeholder:text-[14px]"
+                className="h-10 w-[600px] xs:w-[190px] lg:w-[600px] md:w-[400px] text-black px-3 bg-white outline-none placeholder:text-black placeholder:text-[14px] xs:h-9"
                 type="text"
               />
             </div>
           </div>
 
-          <div className="flex items-center h-9 bg-black rounded-r-2xl py-2 px-6 cursor-pointer z-30">
+          <div className="flex items-center h-10 bg-black rounded-r-3xl py-2 px-6 cursor-pointer z-30 xs:h-9">
             <BsSearch className="text-tahiti-700" />
           </div>
         </div>
-        <div className="text-[25px] text-tahiti-600 flex mr-5">
+        <div className="text-[25px] text-tahiti-600 flex mr-5 col-span-3 items-end justify-end xs:col-span-3 xs:mr-0">
           <FiShoppingCart className="mr-4 cursor-pointer" />
           <FiHeart className="mr-4 cursor-pointer" />
           <FiUser className="cursor-pointer" />

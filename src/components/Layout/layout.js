@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
       <Navbar />
       <div className="flex">
         <SideCategoryWeb/>
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto ml-[250px]">
           <Fragment>{children}</Fragment>
           <Footer />
         </div>
