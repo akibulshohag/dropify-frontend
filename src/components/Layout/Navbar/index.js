@@ -28,7 +28,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="h-[65px] bg-tahiti-100 fixed inset-0 xs:h-[95px]">
+    <div className="h-[65px] bg-tahiti-100 fixed inset-0 xs:h-[95px] z-20">
       <div className="px-4 grid grid-cols-12 items-center h-full xs:grid-cols-4">
         {/* <div className="w-32 h-10 relative">
            <Image src="/assets/logo/logo.png" fill priority alt='logo'/>

@@ -81,7 +81,7 @@ const SideCategoryWeb = () => {
   return (
     <div className="w-[250px] min-h-screen max-h-[100vh] mt-[65px] fixed xs:mt-[95px]">
       {childCategoryTab == 0 ? (
-        <div className="bg-tahiti-600 max-h-[100vh] overflow-y-auto left-side">
+        <div className="bg-tahiti-50 max-h-[100vh] overflow-y-auto left-side">
           {arr?.map((item, index) => (
             <div
               onClick={() => {
@@ -113,14 +113,14 @@ const SideCategoryWeb = () => {
             onClick={() => {
               setcategoryName(""), setchildCategorytab(0);
             }}
-            className="flex items-center h-14 mb-1 bg-tahiti-600 px-4 cursor-pointer"
+            className="flex items-center h-14 mb-1 bg-tahiti-50 px-4 cursor-pointer"
           >
             <BiLeftArrowAlt className="text-[25px]" />
             <span className="text-[14px] font-semibold ml-4 h-[20px]">
               {categoryName}
             </span>
           </div>
-          <div className="bg-tahiti-600 max-h-[100vh] overflow-y-auto left-side">
+          <div className="bg-tahiti-50 max-h-[100vh] overflow-y-auto left-side">
             {arr1?.map((item, index) => (
               <div
                 onClick={() => {
