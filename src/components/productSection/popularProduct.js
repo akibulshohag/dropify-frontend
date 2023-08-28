@@ -8,8 +8,11 @@ const PopularProduct = () => {
       <div className="col-span-1 bg-tahiti-50 rounded-sm pb-4">
         <div className="px-4 py-4 text-[18px] font-bold">Popular</div>
         <div className="grid grid-cols-4 gap-3 px-4">
-          {arr?.map((item,index) => (
-            <div key={index} className=" p-2 col-span-1 shadow-md cursor-pointer">
+          {arr?.map((item, index) => (
+            <div
+              key={index}
+              className=" p-2 col-span-1 shadow-md cursor-pointer"
+            >
               <div className="relative w-full h-[180px]">
                 <Image
                   priority={true}
