@@ -27,12 +27,7 @@ body {
   overflow-x: hidden;
   font-family: 'Jost', sans-serif;
   /* font-family: 'Raleway', sans-serif; */
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    rgb(var(--background-end-rgb))
-  )
-  rgb(var(--background-start-rgb));
+  background-color: #F2F2F2;
 }
 
 /* ::-webkit-scrollbar {
