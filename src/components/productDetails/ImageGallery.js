@@ -12,7 +12,7 @@ const ImageGallery = () => {
   };
 
   const [imageSelect, setimageSelect] = useState(
-    "/assets/product/product1.jpg"
+    "/assets/product/product3.jpg"
   );
   const [render, setrender] = useState(false);
 

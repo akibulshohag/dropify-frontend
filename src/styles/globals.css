@@ -44,4 +44,6 @@ body {
   width: 0.5rem; 
   display: none;
 }
-
+ul{
+   list-style-type: disc;
+}
