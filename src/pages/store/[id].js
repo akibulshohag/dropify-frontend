@@ -1,9 +1,66 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "@/components/productSection/productCard";
 import ReactPaginate from "react-paginate";
+import { FaHome } from "react-icons/fa";
 
-const ShopWiseProduct = () => {
-    let arr = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},{}, {}, {}, {}, ];
+const storeWiseProduct = () => {
+  let arr = [
+   
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+  ];
   const [itemOffset, setItemOffset] = useState(0);
   let itemsPerPage = 20;
   const endOffset = itemOffset + itemsPerPage;
@@ -23,9 +80,20 @@ const ShopWiseProduct = () => {
     <div className="mt-[65px]">
       <div className="p-2">
         <div className="bg-tahiti-50 py-4 px-3 flex items-center justify-between">
-          <div className="font-bold text-[14px]">
-            SHOWING RESULTS FROM - {"    "}
-            <span className="text-tahiti-500">LADIES PURSE</span>
+          <div className="font-bold text-[14px] flex items-center ">
+            <div>
+              <FaHome className="text-[50px] text-tahiti-500" />
+            </div>
+            <div className="pl-2">
+              <div>
+                <b>SELLER: </b>
+                <b className="text-tahiti-500">ABB B2B 2552320535B67VM </b>
+              </div>
+              <div>
+                <b>Seller Name: </b>
+                <b className="">迪莱雅女包</b>
+              </div>
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <div>
@@ -50,12 +118,12 @@ const ShopWiseProduct = () => {
         </div>
         <div className="mt-3 bg-tahiti-50 p-2">
           <div className="grid grid-cols-7 gap-3">
-            <ProductCard product={currentItems }/>
+            <ProductCard product={currentItems} />
           </div>
         </div>
         <div className="mt-3 bg-tahiti-50 p-2 py-5 flex items-center justify-center ">
           <ReactPaginate
-           className="flex items-center justify-center gap-5 list-none"
+            className="flex items-center justify-center gap-5 list-none"
             breakLabel="..."
             nextLabel=" >"
             onPageChange={handlePageClick}
@@ -64,7 +132,7 @@ const ShopWiseProduct = () => {
             previousLabel="< "
             renderOnZeroPageCount={null}
             activeClassName="bg-[#00619a] rounded-md py-[5px] px-[10px] flex item-center justify-center text-[#fff]"
-            pageClassName="border rounded-sm py-[5px] px-[10px] cursor-pointer"
+            pageClassName="border rounded-sm py-[5px] px-[10px] w-full h-full cursor-pointer"
           />
         </div>
       </div>
@@ -72,4 +140,4 @@ const ShopWiseProduct = () => {
   );
 };
 
-export default ShopWiseProduct;
+export default storeWiseProduct;

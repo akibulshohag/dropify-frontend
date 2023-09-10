@@ -100,6 +100,7 @@ const landingCategory = () => {
                       src={"/assets/category/necklace.svg"}
                       width={60}
                       height={60}
+                      alt="category"
                     />
                   </div>
                   <div className="text-center text-[13px] font-semibold">
