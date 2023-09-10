@@ -145,6 +145,43 @@ const SingleProduct = () => {
                 </div>
               </div>
             </div>
+            <div className="mt-3 bg-tahiti-50 rounded-sm">
+              <div className="py-3 flex gap-3 items-center justify-center">
+                <div>
+                  <button className="py-3 px-4 border border-tahiti-500 rounded-md text-[18px] font-semibold bg-tahiti-500 text-tahiti-50">
+                    Specification
+                  </button>
+                </div>
+                <div>
+                  <button className="py-3 px-4 border border-tahiti-500 rounded-md text-[18px] font-semibold">
+                    Description
+                  </button>
+                </div>
+                <div>
+                  <button className="py-3 px-4 border border-tahiti-500 rounded-md text-[18px] font-semibold">
+                    Seller Info
+                  </button>
+                </div>
+              </div>
+              <div className="px-10 py-2">
+                <div className="border ">
+                  {arr.map((item,index)=>
+                  <div key={index} className="grid grid-cols-2 rounded-sm ">
+                    <div className="flex items-center justify-center py-2 bg-[#E9EFF0] font-bold border-r">
+                      Size
+                    </div>
+                    <div className={`flex items-center justify-center py-2 px-1 text-center hover:bg-[#EEEEEE] border-b ${index % 2 == 0 ? 'bg-[#f8f8f8]':'bg-tahiti-50'}`}>
+                      Black, 480 Ml, 480 Ml, 480 Ml, 480 Ml, Fuchsia, 480 Ml,
+                      480 Ml, Black, 550 Ml, 550 Ml, 550 Ml, 550 Ml, Fuchsia,
+                      550 Ml, 550 Ml, Transparent, Black, 480 Ml, Transparent,
+                      480 Ml, Transparent, 480 Ml, Transparent, 480 Ml,
+                      Transparent, Fuchsia, 480 Ml, Transparent, Coffee, 480 Ml
+                    </div>
+                  </div>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
           <div className="">
             <div className="bg-tahiti-50 py-3 rounded-sm">
@@ -282,7 +319,7 @@ const SingleProduct = () => {
             <div className="max-h-[120rem] overflow-y-auto left-side mt-2">
               <div className="bg-tahiti-50 rounded-sm">
                 <div className="text-center py-3 text-[16px] font-semibold border-b">
-                Similar Products
+                  Similar Products
                 </div>
                 <div className="py-4">
                   <div className="grid grid-cols-2 gap-3 px-2">

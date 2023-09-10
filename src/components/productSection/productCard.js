@@ -1,12 +1,12 @@
 import React from "react";
 import Image from "next/image";
 
-const productCard = () => {
+const productCard = ({product}) => {
   let arr = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
 
   return (
     <>
-      {arr?.map((item, index) => (
+      {product?.map((item, index) => (
         <div key={index} className=" p-2 col-span-1 shadow-md cursor-pointer">
           <div className="relative w-full h-[200px]">
             <Image
