@@ -6,6 +6,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { BiChevronLeft, BiChevronRight, BiInfoCircle } from "react-icons/bi";
+import Skeleton from 'react-loading-skeleton';
+
 
 const landingCategory = () => {
   let arr = [

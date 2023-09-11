@@ -121,6 +121,7 @@ const storeWiseProduct = () => {
             <ProductCard product={currentItems} />
           </div>
         </div>
+        <div className="py-8">
         <div className="mt-3 bg-tahiti-50 p-2 py-5 flex items-center justify-center ">
           <ReactPaginate
             className="flex items-center justify-center gap-5 list-none"
@@ -134,6 +135,7 @@ const storeWiseProduct = () => {
             activeClassName="bg-[#00619a] rounded-md py-[5px] px-[10px] flex item-center justify-center text-[#fff]"
             pageClassName="border rounded-sm py-[5px] px-[10px] w-full h-full cursor-pointer"
           />
+        </div>
         </div>
       </div>
     </div>
