@@ -8,7 +8,7 @@ import DashboardMenu from "./DashboardMenu";
 const Layout = ({ children }) => {
   const router = useRouter();
 
-  const pagesWithoutSideCategory = ["/account", "/account/orders","/account/settings"];
+  const pagesWithoutSideCategory = ["/account", "/account/orders","/account/settings","/account/payments","/account/delivery"];
   const shouldHideSideCategory = pagesWithoutSideCategory.includes(
     router.pathname
   );

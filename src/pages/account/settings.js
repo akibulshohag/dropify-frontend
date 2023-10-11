@@ -47,6 +47,9 @@ const Settings = () => {
               <textarea className="border py-2 rounded-sm outline-tahiti-500 w-full px-2" />
             </div>
           </div>
+          <div className="flex items-center ">
+            <div className="bg-tahiti-500 px-2 py-1 rounded-md text-tahiti-50">Update</div>
+          </div>
         </div>
       </div>
     </div>

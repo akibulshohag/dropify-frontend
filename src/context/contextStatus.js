@@ -12,6 +12,7 @@ function StatusProvider({ children }) {
 
 
   const [token, setToken] = useState(cookie?.token ? cookie?.token : "");
+  const [accountMenu, setaccountMenu] = useState('dashboard')
 
 
 
@@ -20,6 +21,9 @@ function StatusProvider({ children }) {
       value={{
         token,
         setToken,
+        accountMenu,
+        setaccountMenu
+
       }}
     >
       {children}
