@@ -8,7 +8,7 @@ export default function middleware(req){
      urlR.pathname = '/'
 
 
-     if(!token &&  url.includes('/myProfile')){
+     if(!token &&  url.includes('/account')){
         return NextResponse.redirect(urlR)
      }
 
