@@ -1,8 +1,42 @@
 import React from "react";
 import Image from "next/image";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import Modal from "react-modal";
+import {HiPlus,HiMinus} from 'react-icons/hi'
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    borderRadius: 0,
+    border:'none,'
+  },
+  overlay: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+};
 
 const Cart = () => {
+  let subtitle;
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    subtitle.style.color = "#f00";
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
   return (
     <div className="flex min-h-screen flex-col mt-[65px] xs:mt-[95px]">
       <div className="p-2">
@@ -80,7 +114,10 @@ const Cart = () => {
                     <span> ৳955</span>
                   </div>
                   <div className="flex items-center gap-3 col-span-1 justify-end">
-                    <div className="bg-tahiti-500 text-tahiti-50 flex items-center justify-center rounded-md px-2 cursor-pointer">
+                    <div
+                      onClick={() => setIsOpen(true)}
+                      className="bg-tahiti-500 text-tahiti-50 flex items-center justify-center rounded-md px-2 cursor-pointer"
+                    >
                       Edit
                     </div>
                     <div className="h-[20px]">৳2865</div>
@@ -101,6 +138,16 @@ const Cart = () => {
                 </div>
               </div>
             </div>
+            {/* <div className="col-span-4 bg-white rounded-sm py-10 flex items-center justify-center">
+               <div>
+               <Image
+                        src="/assets/account/empty.png"
+                        width={120}
+                        height={120}
+                        alt="cart"
+                      />
+               </div>
+            </div> */}
           </div>
           <div className="col-span-2 ">
             <div className="bg-tahiti-50 rounded-sm">
@@ -130,9 +177,79 @@ const Cart = () => {
                 </div>
               </div>
             </div>
+            <div className="bg-tahiti-500 py-3 mt-2 rounded-sm flex items-center justify-center text-tahiti-50 text-[16px] font-semibold cursor-pointer">
+              Go To Checkout
+            </div>
           </div>
         </div>
       </div>
+      <Modal
+        isOpen={modalIsOpen}
+        // onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <div className=" w-[500px]">
+          <div className="flex items-center gap-3 mb-5">
+            <div className="bg-tahiti-100 w-[170px] h-[80px] rounded-md text-white flex items-center justify-center">
+              <div className="">
+                <div className="text-[18px] font-semibold text-center">
+                  ৳1094
+                </div>
+                <div className="text-[16px] text-center">1 or more</div>
+              </div>
+            </div>
+            <div className="bg-tahiti-100 w-[170px] h-[80px] rounded-md text-white flex items-center justify-center">
+              <div className="">
+                <div className="text-[18px] font-semibold text-center">
+                  ৳1094
+                </div>
+                <div className="text-[16px] text-center">1 or more</div>
+              </div>
+            </div>
+            <div className="bg-tahiti-100 w-[170px] h-[80px] rounded-md text-white flex items-center justify-center">
+              <div className="">
+                <div className="text-[18px] font-semibold text-center">
+                  ৳1094
+                </div>
+                <div className="text-[16px] text-center">1 or more</div>
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-[15px] h-[17px]">Color: Green</div>
+              <div className="text-[15px] h-[17px]">Size: 39</div>
+            </div>
+            <div>
+              <div>
+                <div className=" flex items-center justify-center ">
+                  <button className="bg-tahiti-100 text-[18px] text-tahiti-50 w-[30px] h-[30px] font-extrabold rounded-full mr-[-15px] z-10 flex items-center justify-center">
+                    <HiMinus className="text-[20px]"/>
+                  </button>
+                  <input className="outline-none w-[70px] h-[30px] text-center border-t-[2px] border-b-[2px] border-tahiti-500 text-[14px]" />
+                  <button className="bg-tahiti-100 text-[18px] text-tahiti-50 w-[30px] h-[30px] font-extrabold rounded-full ml-[-15px] z-10 flex items-center justify-center">
+                  <HiPlus className="text-[20px]"/>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 py-2 mt-2">
+            <div className="bg-[#EEEEEE] text-[14px] px-2 py-1 rounded-md">Total Items: <span className="">40</span></div>
+            <div className="bg-[#EEEEEE] text-[14px] px-2 py-1 rounded-md">Subtotal: <span className="">৳ 43760</span></div>
+          </div>
+          <div className="flex items-center justify-between mt-2">
+            <div className="bg-red-700 text-tahiti-50 text-[14px] py-2 px-4 rounded-md">Delete</div>
+            <div className="flex items-center gap-3">
+            <div onClick={()=>setIsOpen(false)} className="bg-[#AAAAAA] text-tahiti-50 text-[14px] py-2 px-4 rounded-md cursor-pointer">Cancel</div>
+            <div className="bg-tahiti-500 text-tahiti-50 text-[14px] py-2 px-4 rounded-md">Update</div>
+
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
