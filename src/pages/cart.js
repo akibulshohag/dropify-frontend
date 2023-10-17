@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import Image from "next/image";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Modal from "react-modal";
@@ -22,7 +22,7 @@ const customStyles = {
 
 const Cart = () => {
   let subtitle;
-  const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [modalIsOpen, setIsOpen] =useState(false);
 
   function openModal() {
     setIsOpen(true);
@@ -40,7 +40,7 @@ const Cart = () => {
   return (
     <div className="flex min-h-screen flex-col mt-[65px] xs:mt-[95px]">
       <div className="p-2">
-        <div className="bg-tahiti-50 py-4 px-3 rounded-sm flex items-center justify-between">
+        <div className="bg-tahiti-50 py-4 px-3 rounded-md flex items-center justify-between">
           <div className="flex items-center">
             <div className="bg-tahiti-500 rounded-full text-tahiti-50 w-6 h-6 flex items-center justify-center">
               4
@@ -51,8 +51,8 @@ const Cart = () => {
         </div>
 
         <div className="mt-2 grid grid-cols-6 gap-2">
-          <div className="col-span-4  rounded-sm ">
-            <div className="bg-tahiti-50">
+          <div className="col-span-4  rounded-md ">
+            <div className="bg-tahiti-50 rounded-md">
               <div className="border-b py-2">
                 <div className="py-2 px-3 flex items-center justify-between pb-3">
                   <div className="flex items-center gap-4">
@@ -138,7 +138,7 @@ const Cart = () => {
                 </div>
               </div>
             </div>
-            {/* <div className="col-span-4 bg-white rounded-sm py-10 flex items-center justify-center">
+            {/* <div className="col-span-4 bg-white rounded-md py-10 flex items-center justify-center">
                <div>
                <Image
                         src="/assets/account/empty.png"
@@ -150,7 +150,7 @@ const Cart = () => {
             </div> */}
           </div>
           <div className="col-span-2 ">
-            <div className="bg-tahiti-50 rounded-sm">
+            <div className="bg-tahiti-50 rounded-md">
               <div className="py-3 border-b text-[20px] font-semibold flex items-center justify-center">
                 Cart Summary
               </div>
@@ -177,7 +177,7 @@ const Cart = () => {
                 </div>
               </div>
             </div>
-            <div className="bg-tahiti-500 py-3 mt-2 rounded-sm flex items-center justify-center text-tahiti-50 text-[16px] font-semibold cursor-pointer">
+            <div className="bg-tahiti-500 py-2 mt-2 rounded-md flex items-center justify-center text-tahiti-50 text-[16px] font-semibold cursor-pointer">
               Go To Checkout
             </div>
           </div>

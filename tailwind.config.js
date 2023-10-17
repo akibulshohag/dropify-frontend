@@ -50,6 +50,7 @@ module.exports = {
       },
       fontFamily: {
         body: ["Jost"],
+        serifs: ["sans-serif"],
       },
     },
   },
