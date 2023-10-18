@@ -81,7 +81,7 @@ const SideCategoryWeb = () => {
   const [childCategoryTab, setchildCategorytab] = useState(0);
 
   return (
-    <div className="w-[250px] min-h-screen max-h-[100vh] mt-[65px] fixed xs:mt-[95px]">
+    <div className="w-[250px] min-h-screen max-h-[100vh] mt-[65px] fixed xs:mt-[95px] xs:hidden xms:hidden xls:hidden sm:hidden">
       {childCategoryTab == 0 ? (
         <div className="bg-tahiti-50 max-h-[100vh] overflow-y-auto left-side">
           {loading ? (

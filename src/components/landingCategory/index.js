@@ -53,38 +53,38 @@ const landingCategory = () => {
           modules={[ Navigation]}
           breakpoints={{
             320: {
-              slidesPerView: 1,
+              slidesPerView: 3.4,
               spaceBetween: 5,
             },
 
             375: {
-              slidesPerView: 1,
+              slidesPerView: 3.8,
               spaceBetween: 5,
             },
 
             425: {
-              slidesPerView: 1,
+              slidesPerView: 4.2,
               spaceBetween: 7,
             },
 
             480: {
-              slidesPerView: 1,
+              slidesPerView: 4.8,
               spaceBetween: 7,
             },
             530: {
-              slidesPerView: 1,
+              slidesPerView: 5,
               spaceBetween: 7,
             },
             640: {
-              slidesPerView: 2.4,
+              slidesPerView: 5.3,
               spaceBetween: 7,
             },
             768: {
-              slidesPerView: 1,
+              slidesPerView: 6,
               spaceBetween: 5,
             },
             1024: {
-              slidesPerView: 1,
+              slidesPerView: 7,
               spaceBetween: 5,
             },
             1440: {
@@ -96,7 +96,7 @@ const landingCategory = () => {
           {arr?.map((item, index) => (
             <div className="" key={index}>
               <SwiperSlide>
-                <div className="w-[140px] border-r border-r-tahiti-600 grid items-center justify-center h-full">
+                <div className=" border-r border-r-tahiti-600 grid items-center justify-center h-full px-1">
                   <div className="flex items-center justify-center">
                     <Image
                       src={"/assets/category/necklace.svg"}

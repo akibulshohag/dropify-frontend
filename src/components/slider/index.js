@@ -12,7 +12,7 @@ const Slider = () => {
   return (
     <div>
       <div className="grid grid-cols-3 gap-2 ">
-        <div className="col-span-2 group">
+        <div className="col-span-2 xs:col-span-full xms:col-span-full xls:col-span-full sm:col-span-full group">
           <Swiper
             spaceBetween={5}
             loop
@@ -55,7 +55,7 @@ const Slider = () => {
                 spaceBetween: 7,
               },
               640: {
-                slidesPerView: 2.4,
+                slidesPerView: 1,
                 spaceBetween: 7,
               },
               768: {
@@ -75,7 +75,7 @@ const Slider = () => {
             {slider?.map((item, index) => (
               <div className="cursor-pointer" key={index}>
                 <SwiperSlide>
-                  <div className="relative w-full h-[450px] z-0">
+                  <div className="relative w-full h-[450px] xs:h-[150px] xms:h-[170px] xls:h-[200px] sm:h-[280px] md:h-[180px] lg:h-[270px] z-0">
                     <Image
                     className="rounded-sm"
                       src={"/assets/banner/banner1.jpg"}
@@ -98,7 +98,7 @@ const Slider = () => {
             </div>
           </Swiper>
         </div>
-        <div className="col-span-1">
+        <div className="col-span-1 xs:hidden xms:hidden xls:hidden sm:hidden ">
           <Swiper
             spaceBetween={5}
             loop
@@ -161,7 +161,7 @@ const Slider = () => {
             {slider?.map((item, index) => (
               <div className="cursor-pointer" key={index}>
                 <SwiperSlide>
-                  <div className="relative w-full h-[450px] col-span-1 z-0">
+                  <div className="relative w-full h-[450px] col-span-1 z-0 md:h-[180px] lg:h-[270px]">
                     <Image
                     className="rounded-sm"
                       src={"/assets/banner/promotion2.jpg"}
