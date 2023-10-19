@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { RiMessengerLine } from "react-icons/ri";
+import {BiCategory} from 'react-icons/bi'
 import {
   BsFillHeartFill,
   BsMessenger,
@@ -18,7 +19,7 @@ import {
 import { FaUser } from "react-icons/fa";
 
 export default function BottomNavbar() {
-  const { setProfileMenu, wishData, token } = useStatus();
+  const { setSideCategory, token } = useStatus();
 
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -44,12 +45,12 @@ export default function BottomNavbar() {
   return (
     <div className={styles.bottomNavbar}>
       <div className={styles.icons}>
-        <Link href={``} target="_blank">
+        <div onClick={()=>setSideCategory(true)}>
           <span>
-            <BsMessenger size={16} className="fill-current text-gray-500" />
+            <BiCategory size={16} className="fill-current text-gray-500" />
           </span>
-          <span className="text-[10px] text-gray-500 capitalize">Message</span>
-        </Link>
+          <span className="text-[10px] text-gray-500 capitalize">Category</span>
+        </div>
         <Link href={`tel:0145455`} target="_blank">
           <span>
             <BsTelephoneFill size={18} className="fill-current text-gray-500" />

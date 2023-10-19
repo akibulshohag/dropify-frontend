@@ -35,12 +35,12 @@ const productCard = ({ product }) => {
                 <div className=" text-red-500 text-[16px] font-semibold xs:text-[12px] xms:text-[12px] xls:text-[12px] sm:text-[12px] md:text-[12px] lg:text-[13px]">
                   ৳ 380
                 </div>
-                <div className=" text-tahiti-900 text-[14px] xs:text-[12px] xms:text-[12px] xls:text-[12px] sm:text-[12px] md:text-[12px] lg:text-[13px]">
+                <div className=" text-tahiti-900 text-[14px] xs:text-[12px] xms:text-[12px] xls:text-[12px] sm:text-[12px] md:text-[12px] lg:text-[13px] lg:hidden">
                   Sold: 125845
                 </div>
               </div>
 
-              <div className="flex gap-2 py-2">
+              <div className="flex gap-2 py-2 lg:hidden">
                 <div className="text-tahiti-900 text-[14px] line-through xs:text-[12px] xms:text-[12px] xls:text-[12px] sm:text-[12px] md:text-[12px] lg:text-[13px]">
                   ৳ 399
                 </div>

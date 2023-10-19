@@ -25,7 +25,7 @@ export default function Home() {
       <div className="p-2 xs:p-0 xms:p-0 xls:p-0 sm:p-0">
         <Slider />
         <LandingCategory />
-        <div className="grid grid-cols-2 xs:grid-cols-1 xms:grid-cols-1 xls:grid-cols-1 sm:grid-cols-1 mt-3 gap-3">
+        <div className="grid grid-cols-2 xs:grid-cols-1 xms:grid-cols-1 xls:grid-cols-1 sm:grid-cols-1 mt-3 gap-3 md:grid-cols-1 ">
           <PopularProduct />
           <NewProduct />
         </div>
@@ -38,7 +38,7 @@ export default function Home() {
               </div>
             </div>
             <div className="py-4">
-              <div className="grid grid-cols-7 gap-3 px-4 xs:grid-cols-2 xs:gap-1 xs:px-[0px] xms:grid-cols-2 xms:gap-1 xms:px-[0px] xls:grid-cols-2 xls:gap-1 xls:px-[0px] sm:grid-cols-4 sm:gap-1 sm:px-[0px]">
+              <div className="grid grid-cols-7 gap-3 px-4 xs:grid-cols-2 xs:gap-1 xs:px-[0px] xms:grid-cols-2 xms:gap-1 xms:px-[0px] xls:grid-cols-2 xls:gap-1 xls:px-[0px] sm:grid-cols-4 sm:gap-1 sm:px-[0px] md:grid-cols-4 lg:grid-cols-5">
                 <ProductCard product={arr1} />
               </div>
             </div>
@@ -49,7 +49,7 @@ export default function Home() {
             <div className="font-bold text-[20px]">Trending Products</div>
           </div>
           <div className="py-4">
-            <div className="grid grid-cols-7 gap-3 px-4 xs:grid-cols-2 xs:gap-1 xs:px-[0px] xms:grid-cols-2 xms:gap-1 xms:px-[0px] xls:grid-cols-2 xls:gap-1 xls:px-[0px] sm:grid-cols-4 sm:gap-1 sm:px-[0px]">
+            <div className="grid grid-cols-7 gap-3 px-4 xs:grid-cols-2 xs:gap-1 xs:px-[0px] xms:grid-cols-2 xms:gap-1 xms:px-[0px] xls:grid-cols-2 xls:gap-1 xls:px-[0px] sm:grid-cols-4 sm:gap-1 sm:px-[0px] md:grid-cols-4 lg:grid-cols-5">
               {!loading ? (
                 <>
                   <div className="shadow-md p-2">

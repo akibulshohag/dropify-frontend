@@ -14,10 +14,10 @@ module.exports = {
 
       sm: { min: "481px", max: "768px" },
       // => @media (min-width: 640px) { ... }
-      md: { min: "769px", max: "1024px" },
+      md: { min: "769px", max: "1100px" },
       // => @media (min-width: 768px) { ... }
 
-      lg: { min: "1025px", max: "1440px" },
+      lg: { min: "1101px", max: "1440px" },
 
       // => @media (min-width: 1024px) { ... }
       xl: { min: "1441px", max: "2500px" },

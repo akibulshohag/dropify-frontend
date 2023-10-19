@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { AiOutlineRight } from "react-icons/ai";
 import { BiLeftArrowAlt } from "react-icons/bi";
-import "./sideCategory.module.css";
+
 import Skeleton from "react-loading-skeleton";
 
 const SideCategoryWeb = () => {
@@ -81,10 +81,10 @@ const SideCategoryWeb = () => {
   const [childCategoryTab, setchildCategorytab] = useState(0);
 
   return (
-    <div className="w-[250px] min-h-screen max-h-[100vh] mt-[65px] fixed xs:mt-[95px] xs:hidden xms:hidden xls:hidden sm:hidden">
+    <div className="w-[250px] min-h-screen max-h-[100vh] mt-[65px] fixed xs:mt-[95px] xs:hidden xms:hidden xls:hidden sm:hidden md:w-[200px] lg:w-[200px]">
       {childCategoryTab == 0 ? (
         <div className="bg-tahiti-50 max-h-[100vh] overflow-y-auto left-side">
-          {loading ? (
+          {!loading ? (
             <>
               <div className=" p-2">
                 <Skeleton count={1} />

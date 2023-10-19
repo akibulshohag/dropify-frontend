@@ -13,6 +13,7 @@ function StatusProvider({ children }) {
 
   const [token, setToken] = useState(cookie?.token ? cookie?.token : "");
   const [accountMenu, setaccountMenu] = useState('dashboard')
+  const [sideCategory, setSideCategory] = useState(false);
 
 
 
@@ -22,7 +23,9 @@ function StatusProvider({ children }) {
         token,
         setToken,
         accountMenu,
-        setaccountMenu
+        setaccountMenu,
+        sideCategory,
+        setSideCategory
 
       }}
     >
