@@ -42,8 +42,8 @@ const Checkout = () => {
   }
 
   return (
-    <div className="flex min-h-screen flex-col mt-[65px] xs:mt-[95px]">
-      <div className="p-2">
+    <div className="flex min-h-screen flex-col mt-[65px] xs:mt-[108px] xms:mt-[108px] xls:mt-[108px] sm:mt-[108px]">
+      <div className="p-2 xs:p-0 xms:p-0 xls:p-0 sm:p-0">
         <div className="bg-tahiti-50 py-4 px-3 rounded-md flex items-center justify-between">
           <div className="flex items-center">
             <div className=" flex items-center justify-center">
@@ -56,11 +56,11 @@ const Checkout = () => {
           <div>15 October, 2023</div>
         </div>
 
-        <div className="mt-2 grid grid-cols-6 gap-2">
+        <div className="mt-2 grid grid-cols-6 gap-2 xs:grid-cols-1 xs:gap-0 xms:grid-cols-1 xms:gap-0 xls:grid-cols-1 xls:gap-0 sm:grid-cols-1 sm:gap-0 md:grid-cols-1 md:gap-0">
           <div className="col-span-4">
             <div className="bg-tahiti-50 rounded-md mb-2 py-3 px-3">
               <div>
-                <div className="grid grid-cols-2 gap-5 py-3">
+                <div className="grid grid-cols-2 gap-5 py-3 xs:grid-cols-1 xms:grid-cols-1 xls:grid-cols-1">
                   <div className="col-span-1">
                     <div className="py-1">
                       Name <span className="text-red-600"> *</span>
@@ -77,7 +77,7 @@ const Checkout = () => {
                     />
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-5 py-3">
+                <div className="grid grid-cols-2 gap-5 py-3 xs:grid-cols-1 xms:grid-cols-1 xls:grid-cols-1">
                   <div className="col-span-1">
                     <div className="py-1">Emergency Phone (optional)</div>
                     <input className="border py-2 rounded-sm outline-tahiti-500 w-full px-2" />
@@ -93,7 +93,7 @@ const Checkout = () => {
                     </select>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-5 py-3">
+                <div className="grid grid-cols-2 gap-5 py-3 xs:grid-cols-1 xms:grid-cols-1 xls:grid-cols-1">
                   <div className="col-span-1">
                     <div className="py-1">
                       City / Upazila <span className="text-red-600"> *</span>
@@ -154,8 +154,8 @@ const Checkout = () => {
                 </div>
               </div>
               <div className="border-b">
-                <div className="px-4  py-3 grid grid-cols-4">
-                  <div className="flex items-center gap-3 col-span-2">
+                <div className="px-4  py-3 grid grid-cols-4 xs:grid-cols-5 xs:px-2 xms:grid-cols-5 xms:px-2 xls:grid-cols-5 xls:px-2">
+                  <div className="flex items-center gap-3 col-span-2 xs:col-span-3 xms:col-span-3 xls:col-span-3">
                     <div>
                       <Image
                         src="/assets/product/product1.jpg"
@@ -165,26 +165,26 @@ const Checkout = () => {
                       />
                     </div>
                     <div>
-                      <div className="text-[14px] h-[15px]">
+                      <div className="text-[14px] xs:text-[12px] xms:text-[12px] xls:text-[12px]">
                         Color: White set, with little bears
                       </div>
-                      <div className="text-[14px] h-[15px]">
+                      <div className="text-[14px] xs:text-[12px] xms:text-[12px] xls:text-[12px]">
                         Size: XL(130 catty -145 catty)
                       </div>
                     </div>
                   </div>
-                  <div className="text-[14px] col-span-1 flex items-center">
+                  <div className="text-[14px] col-span-1 flex items-center xs:text-[12px] xms:text-[12px] xls:text-[12px]">
                     <span>3 x</span>
                     <span> ৳955</span>
                   </div>
-                  <div className="flex items-center gap-3 col-span-1 justify-end">
+                  <div className="flex items-center gap-3 col-span-1 justify-end xs:text-[12px] xms:text-[12px] xls:text-[12px]">
                     <div className="h-[20px]">৳2865</div>
                   </div>
                 </div>
               </div>
               <div>
-                <div className="px-4  py-3 grid grid-cols-4 ">
-                  <div className="flex items-center gap-3 col-span-2">
+                <div className="px-4  py-3 grid grid-cols-4 xs:grid-cols-5 xs:px-2 xms:grid-cols-5 xms:px-2 xls:grid-cols-5 xls:px-2">
+                  <div className="flex items-center gap-3 col-span-2 xs:col-span-3 xms:col-span-3 xls:col-span-3">
                     <div>Item details</div>
                   </div>
                   <div className="text-[14px] col-span-1 flex items-center">
@@ -197,7 +197,7 @@ const Checkout = () => {
               </div>
             </div>
           </div>
-          <div className="col-span-2 ">
+          <div className="col-span-2 xs:mb-2 xms:mb-2 xls:mb-2 sm:mb-2">
             <div className="bg-tahiti-50 rounded-md">
               <div className="px-3">
                 <div className="flex items-center justify-between py-2">
@@ -254,7 +254,7 @@ const Checkout = () => {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <div className=" max-w-[600px] max-h-[600px] overflow-y-auto left-side">
+        <div className=" max-w-[600px] max-h-[600px] overflow-y-auto left-side  xs:max-w-[300px] xs:max-h-[400px] xms:max-w-[310px] xms:max-h-[400px] xls:max-w-[370px] xls:max-h-[400px] sm:max-h-[500px]">
           <div className="relative overflow-y-auto left-side">
             <div className="border-b">
               <Condition />

@@ -38,8 +38,8 @@ const Cart = () => {
   }
 
   return (
-    <div className="flex min-h-screen flex-col mt-[65px] xs:mt-[95px]">
-      <div className="p-2">
+    <div className="flex min-h-screen flex-col mt-[65px] xs:mt-[108px] xms:mt-[108px] xls:mt-[108px] sm:mt-[108px]">
+      <div className="p-2 xs:p-0 xms:p-0 xls:p-0 sm:p-0">
         <div className="bg-tahiti-50 py-4 px-3 rounded-md flex items-center justify-between">
           <div className="flex items-center">
             <div className="bg-tahiti-500 rounded-full text-tahiti-50 w-6 h-6 flex items-center justify-center">
@@ -50,7 +50,7 @@ const Cart = () => {
           <div>15 October, 2023</div>
         </div>
 
-        <div className="mt-2 grid grid-cols-6 gap-2">
+        <div className="mt-2 grid grid-cols-6 gap-2 xs:grid-cols-1 xs:gap-0 xms:grid-cols-1 xms:gap-0 xls:grid-cols-1 xls:gap-0 sm:grid-cols-1 sm:gap-0 md:grid-cols-1 md:gap-0">
           <div className="col-span-4  rounded-md ">
             <div className="bg-tahiti-50 rounded-md">
               <div className="border-b py-2">
@@ -90,8 +90,8 @@ const Cart = () => {
                 </div>
               </div>
               <div className="border-b">
-                <div className="px-6  py-3 grid grid-cols-4">
-                  <div className="flex items-center gap-3 col-span-2">
+                <div className="px-6  py-3 grid grid-cols-4 xs:grid-cols-5 xs:px-2 xms:grid-cols-5 xms:px-2 xls:grid-cols-5 xls:px-2">
+                  <div className="flex items-center gap-3 col-span-2 xs:col-span-3 xms:col-span-3 xls:col-span-3">
                     <div>
                       <Image
                         src="/assets/product/product1.jpg"
@@ -100,33 +100,33 @@ const Cart = () => {
                         alt="cart"
                       />
                     </div>
-                    <div>
-                      <div className="text-[14px] h-[15px]">
+                    <div className="">
+                      <div className="text-[14px] xs:text-[12px] xms:text-[12px] xls:text-[12px]">
                         Color: White set, with little bears
                       </div>
-                      <div className="text-[14px] h-[15px]">
+                      <div className="text-[14px]  xs:text-[12px] xms:text-[12px] xls:text-[12px]">
                         Size: XL(130 catty -145 catty)
                       </div>
                     </div>
                   </div>
-                  <div className="text-[14px] col-span-1 flex items-center">
+                  <div className="text-[14px] col-span-1 flex items-center xs:text-[12px] xms:text-[12px] xls:text-[12px]">
                     <span>3 x</span>
                     <span> ৳955</span>
                   </div>
-                  <div className="flex items-center gap-3 col-span-1 justify-end">
+                  <div className="flex items-center gap-3 col-span-1 justify-end xs:gap-1 xms:gap-1 xls:gap-1">
                     <div
                       onClick={() => setIsOpen(true)}
-                      className="bg-tahiti-500 text-tahiti-50 flex items-center justify-center rounded-md px-2 cursor-pointer"
+                      className="bg-tahiti-500 text-tahiti-50 flex items-center justify-center rounded-md px-2 cursor-pointer xs:text-[12px] xms:text-[12px] xls:text-[12px]"
                     >
                       Edit
                     </div>
-                    <div className="h-[20px]">৳2865</div>
+                    <div className="h-[20px] xs:text-[12px]">৳2865</div>
                   </div>
                 </div>
               </div>
               <div>
-                <div className="px-6  py-3 grid grid-cols-4 ">
-                  <div className="flex items-center gap-3 col-span-2">
+                <div className="px-6  py-3 grid grid-cols-4 xs:grid-cols-5 xs:px-2 xms:grid-cols-5 xms:px-2 xls:grid-cols-5 xls:px-2">
+                  <div className="flex items-center gap-3 col-span-2 xs:col-span-3 xsm:col-span-3 xls:col-span-3">
                     <div>Item details</div>
                   </div>
                   <div className="text-[14px] col-span-1 flex items-center">
@@ -149,7 +149,7 @@ const Cart = () => {
                </div>
             </div> */}
           </div>
-          <div className="col-span-2 ">
+          <div className="col-span-2 xs:mt-2 xms:mt-2 xls:mt-2 sm:mt-2 md:mt-2">
             <div className="bg-tahiti-50 rounded-md">
               <div className="py-3 border-b text-[20px] font-semibold flex items-center justify-center">
                 Cart Summary

@@ -30,7 +30,7 @@ const SideCategoryWeb = () => {
   };
 
   return (
-    <div className=" bg-tahiti-50 mt-[65px] xs:hidden  md:fixed md:w-[200px] md:min-h-screen lg:fixed lg:w-[200px] lg:min-h-screen  xl:fixed xl:w-[250px] xl:min-h-screen  xxl:fixed xxl:w-[250px] xxl:min-h-screen xs:mt-[99px]  xms:mt-[99px] xls:mt-[99px] sm:mt-[99px] ">
+    <div className="min-h-screen fixed bg-tahiti-50 mt-[65px] xs:hidden xms:hidden xls:hidden sm:hidden md:w-[200px] lg:fixed lg:w-[200px]  xl:fixed xl:w-[250px]  xxl:w-[250px] xs:mt-[99px]  xms:mt-[99px] xls:mt-[99px] sm:mt-[99px]  ">
       <div className="py-4 mt-[10px] border-b-[3px]">
         <div className="flex items-center justify-center">
           <div className="w-[70px] h-[70px] bg-[#AAAAAA] text-white rounded-full flex items-center justify-center">

@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const Settings = () => {
   return (
-    <div className="mt-[65px] min-h-[50rem] p-2">
+    <div className="mt-[65px] min-h-[50rem] mb-2 p-2 xs:mt-[5px] xms:mt-[5px] xls:mt-[5px] sm:mt-[5px] xs:p-0 xms:p-0 xls:p-0 sm:p-0">
       <div className="bg-tahiti-50 rounded-md p-3 shadow-sm">
         <div className="text-[16px] font-semibold py-3 border-b">
           Account Settings
@@ -13,7 +13,7 @@ const Settings = () => {
             <div className="py-2 mt-4">
               <Image src='/assets/logo/user.png' width={170} height={170} alt='user'/>
             </div>
-          <div className="grid grid-cols-2 gap-5 py-3">
+          <div className="grid grid-cols-2 gap-5 py-3 xs:grid-cols-1 xms:grid-cols-1 xls:grid-cols-1">
             <div className="col-span-1">
               <div className="py-1">Name</div>
               <input className="border py-2 rounded-sm outline-tahiti-500 w-full px-2" />
@@ -23,7 +23,7 @@ const Settings = () => {
               <input className="border py-2 rounded-sm outline-tahiti-500 w-full px-2" />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-5 py-3">
+          <div className="grid grid-cols-2 gap-5 py-3 xs:grid-cols-1 xms:grid-cols-1 xls:grid-cols-1">
             <div className="col-span-1">
               <div className="py-1">District</div>
               <select className="border h-[42px] rounded-sm outline-tahiti-500 w-full px-2">
