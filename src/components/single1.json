@@ -19698,3 +19698,21 @@
   "success": true,
   "message": "Successfully generated api data."
 }
+
+
+[{
+    mainCategory: "Bags",
+    subCategory: ['Ladies Purse','Ladies Bags','BriefCases','Money Clip','Men Wallets','Backpacks','Women Wallets','Travel Bagpacks,'Id Cases','Laptop Bags','Suitcase,'Waist Bag','Hand Bag','Gift Box','Baseball Caps']
+},
+{
+    mainCategory:'Jewelry',
+    subcategory:['Men Bracelets','Men Earrings','Women Earrings','Jewellery Cases','Women Necklaces','Bridal','Crown For Women','Bride Necklace','Pendant','bangle','Ring','Anklet','Women Tiara','Belly Chain','Jewellery Box','Pin Brooch','Fashoin Jewellery']
+},
+{
+    mainCategory: "Shoes",
+    subCategory: ['Men Shoes','Men Boots','Ladies Shoes','Ladies Boot','Ladies High Heels','Formal Shoes For Gents','Sandals','Running Gym Shoes','casual Shoes',Loafers For Woemn,Sports Shoes,Baby Shoes,Low Top Shoes,Rain Boots,Men Higt Top Shoes,Fotball Soccer Shoes,Slippers]
+},
+{
+    
+}
+]
