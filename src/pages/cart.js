@@ -1,8 +1,8 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Modal from "react-modal";
-import {HiPlus,HiMinus} from 'react-icons/hi'
+import { HiPlus, HiMinus } from "react-icons/hi";
 
 const customStyles = {
   content: {
@@ -13,7 +13,7 @@ const customStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     borderRadius: 0,
-    border:'none,'
+    border: "none,",
   },
   overlay: {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -22,7 +22,7 @@ const customStyles = {
 
 const Cart = () => {
   let subtitle;
-  const [modalIsOpen, setIsOpen] =useState(false);
+  const [modalIsOpen, setIsOpen] = useState(false);
 
   function openModal() {
     setIsOpen(true);
@@ -58,13 +58,9 @@ const Cart = () => {
                   <div className="flex items-center gap-4">
                     <div className="flex items-center">
                       <input
-                        id="checkbox-table-3"
                         type="checkbox"
                         className="w-4 h-4  bg-gray-100 border-gray-300 rounded"
                       />
-                      <label for="checkbox-table-3" className="sr-only">
-                        checkbox
-                      </label>
                     </div>
                     <div>
                       <Image
@@ -91,7 +87,7 @@ const Cart = () => {
               </div>
               <div className="border-b">
                 <div className="px-6  py-3 grid grid-cols-4 xs:grid-cols-5 xs:px-2 xms:grid-cols-5 xms:px-2 xls:grid-cols-5 xls:px-2">
-                  <div className="flex items-center gap-3 col-span-2 xs:col-span-3 xms:col-span-3 xls:col-span-3">
+                  <div className="flex items-center gap-3 col-span-2 xs:flex-col xs:items-start xs:col-span-3 xms:col-span-3 xls:col-span-3">
                     <div>
                       <Image
                         src="/assets/product/product1.jpg"
@@ -190,7 +186,7 @@ const Cart = () => {
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <div className=" w-[500px]">
+        <div className=" w-[500px] xs:max-w-[300px] xs:max-h-[400px] xms:max-w-[310px] xms:max-h-[400px] xls:max-w-[370px] xls:max-h-[400px] sm:max-h-[500px]">
           <div className="flex items-center gap-3 mb-5">
             <div className="bg-tahiti-100 w-[170px] h-[80px] rounded-md text-white flex items-center justify-center">
               <div className="">
@@ -226,26 +222,38 @@ const Cart = () => {
               <div>
                 <div className=" flex items-center justify-center ">
                   <button className="bg-tahiti-100 text-[18px] text-tahiti-50 w-[30px] h-[30px] font-extrabold rounded-full mr-[-15px] z-10 flex items-center justify-center">
-                    <HiMinus className="text-[20px]"/>
+                    <HiMinus className="text-[20px]" />
                   </button>
                   <input className="outline-none w-[70px] h-[30px] text-center border-t-[2px] border-b-[2px] border-tahiti-500 text-[14px]" />
                   <button className="bg-tahiti-100 text-[18px] text-tahiti-50 w-[30px] h-[30px] font-extrabold rounded-full ml-[-15px] z-10 flex items-center justify-center">
-                  <HiPlus className="text-[20px]"/>
+                    <HiPlus className="text-[20px]" />
                   </button>
                 </div>
               </div>
             </div>
           </div>
           <div className="flex items-center gap-3 py-2 mt-2">
-            <div className="bg-[#EEEEEE] text-[14px] px-2 py-1 rounded-md">Total Items: <span className="">40</span></div>
-            <div className="bg-[#EEEEEE] text-[14px] px-2 py-1 rounded-md">Subtotal: <span className="">৳ 43760</span></div>
+            <div className="bg-[#EEEEEE] text-[14px] px-2 py-1 rounded-md">
+              Total Items: <span className="">40</span>
+            </div>
+            <div className="bg-[#EEEEEE] text-[14px] px-2 py-1 rounded-md">
+              Subtotal: <span className="">৳ 43760</span>
+            </div>
           </div>
           <div className="flex items-center justify-between mt-2">
-            <div className="bg-red-700 text-tahiti-50 text-[14px] py-2 px-4 rounded-md">Delete</div>
+            <div className="bg-red-700 text-tahiti-50 text-[14px] py-2 px-4 rounded-md">
+              Delete
+            </div>
             <div className="flex items-center gap-3">
-            <div onClick={()=>setIsOpen(false)} className="bg-[#AAAAAA] text-tahiti-50 text-[14px] py-2 px-4 rounded-md cursor-pointer">Cancel</div>
-            <div className="bg-tahiti-500 text-tahiti-50 text-[14px] py-2 px-4 rounded-md">Update</div>
-
+              <div
+                onClick={() => setIsOpen(false)}
+                className="bg-[#AAAAAA] text-tahiti-50 text-[14px] py-2 px-4 rounded-md cursor-pointer"
+              >
+                Cancel
+              </div>
+              <div className="bg-tahiti-500 text-tahiti-50 text-[14px] py-2 px-4 rounded-md">
+                Update
+              </div>
             </div>
           </div>
         </div>
