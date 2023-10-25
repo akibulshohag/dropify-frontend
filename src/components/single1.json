@@ -19700,7 +19700,8 @@
 }
 
 
-[{
+[
+{
     mainCategory: "Bags",
     subCategory: ['Ladies Purse','Ladies Bags','BriefCases','Money Clip','Men Wallets','Backpacks','Women Wallets','Travel Bagpacks,'Id Cases','Laptop Bags','Suitcase,'Waist Bag','Hand Bag','Gift Box','Baseball Caps']
 },
@@ -19713,6 +19714,71 @@
     subCategory: ['Men Shoes','Men Boots','Ladies Shoes','Ladies Boot','Ladies High Heels','Formal Shoes For Gents','Sandals','Running Gym Shoes','casual Shoes',Loafers For Woemn,Sports Shoes,Baby Shoes,Low Top Shoes,Rain Boots,Men Higt Top Shoes,Fotball Soccer Shoes,Slippers]
 },
 {
-    
+  mainCategory:"Beauty and Personal Care",
+  subCategory:[Eyeshadow,Eyeliner,Face Powder,Makeup Remover,Eye Brushes,Hair Removal,Mirrors,Teeth Whitening,Nail Polish,Lip Gloss,Lip Liner,Lip Sticks,Anti Hair Thinning & Loss,Hairspray & Styling,Hair Dryers,Hair Dye,Hair Massage Oil,Hair Massage Oil,Irons & Stylers,Bath & Shower,Candles & Scents,Lotions & Oil,Perfume,Perfume Sets,Deodorant,Soaps,Body Wash,Hair Conditoner, Toner, Facial Masks, Face Moisturizer, Eye Treatment, Face Serum,Body Sunscreen, Face Sunscreen]  
+},
+{
+  mainCategory:"Men’s Clothing",
+  subCategory: [Casual Pants For Men,Mens Jeans Pant,Men Suit,Leather Jackets For Men,Winter Pajamas,Shirts,Athletic Shorts, Tie Clips, Mens Sweater, Boxers, Mens Hat, Leather Gloves, Men Sweatplants,Socks,Tie, Bow Ties, Gloves]
+},
+{
+  mainCategory:"Womens Clothing",
+  subCategory:[Hoodies & Sweatshirts,Women Sets,Womens Suits Blazers,Womens Suits Blazers,Womens Coats Jackets,Swimwear,Bikini Sets,Skirts,Womens Jeans,Pants & Capris,Event Dress,Wedding Dresses,Prom Dresses,Evening Dresses,Cosplay Costumes,Bra,Panties, Women Socks, Bodysuit, Bucket Hats, Belts, Beach Style]
+},
+{
+  mainCategory:"Body Items",
+  subCategory:[Baby Cleaning,Baby Bottles,Changing Mats & Cloth Diapers,Child Furniture,Diapers,Potty & Washing,Baby Pools & Water Toys,Remote Control Toys,Baby Gift Sets,Children S Formal Dress,Childrens Socks,Childrens Swim Suit,Children Under Garments,Chinese Outfits,Cotton Jackets,Baby Skirts Dresses,Baby Sweaters,Baby Shoes,Baby Sports Shoes,Baby Snacks,Infant Formula,Infant Milk Powder,Maternity Supplies,Stretch Mark Removal]
+},
+{
+  mainCategory:"Eyewear",
+  subCategory:[Ladies Sunglass,Mens Sunglass,Baby Sunglass,Party Sunglass,Goggles,Reading Glasses]
+},
+{
+  mainCategory:"Office & School Supplies",
+  subCategory:[Water Purification Equipment,Ceiling Fans,Electric Blankets,Fan,Heaters,Portable Air Conditioners,Home Automation,Led Screens,Monitoring Equipment,Security Inspection Device,Solar Panels,Voltage Converters,Carpets & Rugs,Curtains & Accessories,Dust Protection,Pillow,Seat Cushions,Decorative Umbrella,Calculators,Compasses,Digital Pen Translators,Electronic Dictionaries,Kindles & E-Readers,Lab Equipment,Learning Tablets,Pencil Erasers,Pencil Grips,Planners,Tape,Whiteboards,Whiteboard Magnets,Hole Punches,Scissors & X-Acto Knives,Projectors,Diaries & Planners,Wrapping Paper,Binding Accessories,Laminating Paper]
+},
+{
+  mainCategory:"Seasonal Products",
+  subCategory:[Summer,Summer Dress, Ice Cream Maker, Juicer, Neck Fan, Rainy Season, Rain Coat, Magin umbrella, Mosquito Killing Racket,Bike Raincoat,Waterproof Backpack,Autumn,Winter, Winter Dresses, Badminton]
+},
+{
+  mainCategory:"Phone accessories",
+  subCategory:[Xiaomi,Apple, Huwaei,Realme,OnePlus, Samsung, Google, Vivo, Nokia, Lg, Tecno, Htc,Motorola, Ausu]
+},
+{
+  mainCategory:"Sports & Fitness",
+  subCategory:[Snowboarding,Jet Skis,Swimming Gear,Fishing Rods,Fishing Rods,Grills & Bbq Equipment,Luggage Locks,Military Apparel,Yoga Accessories,Tents & Canopies,Fitness Clothes]
+},
+{
+  mainCategory:"Entertainment Items",
+  subCategory:[Gopro,cameras,Travel,Travel Bags, Travel Luggage,Travel Pilows,$K Ultra Hd Tvs,Beanbags & Sofa Chairs,Flat Tvs,Movie Poster, Popcorn makers, Vaping games, Virtual reality, Nintendo Wii, Bluetooth Speakers, Drawing Tablet, Headphones,Ipad ]
+},
+{
+  mainCategory:"Watches",
+  subCategory:[Women Watches,Male Watches, Sports Watches, Watch, Smart Watches, Brandrd Watches, Gshock, Apple Watch, Huawei Watches, Smart Fit Band, Amazefit Watches]
+},
+{
+  mainCategory:"Automobile Items",
+  subCategory:[Auto Oils & Fluids,Automobile,Interior Accessories,Exterior Accessories,Covers,Exterior Vehicle Care,Interior Vehicle Care,Car Electronics Accessories,Car Audio Accesories,Motorcycle,Motorcycle Accessories,Motorcycle Riding Accesories,Car Kit]
+},
+{
+  mainCategory:"Groceries and Pets",
+  subCategory:[Breakfast, Choco & Snacks,Beverages,Food Staples,Cooking Ingredients,Cooking Ingredients,Cat,Cat Bag, Dog ,Fish,Bird,small Pet]
+},
+{
+  mainCategory:"Outdoor & Travelling",
+  subCategory:[Fishing Reels,Fishing,Fishing Lines, Fishing Rods, Fishing tackle boxes, Sportswear,Sports Bag,Sport Accessories,Camping & Hiking, Hunting,Fitness & Bodybuilding,Skiing & Snowboarding,Musical Instrument]
+},
+{
+  mainCategory:"Electronics & Gadgets",
+  subCategory:[Accessories & Supplies,Electronics,Camera & Photo,Car & Vehicle Electronics,Cell Phones & Accessories,Computers & Accessories,Gps & Navigation,Home Audio,Office Electronics,Portable Audio & Video,Security & Surveillance,Service Plans,Television & Video,Video Game Consoles & Accessories,Video Projectors,Wearable Smart Device,Ebook Readers & Accessories]
+},
+{
+  mainCategory:"Home And Kitchen",
+  subcategory:[Medical Supplies & Equipment,Household Supplies,Oral Care,Personal Care,Sexual Wellness,Health Nutrition,Stationery & Gift Wrapping Supplies,Vision Care,Vitamins & Dietary Supplements,Wellness & Relaxation,Kids' Home Store,Kitchen, Dinig,Bedding,Bath,Furniture,Wall Art]
+},
+{
+  mainCategory:"Tools & Home Improvement",
+  subCategory:[Event & Party Supplies,Heating, Cooling & Air Quality,Electric Irons & Steamers,Vacuum Cleaner,Storage Organizer,Cleaning Supplies,Smart Home Appliances,Building Supplies,Smart Home Appliances,Building Supplies,Electrical,Kitchen & Bath Fixtures,Light Bulbs,Lighting & Ceiling Fans,Measuring & Layout Tool,Painting Supplies & Wall Treatments,Power & Hand Tools,Safety & Security,Storage & Home Organization,Welding & Soldering]
 }
 ]

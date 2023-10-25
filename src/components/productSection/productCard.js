@@ -28,8 +28,8 @@ const productCard = ({ product }) => {
                   alt="product"
                 />
               </div>
-              <div className="py-2 truncate ">
-                Factory direct selling fresh J
+              <div title="Factory direct selling fresh J asd sdaf asdf asdf asdf" className="py-2 truncate ">
+                Factory direct selling fresh J asd sdaf asdf asdf asdf
               </div>
               <div className="flex items-center justify-between py-2">
                 <div className=" text-red-500 text-[16px] font-semibold xs:text-[12px] xms:text-[12px] xls:text-[12px] sm:text-[12px] md:text-[12px] lg:text-[13px]">
