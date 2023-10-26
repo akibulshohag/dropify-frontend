@@ -15,9 +15,22 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [loading, setloading] = useState(true);
+  const [game, setgame] = useState([{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}])
 
   let arr = [{}, {}, {}];
   let arr1 = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
+
+  const arrUpdate = async () => {
+    
+      let arr3 = game;
+      let arr2 = [{}, {}, {}, {}, {}];
+      let data = arr3.concat(arr2);
+      setgame(data);
+      
+    
+  };
+
+
   return (
     <main
       className={`flex min-h-screen flex-col mt-[65px] xs:mt-[99px] xms:mt-[99px] xls:mt-[99px] sm:mt-[99px] `}
@@ -96,13 +109,13 @@ export default function Home() {
                   </div>
                 </>
               ) : (
-                <ProductCard product={arr1} />
+                <ProductCard product={game} />
               )}
             </div>
           </div>
         </div>
         <div className="flex items-center justify-center py-6">
-          <button className="bg-tahiti-500 text-tahiti-50 p-2 text-[13px] rounded-md">
+          <button onClick={arrUpdate} className="bg-tahiti-500 text-tahiti-50 p-2 text-[13px] rounded-md">
             Load More
           </button>
         </div>
