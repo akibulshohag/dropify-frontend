@@ -7,31 +7,13 @@ import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { BiChevronLeft, BiChevronRight, BiInfoCircle } from "react-icons/bi";
 import Skeleton from 'react-loading-skeleton';
+import homeCategory from "@/components/data/homeCategory";
+import { useRouter } from "next/router";
 
 
 const landingCategory = () => {
-  let arr = [
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-  ];
+  const router = useRouter()
+  
   return (
     <div>
       <div className="bg-tahiti-50 mt-2 h-[130px] flex group rounded-sm">
@@ -88,25 +70,25 @@ const landingCategory = () => {
               spaceBetween: 5,
             },
             1440: {
-              slidesPerView: 12,
+              slidesPerView: 11.7,
               spaceBetween: 0,
             },
           }}
         >
-          {arr?.map((item, index) => (
+          {homeCategory?.map((item, index) => (
             <div className="" key={index}>
               <SwiperSlide>
-                <div className=" border-r border-r-tahiti-600 grid items-center justify-center h-full px-1">
+                <div onClick={()=>router.push(`/shop/${item?.categorySlug}`)} className=" border-r border-r-tahiti-600 grid items-center justify-center h-full px-1 cursor-pointer">
                   <div className="flex items-center justify-center">
                     <Image
-                      src={"/assets/category/necklace.svg"}
+                      src={item?.categoryImage}
                       width={60}
                       height={60}
                       alt="category"
                     />
                   </div>
                   <div className="text-center text-[13px] font-semibold">
-                    Jewelry
+                    {item?.categoryName}
                   </div>
                 </div>
               </SwiperSlide>

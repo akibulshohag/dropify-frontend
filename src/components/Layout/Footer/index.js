@@ -58,7 +58,7 @@ const Footer = () => {
           Explore Dropify Brands... Think to the Buy.
         </div>
       </div>
-      <div className="bg-[#F7F7F7]  py-6 ">
+      <div className="bg-[#066D53]  py-6 text-white">
         <div className="grid grid-cols-12 gap-5 max-w-[90rem] mx-auto xs:grid-cols-6 xs:px-2 xms:grid-cols-6 xms:px-2 xls:grid-cols-6 xls:px-2 sm:grid-cols-6 sm:px-2">
           <div className="col-span-3">
             <div className="text-[18px] font-bold">CONTACT</div>
@@ -108,7 +108,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="border-t text-center py-4 bg-[#F7F7F7] xs:pb-[65px] xms:pb-[65px] xls:pb-[65px] sm:pb-[65px]">
+      <div className=" text-center py-4 bg-[#036149] text-white xs:pb-[65px] xms:pb-[65px] xls:pb-[65px] sm:pb-[65px]">
         <div>© 2023 B2GSOFT - All Rights Reserved</div>
       </div>
     </div>

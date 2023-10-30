@@ -1,82 +1,11 @@
-import React, { useState } from "react";
-import Image from "next/image";
+import { useState } from "react";
 import { AiOutlineRight } from "react-icons/ai";
 import { BiLeftArrowAlt } from "react-icons/bi";
-
-import Skeleton from "react-loading-skeleton";
-import  categoryList from "@/components/data/category";
+import { useRouter } from "next/router";
+import categoryList from "@/components/data/category";
 
 const SideCategoryWeb = () => {
-  let arr = [
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-  ];
-  let arr1 = [
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-  ];
+  const router = useRouter();
   const [categoryName, setcategoryName] = useState("");
   const [subCategoryList, setsubCategoryList] = useState([]);
   const [childCategoryTab, setchildCategorytab] = useState(0);
@@ -91,7 +20,7 @@ const SideCategoryWeb = () => {
   return (
     <div className="w-[250px] min-h-screen bg-tahiti-50 max-h-[100vh] mt-[65px] fixed xs:mt-[95px] xs:hidden xms:hidden xls:hidden sm:hidden md:w-[200px] lg:w-[200px]">
       {childCategoryTab == 0 ? (
-        <div className=" max-h-[100vh] overflow-y-auto left-side">
+        <div className="  max-h-[93vh] overflow-y-auto left-side">
           
             <>
               {categoryList?.map((item, index) => (
@@ -102,14 +31,14 @@ const SideCategoryWeb = () => {
                   key={index}
                   className="flex items-center  justify-between hover:bg-tahiti-300 h-14 pl-4 group cursor-pointer"
                 >
-                  <div className="flex items-center">
+                  <div className="flex items-center ">
                     <img
                       src={item?.categoryIamge}
                       width={25}
                       height={25}
                       alt="logo"
                     />
-                    <span className="text-[14px] font-semibold ml-4 h-[16px]">
+                    <span className="text-[14px] font-semibold ml-4  overflow-x-hidden left-side">
                      {item?.categoryName}
                     </span>
                   </div>
@@ -130,21 +59,21 @@ const SideCategoryWeb = () => {
             className="flex items-center h-14 mb-1  px-4 cursor-pointer border-b-4"
           >
             <BiLeftArrowAlt className="text-[25px]" />
-            <span className="text-[14px] font-semibold ml-4 h-[20px]">
+            <span className="text-[14px] font-semibold ml-4  overflow-x-hidden left-side">
               {categoryName}
             </span>
           </div>
           <div className=" max-h-[85vh] overflow-y-scroll left-side mb-10">
             {subCategoryList?.map((item, index) => (
               <div
-                // onClick={() => {
-                //   setcategoryName("Bag"), setchildCategorytab(1);
-                // }}
+                onClick={() => {
+                  router.push(`/shop/${item?.subCatSlug}`)
+                }}
                 key={index}
                 className="flex items-center justify-between hover:bg-tahiti-300 h-14 pl-4 group cursor-pointer "
               >
                 <div className="flex items-center">
-                  <span className="text-[14px] font-medium ml-2 h-[16px] sm:text-[12px]">
+                  <span className="text-[14px] font-medium ml-2  sm:text-[12px] overflow-x-hidden left-side">
                     {item?.subCatName}
                   </span>
                 </div>
