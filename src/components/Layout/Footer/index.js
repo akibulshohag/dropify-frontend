@@ -1,6 +1,14 @@
 import Image from "next/image";
+import { useState,useEffect } from "react";
 
 const Footer = () => {
+
+  const [year,setYear] = useState('')
+    useEffect(() => {
+        let year = new Date();
+        setYear(year.getFullYear())
+    },[year])
+
   return (
     <div className=" bg-tahiti-50 border-l xs:border-none  xms:border-none xls:border-none sm:border-none">
       <div className=" py-8">
@@ -109,7 +117,7 @@ const Footer = () => {
         </div>
       </div>
       <div className=" text-center py-4 bg-[#036149] text-white xs:pb-[65px] xms:pb-[65px] xls:pb-[65px] sm:pb-[65px]">
-        <div>© 2023 B2GSOFT - All Rights Reserved</div>
+        <div>&copy; {year} B2GSOFT - All Rights Reserved</div>
       </div>
     </div>
   );
