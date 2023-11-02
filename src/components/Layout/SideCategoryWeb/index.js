@@ -38,7 +38,7 @@ const SideCategoryWeb = () => {
                       height={25}
                       alt="logo"
                     />
-                    <span className="text-[14px] font-semibold ml-4  overflow-x-hidden left-side">
+                    <span className="text-[14px] font-medium ml-4  overflow-x-hidden left-side">
                      {item?.categoryName}
                     </span>
                   </div>

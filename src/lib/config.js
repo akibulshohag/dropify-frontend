@@ -1,7 +1,7 @@
-export const hostname = `https://mail-service.b2gsoft.xyz`;
+// export const hostname = `https://mail-service.b2gsoft.xyz`;
 export const imagePath = 'https://api.courier.b2gsoft.xyz'
 
-// const hostname = `http://192.168.0.245:3680`;
+export const hostname = `http://192.168.0.242:4311`;
 
 // const hostname = `https://api-lazma.b2gsoft.xyz`;
 
