@@ -217,16 +217,16 @@ const ShopWiseProduct = () => {
           {productList.length > 0 ? 
           <div className="mt-3 bg-tahiti-50 p-2 py-5 flex items-center justify-center xs:mb-2 xms:mb-2 xls:mb-2 sm:mb-2">
             <ReactPaginate
-              className="flex items-center justify-center gap-5 list-none "
+              className="flex items-center justify-center gap-5 list-none xs:gap-2 xms:gap-3 xls:gap-3"
               breakLabel="..."
               nextLabel=" >"
               onPageChange={handlePageClick}
-              pageRangeDisplayed={5}
+              pageRangeDisplayed={1}
               pageCount={totalCount}
               previousLabel="< "
               renderOnZeroPageCount={null}
-              activeClassName="bg-[#00619a] rounded-full py-[5px] px-[10px] flex item-center justify-center text-[#fff] "
-              pageClassName="border rounded-full py-[5px] px-[10px] cursor-pointer"
+              activeClassName="bg-[#00619a] rounded-full py-[5px] px-[10px] flex item-center justify-center text-[#fff]"
+              pageClassName="border rounded-full py-[5px] px-[10px] cursor-pointer "
             />
           </div>
           :null

@@ -25,9 +25,7 @@ export default function Home() {
       let arr3 = game;
       let arr2 = [{}, {}, {}, {}, {}];
       let data = arr3.concat(arr2);
-      setgame(data);
-      console.log();
-    
+      setgame(data);    
   };
 
 
