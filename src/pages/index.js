@@ -52,7 +52,7 @@ export default function Home() {
             </div>
             <div className="py-4">
               <div className="grid grid-cols-7 gap-3 px-4 xs:grid-cols-2 xs:gap-1 xs:px-[0px] xms:grid-cols-2 xms:gap-1 xms:px-[0px] xls:grid-cols-2 xls:gap-1 xls:px-[0px] sm:grid-cols-4 sm:gap-1 sm:px-[0px] md:grid-cols-4 lg:grid-cols-5">
-                <ProductCard product={arr1} />
+                <ProductCard productList={arr1} />
               </div>
             </div>
           </div>
@@ -109,7 +109,7 @@ export default function Home() {
                   </div>
                 </>
               ) : (
-                <ProductCard product={game} />
+                <ProductCard productList={game} />
               )}
             </div>
           </div>
