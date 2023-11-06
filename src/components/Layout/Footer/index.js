@@ -10,7 +10,7 @@ const Footer = () => {
     },[year])
 
   return (
-    <div className=" bg-tahiti-50 border-l xs:border-none  xms:border-none xls:border-none sm:border-none">
+    <div className=" bg-tahiti-50 border-l xs:border-none   xms:border-none   xls:border-none   sm:border-none  " >
       <div className=" py-8">
         <div className="flex items-center justify-center py-3">
           <Image
@@ -67,7 +67,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="bg-[#066D53]  py-6 text-white">
-        <div className="grid grid-cols-12 gap-5 max-w-[90rem] mx-auto xs:grid-cols-6 xs:px-2 xms:grid-cols-6 xms:px-2 xls:grid-cols-6 xls:px-2 sm:grid-cols-6 sm:px-2">
+        <div className="grid grid-cols-12 gap-5 max-w-[90rem] mx-auto xs:grid-cols-6 xs:px-2 xms:grid-cols-6 xms:px-2 xls:grid-cols-6 xls:px-2 sm:grid-cols-6 sm:px-2 md:px-2 lg:px-2">
           <div className="col-span-3">
             <div className="text-[18px] font-bold">CONTACT</div>
             <div className="text-[16px]">

@@ -3,7 +3,7 @@ import ProductCard from "@/components/productSection/productCard";
 import ReactPaginate from "react-paginate";
 import { FaHome } from "react-icons/fa";
 
-const storeWiseProduct = () => {
+const StoreWiseProduct = () => {
   let arr = [
    
     {},
@@ -142,4 +142,4 @@ const storeWiseProduct = () => {
   );
 };
 
-export default storeWiseProduct;
+export default StoreWiseProduct;

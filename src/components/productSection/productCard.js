@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Skeleton from 'react-loading-skeleton';
 
-const productCard = ({ productList }) => {
+const ProductCard = ({ productList }) => {
   return (
     <>
       {productList?.map((item, index) => (
@@ -19,7 +19,7 @@ const productCard = ({ productList }) => {
                   // fill
                   width={250}
                   height={250}
-                  alt="product"
+                  alt={item?.title}
                 />
               </div>
               <div title={item?.title} className="py-2 truncate text-[14px]">
@@ -50,4 +50,4 @@ const productCard = ({ productList }) => {
   );
 };
 
-export default productCard;
+export default ProductCard;

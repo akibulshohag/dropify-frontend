@@ -74,7 +74,7 @@ const Cart = () => {
                       <div className="text-[14px] font-semibold">
                         Order ID: #6527XX
                       </div>
-                      <div>Men's expeditionary Pure</div>
+                      <div>Men&apos;s expeditionary Pure</div>
                     </div>
                   </div>
                   <div>

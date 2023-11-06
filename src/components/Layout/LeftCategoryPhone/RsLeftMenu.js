@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { AiOutlineRight } from "react-icons/ai";
 import { BiLeftArrowAlt } from "react-icons/bi";
 import categoryList from "@/components/data/category";
+import Image from "next/image";
 
 function ResLeftMenu() {
   const { sideCategory, setSideCategory } = useStatus();
@@ -137,7 +138,7 @@ function ResLeftMenu() {
                     className="flex items-center  justify-between hover:bg-tahiti-300 h-14 pl-4 group cursor-pointer"
                   >
                     <div className="flex items-center">
-                      <img
+                      <Image
                         src={item?.categoryIamge}
                         width={25}
                         height={25}

@@ -73,9 +73,9 @@ const Slider = () => {
             }}
           >
             {slider?.map((item, index) => (
-              <div className="cursor-pointer" key={index}>
+              <div key={index} className="cursor-pointer">
                 <SwiperSlide>
-                  <div className="relative w-full h-[450px] xs:h-[150px] xms:h-[170px] xls:h-[200px] sm:h-[280px] md:h-[180px] lg:h-[270px] z-0">
+                  <div className="relative w-full h-[450px] xs:h-[150px] xms:h-[170px] xls:h-[200px] sm:h-[280px] md:h-[220px] lg:h-[270px] z-0">
                     <Image
                     className="rounded-sm"
                       src={"/assets/banner/dfa.png"}
@@ -161,10 +161,10 @@ const Slider = () => {
             {slider?.map((item, index) => (
               <div className="cursor-pointer" key={index}>
                 <SwiperSlide>
-                  <div className="relative w-full h-[450px] col-span-1 z-0 md:h-[180px] lg:h-[270px]">
+                  <div className="relative w-full h-[450px] col-span-1 z-0 md:h-[220px] lg:h-[270px]">
                     <Image
                     className="rounded-sm"
-                      src={"/assets/banner/promotion2.jpg"}
+                      src={"/assets/banner/ad.png"}
                       fill
                       alt="banner"
                     />

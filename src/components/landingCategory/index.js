@@ -8,10 +8,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { BiChevronLeft, BiChevronRight, BiInfoCircle } from "react-icons/bi";
 import Skeleton from 'react-loading-skeleton';
 import homeCategory from "@/components/data/homeCategory";
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router'
 
 
-const landingCategory = () => {
+const LandingCategory = () => {
   const router = useRouter()
   
   return (
@@ -110,4 +110,4 @@ const landingCategory = () => {
   );
 };
 
-export default landingCategory;
+export default LandingCategory;

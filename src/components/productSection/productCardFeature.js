@@ -3,7 +3,7 @@ import Image from "next/image";
 import Skeleton from 'react-loading-skeleton';
 
 
-const productCard = ({ product }) => {
+const ProductCard = ({ product }) => {
   const [loading, setloading] = useState(true);
 
   let arr = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
@@ -63,4 +63,4 @@ const productCard = ({ product }) => {
   );
 };
 
-export default productCard;
+export default ProductCard;

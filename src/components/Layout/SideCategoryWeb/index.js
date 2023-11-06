@@ -3,6 +3,7 @@ import { AiOutlineRight } from "react-icons/ai";
 import { BiLeftArrowAlt } from "react-icons/bi";
 import { useRouter } from "next/router";
 import categoryList from "@/components/data/category";
+import Image from "next/image";
 
 const SideCategoryWeb = () => {
   const router = useRouter();
@@ -32,7 +33,7 @@ const SideCategoryWeb = () => {
                   className="flex items-center  justify-between hover:bg-tahiti-300 h-14 pl-4 group cursor-pointer"
                 >
                   <div className="flex items-center ">
-                    <img
+                    <Image
                       src={item?.categoryIamge}
                       width={25}
                       height={25}
