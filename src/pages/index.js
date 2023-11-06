@@ -53,7 +53,7 @@ export default function Home({ homeData }) {
        
         {homeData.length > 0 &&
           homeData.map((item, index) => (
-            <div key={index} className="mt-3 bg-tahiti-50">
+            <div key={index} className="mt-2 bg-tahiti-50">
               <div className="flex items-center justify-between  border-b py-4 px-6 xs:px-2 xms:px-2 xls:px-2 sm:px-2">
                 <div className="font-bold">{item?.name.toUpperCase()}</div>
                 <div
@@ -73,7 +73,7 @@ export default function Home({ homeData }) {
 
         {trendingProduct.length > 0 ? (
           <>
-            <div className="mt-3 bg-tahiti-50 ">
+            <div className="mt-2 bg-tahiti-50 ">
               <div className="flex items-center justify-center p-3 border-b py-4">
                 <div className="font-bold text-[20px]">Trending Products</div>
               </div>
