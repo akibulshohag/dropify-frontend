@@ -83,6 +83,7 @@ const Slider = ({banner,slider}) => {
                       src={`${hostname}/${item?.image}`}
                       fill
                       alt="banner"
+                      loading="lazy"
                     />
                   </div>
                 </SwiperSlide>
@@ -169,6 +170,7 @@ const Slider = ({banner,slider}) => {
                       src={`${hostname}/${item?.image}`}
                       fill
                       alt="banner"
+                      loading="lazy"
                     />
                   </div>
                 </SwiperSlide>

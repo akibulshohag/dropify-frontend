@@ -12,6 +12,8 @@ import ProductCard from "@/components/productSection/productCard";
 import Skeleton from "react-loading-skeleton";
 import request from "@/lib/request";
 import { useRouter } from "next/router";
+import Head from "next/head";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -40,6 +42,13 @@ export default function Home({ homeData }) {
   };
 
   return (
+    <>
+    <Head>
+        <title>Dropify</title>
+        <meta name="description" content="Dropify" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
     <main
       className={`flex min-h-screen flex-col mt-[65px] xs:mt-[99px] xms:mt-[99px] xls:mt-[99px] sm:mt-[99px] `}
     >
@@ -95,6 +104,7 @@ export default function Home({ homeData }) {
         ) : null}
       </div>
     </main>
+    </>
   );
 }
 
