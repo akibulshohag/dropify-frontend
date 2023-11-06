@@ -78,7 +78,7 @@ const Slider = () => {
                   <div className="relative w-full h-[450px] xs:h-[150px] xms:h-[170px] xls:h-[200px] sm:h-[280px] md:h-[220px] lg:h-[270px] z-0">
                     <Image
                     className="rounded-sm"
-                      src={"/assets/banner/dfa.png"}
+                      src={"/assets/banner/banner1.jpg"}
                       fill
                       alt="banner"
                     />
@@ -164,7 +164,7 @@ const Slider = () => {
                   <div className="relative w-full h-[450px] col-span-1 z-0 md:h-[220px] lg:h-[270px]">
                     <Image
                     className="rounded-sm"
-                      src={"/assets/banner/ad.png"}
+                      src={"/assets/banner/promotion2"}
                       fill
                       alt="banner"
                     />
