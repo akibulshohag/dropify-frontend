@@ -6,13 +6,17 @@ const nextConfig = {
     pagesBufferLength: 2,
   },
   // images: {
-  //   domains: [],
+  //   domains: ['192.168.0.242','cbu01.alicdn.com'],
   // },
 
   images: {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "**",
+      },
+      {
+        protocol: "http",
         hostname: "**",
       },
     ],

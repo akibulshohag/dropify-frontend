@@ -6,9 +6,11 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { BiChevronLeft, BiChevronRight, BiInfoCircle } from "react-icons/bi";
+import { hostname } from "@/lib/config";
 
-const Slider = () => {
-  let slider = [{}, {}];
+const Slider = ({banner,slider}) => {
+  let slider1 = [{}, {}];
+
   return (
     <div>
       <div className="grid grid-cols-3 gap-2 ">
@@ -78,7 +80,7 @@ const Slider = () => {
                   <div className="relative w-full h-[450px] xs:h-[150px] xms:h-[170px] xls:h-[200px] sm:h-[280px] md:h-[220px] lg:h-[270px] z-0">
                     <Image
                     className="rounded-sm"
-                      src={"/assets/banner/banner1.jpg"}
+                      src={`${hostname}/${item?.image}`}
                       fill
                       alt="banner"
                     />
@@ -158,13 +160,13 @@ const Slider = () => {
             //   },
             // }}
           >
-            {slider?.map((item, index) => (
+            {banner?.map((item, index) => (
               <div className="cursor-pointer" key={index}>
                 <SwiperSlide>
                   <div className="relative w-full h-[450px] col-span-1 z-0 md:h-[220px] lg:h-[270px]">
                     <Image
                     className="rounded-sm"
-                      src={"/assets/banner/promotion2.jpg"}
+                      src={`${hostname}/${item?.image}`}
                       fill
                       alt="banner"
                     />

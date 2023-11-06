@@ -44,15 +44,15 @@ export default function Home({ homeData }) {
       className={`flex min-h-screen flex-col mt-[65px] xs:mt-[99px] xms:mt-[99px] xls:mt-[99px] sm:mt-[99px] `}
     >
       <div className="p-2 xs:p-0 xms:p-0 xls:p-0 sm:p-0">
-        <Slider />
+        <Slider banner={homeData?.banner} slider={homeData?.slider}/>
         <LandingCategory />
         {/* <div className="grid grid-cols-2 xs:grid-cols-1 xms:grid-cols-1 xls:grid-cols-1 sm:grid-cols-1 mt-3 gap-3 md:grid-cols-1 ">
           <PopularProduct />
           <NewProduct />
         </div> */}
        
-        {homeData.length > 0 &&
-          homeData.map((item, index) => (
+        {homeData?.homeProducts.length > 0 &&
+          homeData?.homeProducts.map((item, index) => (
             <div key={index} className="mt-2 bg-tahiti-50">
               <div className="flex items-center justify-between  border-b py-4 px-6 xs:px-2 xms:px-2 xls:px-2 sm:px-2">
                 <div className="font-bold">{item?.name.toUpperCase()}</div>
@@ -102,7 +102,7 @@ export async function getServerSideProps() {
   let res = await request("product/home");
   return {
     props: {
-      homeData: res?.data || [],
+      homeData: res?.data || null,
     },
   };
 }
