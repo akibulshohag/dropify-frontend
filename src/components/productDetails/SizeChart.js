@@ -60,16 +60,20 @@ const SizeChart = () => {
                 </span>
               </td>
               <td className="px-4 py-2">
-                <div>
+                {/* <div>
                   <button className="bg-tahiti-100 text-tahiti-50 font-bold px-4 py-1 w-[80px] rounded-md">
                     Add
                   </button>
+                </div> */}
+                <div className=" flex items-center justify-center ">
+                  <button className="bg-tahiti-500 rounded-sm text-[18px] text-tahiti-50 w-[30px] h-[30px] font-extrabold ">
+                    -
+                  </button>
+                  <input className="outline-none w-[50px] h-[30px] text-center border-t-[2px] border-b-[2px] border-tahiti-500" />
+                  <button className="bg-tahiti-500 rounded-sm text-[18px] text-tahiti-50 w-[30px] h-[30px] font-extrabold">
+                    +
+                  </button>
                 </div>
-                {/* <div className=" flex items-center justify-center ">
-                                <button className="bg-tahiti-100 rounded-sm text-[18px] text-tahiti-50 w-[30px] h-[30px] font-extrabold">-</button>
-                                <input className='outline-none w-[50px] h-[30px] text-center'/>
-                                <button className='bg-tahiti-100 rounded-sm text-[18px] text-tahiti-50 w-[30px] h-[30px] font-extrabold'>+</button>
-                            </div> */}
               </td>
             </tr>
           ))}

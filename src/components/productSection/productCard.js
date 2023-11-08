@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Skeleton from 'react-loading-skeleton';
+import { useRouter } from "next/router";
 
 const ProductCard = ({ productList }) => {
+  const router = useRouter();
   return (
     <>
       {productList?.map((item, index) => (
         <div  key={index}>
             <div
-             
+             onClick={()=>router.push(`/product/${item?.productId}`)}
               className=" p-2 col-span-1 shadow-md cursor-pointer"
             >
               <div className="">

@@ -1,0 +1,40 @@
+.variationContainer{
+    position: relative;
+}
+
+.variationContainer .count{
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 4px 0 4px 4px;
+    font-size: 12px;
+    height: 36px;
+    width: 36px;
+    text-align:left;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    font-weight: 700;
+}
+.spanSelectedBadge{
+    background: linear-gradient(to top left,transparent,transparent 50%,#333 0,#555)!important;
+}
+.spanSelectedBadge1{
+    background: linear-gradient(to top left,transparent,transparent 50%,#0CA781 0,#0CA781)!important;
+}
+.subImages{
+    position: relative;
+}
+.subImages .count{
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 4px 0 4px 4px;
+    font-size: 12px;
+    height: 36px;
+    width: 36px;
+    text-align:left;
+    border-top-right-radius: 4px;
+    font-weight: 700;
+    border-top-left-radius: 4px;
+    
+}
