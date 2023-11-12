@@ -14,28 +14,99 @@ import ShippingCharge from "@/components/productDetails/ShippingCharge";
 import { useRouter } from "next/router";
 import style from "@/styles/productDetails.module.css";
 import request from "@/lib/request";
+import Modal from "react-modal";
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    borderRadius: 0,
+    border: "none,",
+  },
+  overlay: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+};
 
 const SingleProduct = ({ data }) => {
   const router = useRouter();
   const { slug } = router.query;
   const [selectedImage, setselectedImage] = useState("");
   const [tabChange, settabChange] = useState(1);
+  const [productDetails, setproductDetails] = useState(data);
+  const [productVariation, setproductVariation] = useState([]);
+  const [variationId, setvariationId] = useState("");
+  const [isVideo, setisVideo] = useState(false);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [tableVariation, settableVariation] = useState([]);
+  const [propertyName, setpropertyName] = useState("");
+  const [values, setvalues] = useState("");
+  const [renderMe, setrenderMe] = useState(false)
 
-  let arr = [
-    { name: "akib", image: "/assets/product/product1.jpg" },
-    { name: "akib", image: "" },
-    { name: "Made according to the requirements of guests", image: "" },
-    { name: "akib", image: "/assets/product/product1.jpg" },
-    { name: "akib sdfsdf", image: "" },
-    { name: "akib", image: "" },
-    { name: "akib", image: "/assets/product/product1.jpg" },
-  ];
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   useEffect(() => {
-    if (data) {
-      setselectedImage(data?.MainPictureUrl);
+    console.log('..............useEffect');
+    if (productDetails) {
+      setselectedImage(productDetails?.MainPictureUrl);
     }
-  }, []);
+
+    if (productDetails?.Variation2.length > 0) {
+      console.log("........variation1");
+    } else if (productDetails?.Variation1.length > 0) {
+      // setproductVariation(productDetails?.Variation1);
+      let value = productDetails?.Variation1.filter(
+        (item) => item?.Vid == productDetails?.Variation1[0]?.Vid
+      );
+      console.log(".........cc", value);
+      settableVariation([...value]);
+      setpropertyName(value[0]?.PropertyName);
+      setvalues(value[0]?.Value);
+      setvariationId(value[0]?.Vid);
+    }
+  }, [productDetails]);
+
+  const selectVariation = (val) => {
+
+    setvariationId(val?.Vid);
+    setvalues(val?.Value);
+    if (val?.ImageUrl) {
+      setselectedImage(val?.ImageUrl);
+    }
+
+    if (productDetails?.Variation2.length > 0) {
+      console.log("........variation1");
+    } else if (productDetails?.Variation1.length > 0) {
+      let value = productDetails?.Variation1.filter((item) => item?.Vid == val?.Vid);
+      console.log(".........cc", value);
+      settableVariation(value);
+    }
+  };
+
+  const subQty=(val,index)=>{
+    const arr = [...tableVariation];
+    arr[index].qty -= 1;
+    settableVariation(arr)
+  }
+  // console.log('........pro',productVariation);
+
+  const addQty =(val,index)=>{
+    const arr = [...tableVariation];
+    arr[index].qty += 1;
+    settableVariation(arr)
+  }
+
+  const inputQty =(val,index)=>{
+    const arr = [...tableVariation];
+    arr[index].qty = val;
+    settableVariation(arr)
+  }
 
   return (
     <div className="flex min-h-screen flex-col mt-[65px] xs:mt-[95px]">
@@ -53,6 +124,8 @@ const SingleProduct = ({ data }) => {
                   data={data}
                   setselectedImage={setselectedImage}
                   selectedImage={selectedImage}
+                  isVideo={isVideo}
+                  setisVideo={setisVideo}
                 />
                 <div className="col-span-3">
                   {/* <Campaign /> */}
@@ -84,46 +157,64 @@ const SingleProduct = ({ data }) => {
                   </div>
                   <div className="py-2 mt-2">
                     <div className="text-[18px] font-semibold">
-                      Color: White
+                      {propertyName}: {values}
                     </div>
                     <div className="flex items-center flex-wrap gap-2 pr-5 py-2">
-                      {arr.map((item, index) => (
+                      {productDetails?.Variation1?.map((item, index) => (
                         <>
-                          {item?.image ? (
+                          {item?.MiniImageUrl ? (
                             <div
+                              onClick={() => selectVariation(item)}
                               key={index}
-                              className={`p-[1px] border-[1px] border-gray-300 rounded-md col-span-1 hover:border-tahiti-500 hover:border-[1px] cursor-pointer ${style.subImages}`}
+                              className={`${
+                                item?.Vid == variationId
+                                  ? "border-[1px] border-tahiti-500"
+                                  : "border-[1px] border-gray-300"
+                              } p-[1px]  rounded-md col-span-1 hover:border-tahiti-500 hover:border-[1px] cursor-pointer ${
+                                style.subImages
+                              }`}
                             >
                               <div className="w-[55px] h-[55px] relative flex items-center justify-center cursor-pointer ">
                                 <Image
                                   className="object-fill rounded-md"
-                                  src={item?.image}
+                                  src={item?.MiniImageUrl}
                                   fill
                                   alt="variation image"
                                   priority={true}
                                 />
                               </div>
-                              <span
-                                className={`${style.count} ${style.spanSelectedBadge1}`}
-                              >
-                                1
-                              </span>
+                              {item?.qty == 0 ? null : (
+                                <span
+                                  className={`${style.count} ${style.spanSelectedBadge1}`}
+                                >
+                                  {item?.qty}s
+                                </span>
+                              )}
                             </div>
                           ) : (
-                            <div>
+                            <div
+                              onClick={() => selectVariation(item)}
+                              key={index}
+                            >
                               <div
                                 className={`${style.variationContainer} relative cursor-pointer`}
                               >
                                 <div
-                                  className={`bg-[#F4F4F4] px-2 py-4 rounded-md text-black`}
+                                  className={`${
+                                    item?.Vid == variationId
+                                      ? "bg-tahiti-500 text-white"
+                                      : "bg-[#F4F4F4] text-black"
+                                  } px-2 py-4 rounded-md `}
                                 >
-                                  {item?.name}
+                                  {item?.Value}
                                 </div>
-                                <span
-                                  className={`${style.count} ${style.spanSelectedBadge}`}
-                                >
-                                  1
-                                </span>
+                                {item?.qty == 0 ? null : (
+                                  <span
+                                    className={`${style.count} ${style.spanSelectedBadge}`}
+                                  >
+                                   {item?.qty}
+                                  </span>
+                                )}
                               </div>
                             </div>
                           )}
@@ -131,7 +222,66 @@ const SingleProduct = ({ data }) => {
                       ))}
                     </div>
                   </div>
-                  <SizeChart />
+                  {/* <SizeChart tableVariation={tableVariation} /> */}
+                  <div className="relative overflow-x-auto border max-h-[250px] sm:rounded-lg left-side">
+                    <table className="w-full text-sm text-center text-gray-500 dark:text-gray-400 border">
+                      {tableVariation?.length > 0 && (
+                        <thead className="text-xs text-gray-700 uppercase bg-[#F0F0F0] dark:bg-gray-700 dark:text-gray-400">
+                          <tr>
+                            <th scope="col" className="px-6 py-3 min-w-[200px]">
+                              {tableVariation[0]?.PropertyName}
+                            </th>
+                            <th scope="col" className="px-6 py-3 ">
+                              Price
+                            </th>
+                            <th scope="col" className="px-6 py-3  ">
+                              Quantity
+                            </th>
+                          </tr>
+                        </thead>
+                      )}
+                      <tbody>
+                        {tableVariation.map((items, index) => (
+                          <tr
+                            key={index}
+                            className="bg-white border-b dark:bg-gray-900 dark:border-gray-700 cursor-pointer hover:bg-[#F0F0F0]"
+                          >
+                            <th
+                              scope="row"
+                              className="px-6 py-2 text-gray-900 font-semibold whitespace-nowrap dark:text-white"
+                            >
+                              {items?.Value}
+                            </th>
+                            <td className="px-6 py-2 border-l border-r text-tahiti-800 font-semibold">
+                              ৳ {items?.Price} <br />
+                              {/* <span className="text-[13px] text-gray-400 line-through">
+                                ৳ 719
+                             </span> */}
+                            </td>
+                            <td className="px-4 py-2">
+                              {items?.qty == 0 ? (
+                                <div>
+                                  <h2 onClick={()=>addQty(items,index)} className="bg-tahiti-500 text-tahiti-50 font-bold px-4 py-1 w-[80px] rounded-md">
+                                    Add
+                                  </h2>
+                                </div>
+                              ) : (
+                                <div className=" flex items-center justify-center ">
+                                  <h2 onClick={()=>subQty(items,index)} className="bg-tahiti-500 rounded-sm text-[18px] text-tahiti-50 w-[30px] h-[30px] font-extrabold ">
+                                    -
+                                  </h2>
+                                  <input value={items.qty} onChange={(e)=>inputQty(e.target.value,index)} className="outline-none w-[50px] h-[30px] text-center border-t-[2px] border-b-[2px] border-tahiti-500" />
+                                  <h3 onClick={()=>addQty(items,index)} className="bg-tahiti-500 rounded-sm text-[18px] text-tahiti-50 w-[30px] h-[30px] font-extrabold">
+                                    +
+                                  </h3>
+                                </div>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                   <div className="py-1 text-center">Scroll More Size</div>
                   <PriceTable />
                   <div className="mt-5 grid grid-cols-7 gap-2">
@@ -209,7 +359,11 @@ const SingleProduct = ({ data }) => {
                 <div>
                   <button
                     onClick={() => settabChange(1)}
-                    className={`py-3 px-4 border ${tabChange == 1? ' bg-tahiti-500 text-white' :' text-black'} border-tahiti-500 rounded-md text-[18px] font-semibold`}
+                    className={`py-3 px-4 border ${
+                      tabChange == 1
+                        ? " bg-tahiti-500 text-white"
+                        : " text-black"
+                    } border-tahiti-500 rounded-md text-[18px] font-semibold`}
                   >
                     Specification
                   </button>
@@ -217,13 +371,23 @@ const SingleProduct = ({ data }) => {
                 <div>
                   <button
                     onClick={() => settabChange(2)}
-                    className={`py-3 px-4 border ${tabChange == 2? ' bg-tahiti-500 text-white' :'text-black'} border-tahiti-500 rounded-md text-[18px] font-semibold `}
+                    className={`py-3 px-4 border ${
+                      tabChange == 2
+                        ? " bg-tahiti-500 text-white"
+                        : "text-black"
+                    } border-tahiti-500 rounded-md text-[18px] font-semibold `}
                   >
                     Description
                   </button>
                 </div>
                 <div>
-                  <button className={`py-3 px-4 border ${tabChange == 3? ' bg-tahiti-500 text-white' :'text-black'} border-tahiti-500 rounded-md text-[18px] font-semibold `}>
+                  <button
+                    className={`py-3 px-4 border ${
+                      tabChange == 3
+                        ? " bg-tahiti-500 text-white"
+                        : "text-black"
+                    } border-tahiti-500 rounded-md text-[18px] font-semibold `}
+                  >
                     Seller Info
                   </button>
                 </div>
@@ -231,29 +395,26 @@ const SingleProduct = ({ data }) => {
               <div className="px-10 py-2">
                 {tabChange == 1 ? (
                   <div className="border ">
-                    {arr.map((item, index) => (
+                    {data?.specs?.map((item, index) => (
                       <div key={index} className="grid grid-cols-2 rounded-sm ">
-                        <div className="flex items-center justify-center py-2 bg-[#E9EFF0] font-bold border-r">
-                          Size
+                        <div className="flex items-center justify-center py-2 bg-[#E9EFF0] font-semibold border-r">
+                          {Object.keys(item)}
                         </div>
                         <div
                           className={`flex items-center justify-center py-2 px-1 text-center hover:bg-[#EEEEEE] border-b ${
                             index % 2 == 0 ? "bg-[#f8f8f8]" : "bg-tahiti-50"
                           }`}
                         >
-                          Black, 480 Ml, 480 Ml, 480 Ml, 480 Ml, Fuchsia, 480
-                          Ml, 480 Ml, Black, 550 Ml, 550 Ml, 550 Ml, 550 Ml,
-                          Fuchsia, 550 Ml, 550 Ml, Transparent, Black, 480 Ml,
-                          Transparent, 480 Ml, Transparent, 480 Ml, Transparent,
-                          480 Ml, Transparent, Fuchsia, 480 Ml, Transparent,
-                          Coffee, 480 Ml
+                          {Object.values(item).toLocaleString()}
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : tabChange == 2 ? (
-                  <div className="" >
-                    <div dangerouslySetInnerHTML={{ __html: data?.Description }}></div>
+                  <div className="">
+                    <div
+                      dangerouslySetInnerHTML={{ __html: data?.Description }}
+                    ></div>
                   </div>
                 ) : null}
               </div>
@@ -317,6 +478,32 @@ const SingleProduct = ({ data }) => {
           </div>
         </div>
       </div>
+      <Modal
+        isOpen={modalIsOpen}
+        // onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <div className=" w-[500px] xs:max-w-[300px] xs:max-h-[400px] xms:max-w-[310px] xms:max-h-[400px] xls:max-w-[370px] xls:max-h-[400px] sm:max-h-[500px]">
+          <div className="flex items-center justify-between mt-2">
+            <div className="bg-red-700 text-tahiti-50 text-[14px] py-2 px-4 rounded-md">
+              Delete
+            </div>
+            <div className="flex items-center gap-3">
+              <div
+                onClick={() => setIsOpen(false)}
+                className="bg-[#AAAAAA] text-tahiti-50 text-[14px] py-2 px-4 rounded-md cursor-pointer"
+              >
+                Cancel
+              </div>
+              <div className="bg-tahiti-500 text-tahiti-50 text-[14px] py-2 px-4 rounded-md">
+                Update
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

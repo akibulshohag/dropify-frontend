@@ -5,80 +5,72 @@ import ReactPlayer from "react-player";
 import ReactImageZoom from "react-image-zoom";
 import Magnifier from "react-magnifier";
 
-const ImageGallery = ({data,selectedImage,setselectedImage}) => {
+const ImageGallery = ({
+  data,
+  selectedImage,
+  setselectedImage,
+  isVideo,
+  setisVideo,
+}) => {
   const props = {
     width: 450,
     height: 450,
     img: selectedImage,
   };
-
-  const [imageSelect, setimageSelect] = useState("/assets/product/2.jpg");
   const [render, setrender] = useState(false);
+  const [video, setvideo] = useState('')
 
-  let videos = [{}, {}];
-  let images = [
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-  ];
+
 
   const handleImage = (val) => {
-    setselectedImage(val?.Large?.Url)
+    setselectedImage(val?.Large?.Url);
+    setisVideo(false)
   };
 
-  console.log('............',selectedImage);
+  const selectVideo=(val)=>{
+    setisVideo(true)
+    setvideo(val)
+  }
+
 
   return (
     <div className="col-span-2 ">
-      <div className="">
-        {/* <Zoom img={selectedImage} zoomScale={3} height={450} width={450} /> */}
-         {/* {selectedImage ?
+      {!isVideo ? (
+        <div className="">
+          {/* <Zoom img={selectedImage} zoomScale={3} height={450} width={450} /> */}
+          {/* {selectedImage ?
         <div className="cursor-crosshair">
           <ReactImageZoom {...props} zoomPosition="original" />
         </div>
         :null} */}
-        <div className="relative w-full h-[500px]">
-          <Image src={selectedImage} fill alt="mainImage"/>
+
+          <div className="relative w-full h-[500px]">
+            <Image src={`${selectedImage ? selectedImage :'/assets/product/product1.jpg'}`} fill alt="mainImage" />
+          </div>
         </div>
-      </div>
-      {/* <div className="">
-                  <ReactPlayer
-                    url={`https://www.youtube.com/watch?v=4159zHCxywg&ab_channel=NaturalFishingBD`}
-                    width="100%"
-                    height="450px"
-                    volume={1}
-                    controls
-                  />
-                </div> */}
+      ) : (
+        <div className="">
+          <video
+            width="100%"
+            height="450px"
+            controls
+          >
+            <source src={video} type="video/mp4" />
+          </video>
+        </div>
+      )}
       <div className="py-3 pr-2">
         <div className="grid grid-cols-5 gap-2">
-          {data?.videos?.map((video, index) => (
-            <div
-              key={`video-${index}`}
-              className="bg-gray-300 p-2 flex items-center justify-center  border border-tahiti-800 "
-            >
+          {data?.Videos?.Url ? (
+            <div className="bg-gray-300 p-2 flex items-center justify-center  border border-tahiti-800 ">
               <div
-                // onClick={() => imageChange()}
+                onClick={() => selectVideo(data?.Videos?.Url)}
                 className="w-full h-[50px] relative flex items-center justify-center cursor-pointer "
               >
+               
                 <Image
                   className="object-fill"
-                  src={"/assets/product/product2.jpg"}
+                  src={`${data?.Videos?.PreviewUrl ? data?.Videos?.PreviewUrl : '/assets/product/empty.svg'}`}
                   fill
                   alt="variation image"
                   priority={true}
@@ -95,7 +87,7 @@ const ImageGallery = ({data,selectedImage,setselectedImage}) => {
                 </div>
               </div>
             </div>
-          ))}
+          ) : null}
 
           {data?.Pictures?.map((item, index) => (
             <div
