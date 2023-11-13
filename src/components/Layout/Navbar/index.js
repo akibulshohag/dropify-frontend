@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import { BsFillCameraFill, BsSearch } from "react-icons/bs";
 import { FiHeart, FiShoppingCart, FiUser } from "react-icons/fi";
 import postRequest from "../../../lib/postRequest";
+import { useStatus } from "@/context/contextStatus";
 
 const Navbar = () => {
   const router = useRouter();
+  const { token} = useStatus();
   const [uploadedImage, setUploadedImage] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -46,6 +48,14 @@ const Navbar = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const loginRoute =()=>{
+    if(token){
+      router.push('/account')
+    }else{
+      router.push('/login')
+    }
+  }
 
   return (
     <div
@@ -111,7 +121,7 @@ const Navbar = () => {
             </div>
           </div>
           {/* <FiHeart className="cursor-pointer" /> */}
-          <FiUser className="cursor-pointer" />
+          <FiUser onClick={loginRoute} className="cursor-pointer" />
         </div>
       </div>
     </div>

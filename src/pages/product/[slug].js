@@ -26,6 +26,7 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
     borderRadius: 0,
     border: "none,",
+    padding: "none",
   },
   overlay: {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -50,7 +51,7 @@ const SingleProduct = ({ data }) => {
   const [qtyRangePrice, setqtyRangePrice] = useState(null);
   const [qtyRange, setqtyRange] = useState(0);
   const [totalPrice, settotalPrice] = useState(0);
-  const [ModalTab, setModalTab] = useState(0)
+  const [ModalTab, setModalTab] = useState(0);
 
   function closeModal() {
     setIsOpen(false);
@@ -187,29 +188,26 @@ const SingleProduct = ({ data }) => {
   };
 
   const addToCart = async () => {
-    
-    if(productDetails?.QuantityRanges.length > 0){
-      if(productDetails?.QuantityRanges[0]?.MinQuantity - 1  >= totalQty ){
-        setIsOpen(true)
-        setModalTab(0)
+    if (productDetails?.QuantityRanges.length > 0) {
+      if (productDetails?.QuantityRanges[0]?.MinQuantity - 1 >= totalQty) {
+        setIsOpen(true);
+        setModalTab(0);
         return;
       }
-    }else if(2>=totalQty){
-      setIsOpen(true)
-      setModalTab(0)
+    } else if (2 >= totalQty) {
+      setIsOpen(true);
+      setModalTab(0);
       return;
     }
 
-    
-    if(1000 >= totalPrice){
-      setIsOpen(true)
-     console.log('.......total',totalQty);
-
+    if (1000 >= totalPrice) {
+      setIsOpen(true);
+      setModalTab(1);
+      console.log(".......total", totalQty);
     }
 
-
-
-
+    setIsOpen(true);
+    setModalTab(3);
   };
 
   return (
@@ -413,7 +411,10 @@ const SingleProduct = ({ data }) => {
                   <div className="py-1 text-center">Scroll More Size</div>
                   <PriceTable totalQty={totalQty} totalPrice={totalPrice} />
                   <div className="mt-5 grid grid-cols-7 gap-2">
-                    <div onClick={()=>addToCart()} className="bg-tahiti-500 flex items-center justify-center col-span-3 py-2 rounded-md cursor-pointer">
+                    <div
+                      onClick={() => addToCart()}
+                      className="bg-tahiti-500 flex items-center justify-center col-span-3 py-2 rounded-md cursor-pointer"
+                    >
                       <AiOutlineShoppingCart className="text-tahiti-50 text-[20px] mr-4" />
                       <div className="text-white font-bold text-[18px]">
                         Add To Cart
@@ -619,7 +620,56 @@ const SingleProduct = ({ data }) => {
         ariaHideApp={false}
       >
         <div className=" w-[500px] xs:max-w-[300px] xs:max-h-[400px] xms:max-w-[310px] xms:max-h-[400px] xls:max-w-[370px] xls:max-h-[400px] sm:max-h-[500px]">
-          <div className="flex items-center justify-between mt-2">
+          {ModalTab == 0 ? (
+            <div>
+              <div className="border-b px-3 py-4">
+                Minimum Quantity{" "}
+                {productDetails?.QuantityRanges.length > 0
+                  ? productDetails?.QuantityRanges[0]?.MinQuantity
+                  : 3}{" "}
+                Piece
+              </div>
+              <div className="flex items-center justify-end px-3 py-4">
+                <div
+                  onClick={() => setIsOpen(false)}
+                  className="bg-tahiti-500 text-tahiti-50 text-[14px] py-2 px-4 rounded-md cursor-pointer"
+                >
+                  Ok
+                </div>
+              </div>
+            </div>
+          ) : ModalTab == 1 ? (
+            <div>
+              <div className="border-b px-3 py-4">
+                Minimum Total Price 1000 Taka
+              </div>
+              <div className="flex items-center justify-end px-3 py-4">
+                <div
+                  onClick={() => setIsOpen(false)}
+                  className="bg-tahiti-500 text-tahiti-50 text-[14px] py-2 px-4 rounded-md cursor-pointer"
+                >
+                  Ok
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div>
+              <div className="border-b px-3 py-4">Add to cart Successfully</div>
+              <div className="flex items-center gap-3 py-4 px-3 justify-end">
+                <div
+                  onClick={() => setIsOpen(false)}
+                  className="bg-[#AAAAAA] text-tahiti-50 text-[14px] py-2 px-4 rounded-md cursor-pointer"
+                >
+                  Shop More
+                </div>
+                <div className="bg-tahiti-500 text-tahiti-50 text-[14px] py-2 px-4 rounded-md">
+                  Go To Cart
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* <div className="flex items-center justify-between mt-2">
             <div className="bg-red-700 text-tahiti-50 text-[14px] py-2 px-4 rounded-md">
               Delete
             </div>
@@ -634,7 +684,7 @@ const SingleProduct = ({ data }) => {
                 Update
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </Modal>
     </div>
