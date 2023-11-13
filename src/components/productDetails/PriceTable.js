@@ -1,31 +1,8 @@
 import React from "react";
 import Image from "next/image";
 
-const PriceTable = () => {
-  let arr = [
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-  ];
+const PriceTable = ({totalQty,totalPrice}) => {
+  
   return (
     <div>
       <div className="relative overflow-x-auto border sm:rounded-lg left-side mt-5">
@@ -68,7 +45,7 @@ const PriceTable = () => {
                 Product Quantity
               </th>
               <td className="px-6 py-3 border-l border-r text-tahiti-800 font-semibold">
-                0
+                {totalQty}
               </td>
             </tr>
             <tr className="bg-white border-b text-left dark:bg-gray-900 dark:border-gray-700 cursor-pointer hover:bg-[#F0F0F0]">
@@ -79,7 +56,7 @@ const PriceTable = () => {
                 Product Price
               </th>
               <td className="px-6 py-3 border-l border-r text-tahiti-800 font-semibold">
-                ৳0
+                ৳{totalPrice}
               </td>
             </tr>
             <tr className="bg-white border-b text-left dark:bg-gray-900 dark:border-gray-700 cursor-pointer hover:bg-[#F0F0F0]">
@@ -101,7 +78,7 @@ const PriceTable = () => {
                 Total Cost
               </th>
               <td className="px-6 py-3 border-l border-r text-tahiti-800 font-semibold">
-                ৳0 + Shipping & Courier Charges
+                ৳{totalPrice} + Shipping & Courier Charges
               </td>
             </tr>
             <tr className="bg-white border-b text-left dark:bg-gray-900 dark:border-gray-700 cursor-pointer hover:bg-[#F0F0F0]">
@@ -112,7 +89,7 @@ const PriceTable = () => {
                 Pay now (70%)
               </th>
               <td className="px-6 py-3 border-l border-r text-tahiti-800 font-semibold">
-                ৳0
+                ৳{Math.ceil(totalPrice*70/100)}
               </td>
             </tr>
             <tr className="bg-white border-b text-left dark:bg-gray-900 dark:border-gray-700 cursor-pointer hover:bg-[#F0F0F0]">
@@ -123,7 +100,7 @@ const PriceTable = () => {
                 Pay on Delivery
               </th>
               <td className="px-6 py-3 border-l border-r text-tahiti-800 font-semibold">
-                ৳0 + Shipping & Courier Charges
+                ৳{Math.ceil(totalPrice -(totalPrice*70/100)) } + Shipping & Courier Charges
               </td>
             </tr>
           </tbody>

@@ -45,26 +45,29 @@ const SingleProduct = ({ data }) => {
   const [tableVariation, settableVariation] = useState([]);
   const [propertyName, setpropertyName] = useState("");
   const [values, setvalues] = useState("");
-  const [renderMe, setrenderMe] = useState(false)
+  const [renderMe, setrenderMe] = useState(false);
+  const [totalQty, settotalQty] = useState(0);
+  const [qtyRangePrice, setqtyRangePrice] = useState(null);
+  const [qtyRange, setqtyRange] = useState(0);
+  const [totalPrice, settotalPrice] = useState(0);
+  const [ModalTab, setModalTab] = useState(0)
 
   function closeModal() {
     setIsOpen(false);
   }
 
   useEffect(() => {
-    console.log('..............useEffect');
     if (productDetails) {
       setselectedImage(productDetails?.MainPictureUrl);
     }
 
     if (productDetails?.Variation2.length > 0) {
-      console.log("........variation1");
+      console.log("d2222");
     } else if (productDetails?.Variation1.length > 0) {
-      // setproductVariation(productDetails?.Variation1);
+      setproductVariation(productDetails?.Variation1);
       let value = productDetails?.Variation1.filter(
         (item) => item?.Vid == productDetails?.Variation1[0]?.Vid
       );
-      console.log(".........cc", value);
       settableVariation([...value]);
       setpropertyName(value[0]?.PropertyName);
       setvalues(value[0]?.Value);
@@ -73,40 +76,141 @@ const SingleProduct = ({ data }) => {
   }, [productDetails]);
 
   const selectVariation = (val) => {
-
     setvariationId(val?.Vid);
     setvalues(val?.Value);
     if (val?.ImageUrl) {
       setselectedImage(val?.ImageUrl);
     }
-
     if (productDetails?.Variation2.length > 0) {
-      console.log("........variation1");
     } else if (productDetails?.Variation1.length > 0) {
-      let value = productDetails?.Variation1.filter((item) => item?.Vid == val?.Vid);
-      console.log(".........cc", value);
+      let value = productDetails?.Variation1.filter(
+        (item) => item?.Vid == val?.Vid
+      );
       settableVariation(value);
     }
   };
 
-  const subQty=(val,index)=>{
-    const arr = [...tableVariation];
-    arr[index].qty -= 1;
-    settableVariation(arr)
-  }
-  // console.log('........pro',productVariation);
+  useEffect(() => {
+    let totalQuantity = productVariation.reduce((a, b) => a + b?.qty, 0);
+    settotalQty(totalQuantity);
+    let getQtyPrice;
+    if (productDetails?.QuantityRanges.length > 0) {
+      let quantityrange = 0;
+      let quantity = productDetails?.QuantityRanges.map((item) => {
+        return item.MinQuantity;
+      });
+      quantity = quantity.sort((a, b) => a - b);
 
-  const addQty =(val,index)=>{
-    const arr = [...tableVariation];
-    arr[index].qty += 1;
-    settableVariation(arr)
-  }
+      function small(tot) {
+        return tot < quantity[0];
+      }
 
-  const inputQty =(val,index)=>{
+      function big(tot) {
+        return tot > quantity[quantity.length - 1];
+      }
+
+      if (small(totalQuantity)) {
+        quantityrange = quantity[0];
+      } else if (big(totalQuantity)) {
+        quantityrange = quantity[quantity.length - 1];
+      } else {
+        for (let i = quantity.length - 1; i >= 0; --i) {
+          if (totalQuantity >= quantity[i]) {
+            quantityrange = quantity[i];
+            break;
+          }
+        }
+      }
+      setqtyRange(quantityrange);
+      let value = productDetails?.QuantityRanges.filter(
+        (a) => a.MinQuantity == quantityrange
+      );
+      getQtyPrice = value[0]?.Price + (value[0]?.Price * 10) / 100;
+      setqtyRangePrice(getQtyPrice);
+    }
+
+    if (productDetails?.Variation2.length > 0) {
+    } else if (productDetails?.Variation1.length > 0) {
+      let fillter = productVariation?.filter((a) => a?.qty > 0);
+      let totalPrice = fillter.reduce(
+        (a, b) =>
+          a +
+          (qtyRangePrice == null
+            ? Math.ceil(b?.Price + (b?.Price * 10) / 100) * b?.qty
+            : Math.ceil(getQtyPrice) * b?.qty),
+        0
+      );
+      settotalPrice(totalPrice);
+    }
+  }, [productVariation]);
+
+  const subQty = (val, index) => {
     const arr = [...tableVariation];
-    arr[index].qty = val;
-    settableVariation(arr)
-  }
+    const arrP = [...productVariation];
+    const arr1 = arr.map((item, i) =>
+      i === index ? { ...item, qty: item.qty - 1 } : item
+    );
+    settableVariation(arr1);
+    let findIndex = arrP?.findIndex((item) => item?.Vid == val?.Vid);
+    if (findIndex > -1) {
+      arrP[findIndex].qty -= 1;
+    }
+    setproductVariation(arrP);
+  };
+
+  const addQty = (val, index) => {
+    const arr = [...tableVariation];
+    const arrP = [...productVariation];
+    const arr1 = arr.map((item, i) =>
+      i === index ? { ...item, qty: item.qty + 1 } : item
+    );
+    settableVariation(arr1);
+    let findIndex = arrP?.findIndex((item) => item?.Vid == val?.Vid);
+    if (findIndex > -1) {
+      arrP[findIndex].qty += 1;
+    }
+    setproductVariation(arrP);
+  };
+
+  const inputQty = (val, index, items) => {
+    const arr = [...tableVariation];
+    const arrP = [...productVariation];
+    const arr1 = arr.map((item, i) =>
+      i === index ? { ...item, qty: Number(val) } : item
+    );
+    settableVariation(arr1);
+    let findIndex = arrP?.findIndex((item) => item?.Vid == items?.Vid);
+    if (findIndex > -1) {
+      arrP[findIndex].qty = Number(val);
+    }
+    setproductVariation(arrP);
+  };
+
+  const addToCart = async () => {
+    
+    if(productDetails?.QuantityRanges.length > 0){
+      if(productDetails?.QuantityRanges[0]?.MinQuantity - 1  >= totalQty ){
+        setIsOpen(true)
+        setModalTab(0)
+        return;
+      }
+    }else if(2>=totalQty){
+      setIsOpen(true)
+      setModalTab(0)
+      return;
+    }
+
+    
+    if(1000 >= totalPrice){
+      setIsOpen(true)
+     console.log('.......total',totalQty);
+
+    }
+
+
+
+
+  };
 
   return (
     <div className="flex min-h-screen flex-col mt-[65px] xs:mt-[95px]">
@@ -121,7 +225,7 @@ const SingleProduct = ({ data }) => {
               </div>
               <div className="grid grid-cols-5 gap-8 p-4">
                 <ImageGallery
-                  data={data}
+                  data={productDetails}
                   setselectedImage={setselectedImage}
                   selectedImage={selectedImage}
                   isVideo={isVideo}
@@ -129,38 +233,38 @@ const SingleProduct = ({ data }) => {
                 />
                 <div className="col-span-3">
                   {/* <Campaign /> */}
-                  <div className="grid grid-cols-3 gap-3 mt-3">
-                    <div className="bg-tahiti-500  h-[80px] rounded-md text-white flex items-center justify-center">
-                      <div className="">
-                        <div className="text-[18px] font-semibold text-center">
-                          ৳1094
+                  {productDetails?.QuantityRanges?.length > 0 && (
+                    <div className="grid grid-cols-3 gap-3 mt-3">
+                      {productDetails?.QuantityRanges?.map((item, index) => (
+                        <div
+                          key={index}
+                          className={`${
+                            item?.MinQuantity == qtyRange
+                              ? "bg-tahiti-500 text-white"
+                              : "bg-[#F4F4F4] text-black"
+                          }  h-[80px] rounded-md  flex items-center justify-center`}
+                        >
+                          <div className="">
+                            <div className="text-[18px] font-semibold text-center">
+                              ৳
+                              {Math.ceil(
+                                item?.Price + (item?.Price * 10) / 100
+                              )}
+                            </div>
+                            <div className="text-[16px] text-center">
+                              {item?.MinQuantity} or more
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-[16px] text-center">1 or more</div>
-                      </div>
+                      ))}
                     </div>
-                    <div className="bg-tahiti-500  h-[80px] rounded-md text-white flex items-center justify-center">
-                      <div className="">
-                        <div className="text-[18px] font-semibold text-center">
-                          ৳1094
-                        </div>
-                        <div className="text-[16px] text-center">1 or more</div>
-                      </div>
-                    </div>
-                    <div className="bg-tahiti-500  h-[80px] rounded-md text-white flex items-center justify-center">
-                      <div className="">
-                        <div className="text-[18px] font-semibold text-center">
-                          ৳1094
-                        </div>
-                        <div className="text-[16px] text-center">1 or more</div>
-                      </div>
-                    </div>
-                  </div>
+                  )}
                   <div className="py-2 mt-2">
                     <div className="text-[18px] font-semibold">
                       {propertyName}: {values}
                     </div>
                     <div className="flex items-center flex-wrap gap-2 pr-5 py-2">
-                      {productDetails?.Variation1?.map((item, index) => (
+                      {productVariation?.map((item, index) => (
                         <>
                           {item?.MiniImageUrl ? (
                             <div
@@ -168,9 +272,9 @@ const SingleProduct = ({ data }) => {
                               key={index}
                               className={`${
                                 item?.Vid == variationId
-                                  ? "border-[1px] border-tahiti-500"
-                                  : "border-[1px] border-gray-300"
-                              } p-[1px]  rounded-md col-span-1 hover:border-tahiti-500 hover:border-[1px] cursor-pointer ${
+                                  ? "border-[2px] border-tahiti-500"
+                                  : "border-[2px] border-gray-300"
+                              } p-[1px]  rounded-md col-span-1 hover:border-tahiti-500 hover:border-[2px] cursor-pointer ${
                                 style.subImages
                               }`}
                             >
@@ -185,9 +289,9 @@ const SingleProduct = ({ data }) => {
                               </div>
                               {item?.qty == 0 ? null : (
                                 <span
-                                  className={`${style.count} ${style.spanSelectedBadge1}`}
+                                  className={`text-white ${style.count} ${style.spanSelectedBadge1}`}
                                 >
-                                  {item?.qty}s
+                                  {item?.qty}
                                 </span>
                               )}
                             </div>
@@ -210,9 +314,9 @@ const SingleProduct = ({ data }) => {
                                 </div>
                                 {item?.qty == 0 ? null : (
                                   <span
-                                    className={`${style.count} ${style.spanSelectedBadge}`}
+                                    className={`text-white ${style.count} ${style.spanSelectedBadge}`}
                                   >
-                                   {item?.qty}
+                                    {item?.qty}
                                   </span>
                                 )}
                               </div>
@@ -253,7 +357,13 @@ const SingleProduct = ({ data }) => {
                               {items?.Value}
                             </th>
                             <td className="px-6 py-2 border-l border-r text-tahiti-800 font-semibold">
-                              ৳ {items?.Price} <br />
+                              ৳{" "}
+                              {qtyRangePrice == null
+                                ? Math.ceil(
+                                    items?.Price + (items?.Price * 10) / 100
+                                  )
+                                : Math.ceil(qtyRangePrice)}{" "}
+                              <br />
                               {/* <span className="text-[13px] text-gray-400 line-through">
                                 ৳ 719
                              </span> */}
@@ -261,19 +371,37 @@ const SingleProduct = ({ data }) => {
                             <td className="px-4 py-2">
                               {items?.qty == 0 ? (
                                 <div>
-                                  <h2 onClick={()=>addQty(items,index)} className="bg-tahiti-500 text-tahiti-50 font-bold px-4 py-1 w-[80px] rounded-md">
+                                  <button
+                                    onClick={() => addQty(items, index)}
+                                    className="bg-tahiti-500 text-tahiti-50 font-bold px-4 py-1 w-[80px] rounded-md"
+                                  >
                                     Add
-                                  </h2>
+                                  </button>
                                 </div>
                               ) : (
                                 <div className=" flex items-center justify-center ">
-                                  <h2 onClick={()=>subQty(items,index)} className="bg-tahiti-500 rounded-sm text-[18px] text-tahiti-50 w-[30px] h-[30px] font-extrabold ">
+                                  <button
+                                    onClick={() => subQty(items, index)}
+                                    className="bg-tahiti-500 rounded-sm text-[18px] text-tahiti-50 w-[30px] h-[30px] font-extrabold "
+                                  >
                                     -
-                                  </h2>
-                                  <input value={items.qty} onChange={(e)=>inputQty(e.target.value,index)} className="outline-none w-[50px] h-[30px] text-center border-t-[2px] border-b-[2px] border-tahiti-500" />
-                                  <h3 onClick={()=>addQty(items,index)} className="bg-tahiti-500 rounded-sm text-[18px] text-tahiti-50 w-[30px] h-[30px] font-extrabold">
+                                  </button>
+                                  <input
+                                    type="text"
+                                    pattern="\d*"
+                                    inputMode="numeric"
+                                    value={items.qty}
+                                    onChange={(e) =>
+                                      inputQty(e.target.value, index, items)
+                                    }
+                                    className="outline-none w-[50px] h-[30px] text-center border-t-[2px] border-b-[2px] border-tahiti-500"
+                                  />
+                                  <button
+                                    onClick={() => addQty(items, index)}
+                                    className="bg-tahiti-500 rounded-sm text-[18px] text-tahiti-50 w-[30px] h-[30px] font-extrabold"
+                                  >
                                     +
-                                  </h3>
+                                  </button>
                                 </div>
                               )}
                             </td>
@@ -283,9 +411,9 @@ const SingleProduct = ({ data }) => {
                     </table>
                   </div>
                   <div className="py-1 text-center">Scroll More Size</div>
-                  <PriceTable />
+                  <PriceTable totalQty={totalQty} totalPrice={totalPrice} />
                   <div className="mt-5 grid grid-cols-7 gap-2">
-                    <div className="bg-tahiti-500 flex items-center justify-center col-span-3 py-2 rounded-md cursor-pointer">
+                    <div onClick={()=>addToCart()} className="bg-tahiti-500 flex items-center justify-center col-span-3 py-2 rounded-md cursor-pointer">
                       <AiOutlineShoppingCart className="text-tahiti-50 text-[20px] mr-4" />
                       <div className="text-white font-bold text-[18px]">
                         Add To Cart
@@ -304,12 +432,14 @@ const SingleProduct = ({ data }) => {
                   <div className="mt-5">
                     <div className="text-[16px] font-semibold pb-1">
                       Product Code:{" "}
-                      <span className="text-[16px] font-light">{data?.Id}</span>
+                      <span className="text-[16px] font-light">
+                        {productDetails?.productId}
+                      </span>
                     </div>
                     <div className="text-[16px] font-semibold pb-1">
                       Approximate Weight:{" "}
                       <span className="text-[16px] font-light">
-                        {data?.PhysicalParameters?.Weight} Kg
+                        {productDetails?.PhysicalParameters?.Weight} Kg
                       </span>
                     </div>
                     <div className="text-[16px] font-semibold pb-1">
@@ -342,14 +472,14 @@ const SingleProduct = ({ data }) => {
                 </div>
               </div>
             </div>
-            {data?.VendorItems.length > 0 ? (
+            {productDetails?.VendorItems.length > 0 ? (
               <div className="mt-2 bg-tahiti-50">
                 <div className="py-3 px-3 text-[18px] font-semibold border-b">
                   From The Same Seller
                 </div>
                 <div className="py-4">
                   <div className="grid grid-cols-5 gap-3 px-4">
-                    <ProductCard productList={data?.VendorItems} />
+                    <ProductCard productList={productDetails?.VendorItems} />
                   </div>
                 </div>
               </div>
@@ -395,7 +525,7 @@ const SingleProduct = ({ data }) => {
               <div className="px-10 py-2">
                 {tabChange == 1 ? (
                   <div className="border ">
-                    {data?.specs?.map((item, index) => (
+                    {productDetails?.specs?.map((item, index) => (
                       <div key={index} className="grid grid-cols-2 rounded-sm ">
                         <div className="flex items-center justify-center py-2 bg-[#E9EFF0] font-semibold border-r">
                           {Object.keys(item)}
@@ -413,7 +543,9 @@ const SingleProduct = ({ data }) => {
                 ) : tabChange == 2 ? (
                   <div className="">
                     <div
-                      dangerouslySetInnerHTML={{ __html: data?.Description }}
+                      dangerouslySetInnerHTML={{
+                        __html: productDetails?.Description,
+                      }}
                     ></div>
                   </div>
                 ) : null}
@@ -426,12 +558,12 @@ const SingleProduct = ({ data }) => {
                 <FaHome className="text-[40px] text-tahiti-500 flex items-center justify-center" />
               </div>
               <div className="text-[16px] font-semibold text-center">
-                {data?.VendorName}
+                {productDetails?.VendorName}
               </div>
               <div className="text-[14px] text-center">卖家商店名称和信息</div>
               <div className=" flex justify-center py-1">
                 <div className="bg-tahiti-900 rounded-2xl px-2 text-tahiti-50">
-                  Seller Score: {data?.VendorScore}
+                  Seller Score: {productDetails?.VendorScore}
                 </div>
               </div>
               <div className="flex  items-center justify-evenly py-1">
@@ -484,6 +616,7 @@ const SingleProduct = ({ data }) => {
         onRequestClose={closeModal}
         style={customStyles}
         contentLabel="Example Modal"
+        ariaHideApp={false}
       >
         <div className=" w-[500px] xs:max-w-[300px] xs:max-h-[400px] xms:max-w-[310px] xms:max-h-[400px] xls:max-w-[370px] xls:max-h-[400px] sm:max-h-[500px]">
           <div className="flex items-center justify-between mt-2">
