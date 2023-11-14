@@ -109,7 +109,7 @@ const Navbar = () => {
           }`}
         >
           <div className="relative">
-            <FiShoppingCart className="cursor-pointer" />
+            <FiShoppingCart onClick={()=>router.push('/cart')} className="cursor-pointer" />
             <div className="text-[14px] absolute top-[-12px] right-[-7px]">
               12
             </div>

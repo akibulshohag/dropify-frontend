@@ -15,6 +15,9 @@ import { useRouter } from "next/router";
 import style from "@/styles/productDetails.module.css";
 import request from "@/lib/request";
 import Modal from "react-modal";
+import postRequest from "@/lib/postRequest";
+import { toast } from "react-toastify";
+
 
 const customStyles = {
   content: {
@@ -52,6 +55,8 @@ const SingleProduct = ({ data }) => {
   const [qtyRange, setqtyRange] = useState(0);
   const [totalPrice, settotalPrice] = useState(0);
   const [ModalTab, setModalTab] = useState(0);
+  const [nonVariation, setnonVariation] = useState(null);
+  const [selectedProduct, setselectedProduct] = useState([]);
 
   function closeModal() {
     setIsOpen(false);
@@ -73,6 +78,9 @@ const SingleProduct = ({ data }) => {
       setpropertyName(value[0]?.PropertyName);
       setvalues(value[0]?.Value);
       setvariationId(value[0]?.Vid);
+    } else {
+      let nonVariation = { Price: productDetails?.Price, qty: 1 };
+      setnonVariation(nonVariation);
     }
   }, [productDetails]);
 
@@ -92,8 +100,17 @@ const SingleProduct = ({ data }) => {
   };
 
   useEffect(() => {
-    let totalQuantity = productVariation.reduce((a, b) => a + b?.qty, 0);
-    settotalQty(totalQuantity);
+    console.log("...dddss");
+
+    let totalQuantity;
+    if (productDetails?.Variation1?.length > 0) {
+      totalQuantity = productVariation.reduce((a, b) => a + b?.qty, 0);
+      settotalQty(totalQuantity);
+    } else {
+      totalQuantity = nonVariation?.qty;
+      settotalQty(totalQuantity);
+    }
+
     let getQtyPrice;
     if (productDetails?.QuantityRanges.length > 0) {
       let quantityrange = 0;
@@ -133,6 +150,7 @@ const SingleProduct = ({ data }) => {
     if (productDetails?.Variation2.length > 0) {
     } else if (productDetails?.Variation1.length > 0) {
       let fillter = productVariation?.filter((a) => a?.qty > 0);
+      setselectedProduct(fillter);
       let totalPrice = fillter.reduce(
         (a, b) =>
           a +
@@ -142,8 +160,15 @@ const SingleProduct = ({ data }) => {
         0
       );
       settotalPrice(totalPrice);
+    } else {
+      let totalPrice =
+        qtyRangePrice == null
+          ? Math.ceil(nonVariation?.Price + (nonVariation?.Price * 10) / 100) *
+            nonVariation?.qty
+          : Math.ceil(getQtyPrice) * nonVariation?.qty;
+      settotalPrice(totalPrice);
     }
-  }, [productVariation]);
+  }, [productVariation, renderMe, nonVariation]);
 
   const subQty = (val, index) => {
     const arr = [...tableVariation];
@@ -187,6 +212,29 @@ const SingleProduct = ({ data }) => {
     setproductVariation(arrP);
   };
 
+  const addNonQty = async () => {
+    let b = nonVariation;
+    b.qty += 1;
+    setnonVariation(b);
+    setrenderMe(!renderMe);
+  };
+  const subNonQty = async () => {
+    let b = nonVariation;
+    if (b?.qty > 1) {
+      b.qty -= 1;
+      setnonVariation(b);
+      setrenderMe(!renderMe);
+    }
+  };
+  const inputNonQty = async (val) => {
+    if (Number(val) > 0) {
+      let b = nonVariation;
+      b.qty = Number(val);
+      setnonVariation(b);
+      setrenderMe(!renderMe);
+    }
+  };
+
   const addToCart = async () => {
     if (productDetails?.QuantityRanges.length > 0) {
       if (productDetails?.QuantityRanges[0]?.MinQuantity - 1 >= totalQty) {
@@ -203,11 +251,60 @@ const SingleProduct = ({ data }) => {
     if (1000 >= totalPrice) {
       setIsOpen(true);
       setModalTab(1);
-      console.log(".......total", totalQty);
+      return;
+    }
+    let pro;
+
+    if (productDetails?.Variation1.length > 0) {
+      pro = selectedProduct?.map((item) => {
+        return {
+          Color: item?.Value,
+          Size: "",
+          unitPrice:
+            qtyRangePrice == null
+              ? Math.ceil(item?.Price+(item?.Price*10/100))
+              : Math.ceil(qtyRangePrice),
+          qty: item?.qty,
+          MiniImageUrl: item?.MiniImageUrl,
+        };
+      });
+    } else if (productDetails?.Variation2.length > 0) {
+    } else {
+      pro = [
+        {
+          Color: "",
+          Size: "",
+          unitPrice:
+            qtyRangePrice == null
+              ? Math.ceil(nonVariation?.Price)
+              : Math.ceil(qtyRangePrice),
+          qty: nonVariation?.qty,
+          MiniImageUrl: "",
+        },
+      ];
     }
 
-    setIsOpen(true);
-    setModalTab(3);
+    let data = {
+      productId: productDetails?.productId,
+      QuantityRanges:
+        productDetails?.QuantityRanges.length > 0
+          ? productDetails?.QuantityRanges
+          : [],
+      selected: pro,
+      totalQty: totalQty,
+      totalPrice: totalPrice,
+    };
+
+    let res = await postRequest("cart/add", data);
+    console.log('......res',res);
+    if (res?.success) {
+      setIsOpen(true);
+      setModalTab(3);
+    }else{
+      toast.error(res.message);
+    }
+
+    console.log(data);
   };
 
   return (
@@ -218,7 +315,7 @@ const SingleProduct = ({ data }) => {
             <div className="bg-tahiti-50 rounded-sm">
               <div className=" py-4 pl-4 border-b">
                 <h1 className="text-[18px] font-bold">
-                  Shirt, colored long-sleeve, Korean style, for leisure
+                  {productDetails?.Title}
                 </h1>
               </div>
               <div className="grid grid-cols-5 gap-8 p-4">
@@ -257,82 +354,171 @@ const SingleProduct = ({ data }) => {
                       ))}
                     </div>
                   )}
-                  <div className="py-2 mt-2">
-                    <div className="text-[18px] font-semibold">
-                      {propertyName}: {values}
-                    </div>
-                    <div className="flex items-center flex-wrap gap-2 pr-5 py-2">
-                      {productVariation?.map((item, index) => (
-                        <>
-                          {item?.MiniImageUrl ? (
-                            <div
-                              onClick={() => selectVariation(item)}
-                              key={index}
-                              className={`${
-                                item?.Vid == variationId
-                                  ? "border-[2px] border-tahiti-500"
-                                  : "border-[2px] border-gray-300"
-                              } p-[1px]  rounded-md col-span-1 hover:border-tahiti-500 hover:border-[2px] cursor-pointer ${
-                                style.subImages
-                              }`}
-                            >
-                              <div className="w-[55px] h-[55px] relative flex items-center justify-center cursor-pointer ">
-                                <Image
-                                  className="object-fill rounded-md"
-                                  src={item?.MiniImageUrl}
-                                  fill
-                                  alt="variation image"
-                                  priority={true}
-                                />
-                              </div>
-                              {item?.qty == 0 ? null : (
-                                <span
-                                  className={`text-white ${style.count} ${style.spanSelectedBadge1}`}
-                                >
-                                  {item?.qty}
-                                </span>
-                              )}
-                            </div>
-                          ) : (
-                            <div
-                              onClick={() => selectVariation(item)}
-                              key={index}
-                            >
-                              <div
-                                className={`${style.variationContainer} relative cursor-pointer`}
-                              >
+                  {productDetails?.Variation1.length > 0 && (
+                    <>
+                      <div className="py-2 mt-2">
+                        <div className="text-[18px] font-semibold">
+                          {propertyName}: {values}
+                        </div>
+                        <div className="flex items-center flex-wrap gap-2 pr-5 py-2">
+                          {productVariation?.map((item, index) => (
+                            <>
+                              {item?.MiniImageUrl ? (
                                 <div
+                                  onClick={() => selectVariation(item)}
+                                  key={index}
                                   className={`${
                                     item?.Vid == variationId
-                                      ? "bg-tahiti-500 text-white"
-                                      : "bg-[#F4F4F4] text-black"
-                                  } px-2 py-4 rounded-md `}
+                                      ? "border-[2px] border-tahiti-500"
+                                      : "border-[2px] border-gray-300"
+                                  } p-[1px]  rounded-md col-span-1 hover:border-tahiti-500 hover:border-[2px] cursor-pointer ${
+                                    style.subImages
+                                  }`}
                                 >
-                                  {item?.Value}
+                                  <div className="w-[55px] h-[55px] relative flex items-center justify-center cursor-pointer ">
+                                    <Image
+                                      className="object-fill rounded-md"
+                                      src={item?.MiniImageUrl}
+                                      fill
+                                      alt="variation image"
+                                      priority={true}
+                                    />
+                                  </div>
+                                  {item?.qty == 0 ? null : (
+                                    <span
+                                      className={`text-white ${style.count} ${style.spanSelectedBadge1}`}
+                                    >
+                                      {item?.qty}
+                                    </span>
+                                  )}
                                 </div>
-                                {item?.qty == 0 ? null : (
-                                  <span
-                                    className={`text-white ${style.count} ${style.spanSelectedBadge}`}
+                              ) : (
+                                <div
+                                  onClick={() => selectVariation(item)}
+                                  key={index}
+                                >
+                                  <div
+                                    className={`${style.variationContainer} relative cursor-pointer`}
                                   >
-                                    {item?.qty}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
+                                    <div
+                                      className={`${
+                                        item?.Vid == variationId
+                                          ? "bg-tahiti-500 text-white"
+                                          : "bg-[#F4F4F4] text-black"
+                                      } px-2 py-4 rounded-md `}
+                                    >
+                                      {item?.Value}
+                                    </div>
+                                    {item?.qty == 0 ? null : (
+                                      <span
+                                        className={`text-white ${style.count} ${style.spanSelectedBadge}`}
+                                      >
+                                        {item?.qty}
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                              )}
+                            </>
+                          ))}
+                        </div>
+                      </div>
+                      {/* <SizeChart tableVariation={tableVariation} /> */}
+                      <div className="relative overflow-x-auto border max-h-[250px] sm:rounded-lg left-side">
+                        <table className="w-full text-sm text-center text-gray-500 dark:text-gray-400 border">
+                          {tableVariation?.length > 0 && (
+                            <thead className="text-xs text-gray-700 uppercase bg-[#eee9e9] dark:bg-gray-700 dark:text-gray-400">
+                              <tr>
+                                <th
+                                  scope="col"
+                                  className="px-6 py-3 min-w-[200px]"
+                                >
+                                  {tableVariation[0]?.PropertyName}
+                                </th>
+                                <th scope="col" className="px-6 py-3 ">
+                                  Price
+                                </th>
+                                <th scope="col" className="px-6 py-3  ">
+                                  Quantity
+                                </th>
+                              </tr>
+                            </thead>
                           )}
-                        </>
-                      ))}
-                    </div>
-                  </div>
-                  {/* <SizeChart tableVariation={tableVariation} /> */}
-                  <div className="relative overflow-x-auto border max-h-[250px] sm:rounded-lg left-side">
-                    <table className="w-full text-sm text-center text-gray-500 dark:text-gray-400 border">
-                      {tableVariation?.length > 0 && (
+                          <tbody>
+                            {tableVariation.map((items, index) => (
+                              <tr
+                                key={index}
+                                className="bg-white border-b dark:bg-gray-900 dark:border-gray-700 cursor-pointer hover:bg-[#F0F0F0]"
+                              >
+                                <th
+                                  scope="row"
+                                  className="px-6 py-2 text-gray-900 font-semibold whitespace-nowrap dark:text-white"
+                                >
+                                  {items?.Value}
+                                </th>
+                                <td className="px-6 py-2 border-l border-r text-tahiti-800 font-semibold">
+                                  ৳{" "}
+                                  {qtyRangePrice == null
+                                    ? Math.ceil(
+                                        items?.Price + (items?.Price * 10) / 100
+                                      )
+                                    : Math.ceil(qtyRangePrice)}{" "}
+                                  <br />
+                                  {/* <span className="text-[13px] text-gray-400 line-through">
+                                ৳ 719
+                             </span> */}
+                                </td>
+                                <td className="px-4 py-2">
+                                  {items?.qty == 0 ? (
+                                    <div>
+                                      <button
+                                        onClick={() => addQty(items, index)}
+                                        className="bg-tahiti-500 text-tahiti-50 font-bold px-4 py-1 w-[80px] rounded-md"
+                                      >
+                                        Add
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <div className=" flex items-center justify-center ">
+                                      <button
+                                        onClick={() => subQty(items, index)}
+                                        className="bg-tahiti-500 rounded-sm text-[18px] text-tahiti-50 w-[30px] h-[30px] font-extrabold "
+                                      >
+                                        -
+                                      </button>
+                                      <input
+                                        type="text"
+                                        pattern="\d*"
+                                        inputMode="numeric"
+                                        value={items.qty}
+                                        onChange={(e) =>
+                                          inputQty(e.target.value, index, items)
+                                        }
+                                        className="outline-none w-[50px] h-[30px] text-center border-t-[2px] border-b-[2px] border-tahiti-500"
+                                      />
+                                      <button
+                                        onClick={() => addQty(items, index)}
+                                        className="bg-tahiti-500 rounded-sm text-[18px] text-tahiti-50 w-[30px] h-[30px] font-extrabold"
+                                      >
+                                        +
+                                      </button>
+                                    </div>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+
+                      <div className="py-1 text-center">Scroll More Size</div>
+                    </>
+                  )}
+                  {nonVariation == null ? null : (
+                    <div className="relative overflow-x-auto border max-h-[250px] mt-3 sm:rounded-lg left-side">
+                      <table className="w-full text-sm text-center text-gray-500 dark:text-gray-400 border">
                         <thead className="text-xs text-gray-700 uppercase bg-[#F0F0F0] dark:bg-gray-700 dark:text-gray-400">
                           <tr>
-                            <th scope="col" className="px-6 py-3 min-w-[200px]">
-                              {tableVariation[0]?.PropertyName}
-                            </th>
                             <th scope="col" className="px-6 py-3 ">
                               Price
                             </th>
@@ -341,24 +527,15 @@ const SingleProduct = ({ data }) => {
                             </th>
                           </tr>
                         </thead>
-                      )}
-                      <tbody>
-                        {tableVariation.map((items, index) => (
-                          <tr
-                            key={index}
-                            className="bg-white border-b dark:bg-gray-900 dark:border-gray-700 cursor-pointer hover:bg-[#F0F0F0]"
-                          >
-                            <th
-                              scope="row"
-                              className="px-6 py-2 text-gray-900 font-semibold whitespace-nowrap dark:text-white"
-                            >
-                              {items?.Value}
-                            </th>
+
+                        <tbody>
+                          <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700 cursor-pointer hover:bg-[#F0F0F0]">
                             <td className="px-6 py-2 border-l border-r text-tahiti-800 font-semibold">
                               ৳{" "}
                               {qtyRangePrice == null
                                 ? Math.ceil(
-                                    items?.Price + (items?.Price * 10) / 100
+                                    nonVariation?.Price +
+                                      (nonVariation?.Price * 10) / 100
                                   )
                                 : Math.ceil(qtyRangePrice)}{" "}
                               <br />
@@ -367,10 +544,10 @@ const SingleProduct = ({ data }) => {
                              </span> */}
                             </td>
                             <td className="px-4 py-2">
-                              {items?.qty == 0 ? (
+                              {nonVariation?.qty == 0 ? (
                                 <div>
                                   <button
-                                    onClick={() => addQty(items, index)}
+                                    onClick={() => addNonQty()}
                                     className="bg-tahiti-500 text-tahiti-50 font-bold px-4 py-1 w-[80px] rounded-md"
                                   >
                                     Add
@@ -379,7 +556,7 @@ const SingleProduct = ({ data }) => {
                               ) : (
                                 <div className=" flex items-center justify-center ">
                                   <button
-                                    onClick={() => subQty(items, index)}
+                                    onClick={() => subNonQty()}
                                     className="bg-tahiti-500 rounded-sm text-[18px] text-tahiti-50 w-[30px] h-[30px] font-extrabold "
                                   >
                                     -
@@ -388,14 +565,14 @@ const SingleProduct = ({ data }) => {
                                     type="text"
                                     pattern="\d*"
                                     inputMode="numeric"
-                                    value={items.qty}
+                                    value={nonVariation?.qty}
                                     onChange={(e) =>
-                                      inputQty(e.target.value, index, items)
+                                      inputNonQty(e.target.value)
                                     }
                                     className="outline-none w-[50px] h-[30px] text-center border-t-[2px] border-b-[2px] border-tahiti-500"
                                   />
                                   <button
-                                    onClick={() => addQty(items, index)}
+                                    onClick={() => addNonQty()}
                                     className="bg-tahiti-500 rounded-sm text-[18px] text-tahiti-50 w-[30px] h-[30px] font-extrabold"
                                   >
                                     +
@@ -404,11 +581,10 @@ const SingleProduct = ({ data }) => {
                               )}
                             </td>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="py-1 text-center">Scroll More Size</div>
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
                   <PriceTable totalQty={totalQty} totalPrice={totalPrice} />
                   <div className="mt-5 grid grid-cols-7 gap-2">
                     <div
@@ -662,7 +838,7 @@ const SingleProduct = ({ data }) => {
                 >
                   Shop More
                 </div>
-                <div className="bg-tahiti-500 text-tahiti-50 text-[14px] py-2 px-4 rounded-md">
+                <div onClick={()=>router.push('/cart')} className="bg-tahiti-500 text-tahiti-50 text-[14px] py-2 px-4 rounded-md">
                   Go To Cart
                 </div>
               </div>

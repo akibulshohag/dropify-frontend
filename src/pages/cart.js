@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Modal from "react-modal";
 import { HiPlus, HiMinus } from "react-icons/hi";
+import request from "@/lib/request";
+import { useRouter } from "next/router";
 
 const customStyles = {
   content: {
@@ -22,13 +24,34 @@ const customStyles = {
 
 const Cart = () => {
   let subtitle;
+  const router = useRouter()
   const [modalIsOpen, setIsOpen] = useState(false);
-
-
+  const [cartList, setcartList] = useState([]);
+  const [totalCartPrice, settotalCartPrice] = useState(0)
 
   function closeModal() {
     setIsOpen(false);
   }
+
+  useEffect(() => {
+    const cartItems = async () => {
+      let res = await request("cart/fetch");
+      if (res?.success) {
+        if (res?.data.length > 0) {
+          let value = res?.data.map((item) => {
+            return { ...item, isChecked: true };
+          });
+          setcartList(value);
+        
+          let total = value?.reduce((a,b)=>a + (b?.totalPrice),0)
+          settotalCartPrice(total)
+        }
+      }
+    };
+    cartItems();
+  }, []);
+
+  console.log(totalCartPrice);
 
   return (
     <div className="flex min-h-screen flex-col mt-[65px] xs:mt-[108px] xms:mt-[108px] xls:mt-[108px] sm:mt-[108px]">
@@ -36,7 +59,7 @@ const Cart = () => {
         <div className="bg-tahiti-50 py-4 px-3 rounded-md flex items-center justify-between">
           <div className="flex items-center">
             <div className="bg-tahiti-500 rounded-full text-tahiti-50 w-6 h-6 flex items-center justify-center">
-              4
+              {cartList?.length}
             </div>
             <div className="text-[18px] font-semibold pl-2">CART</div>
           </div>
@@ -45,98 +68,120 @@ const Cart = () => {
 
         <div className="mt-2 grid grid-cols-6 gap-2 xs:grid-cols-1 xs:gap-0 xms:grid-cols-1 xms:gap-0 xls:grid-cols-1 xls:gap-0 sm:grid-cols-1 sm:gap-0 md:grid-cols-1 md:gap-0">
           <div className="col-span-4  rounded-md ">
-            <div className="bg-tahiti-50 rounded-md">
-              <div className="border-b py-2">
-                <div className="py-2 px-3 flex items-center justify-between pb-3">
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        className="w-4 h-4  bg-gray-100 border-gray-300 rounded"
-                      />
-                    </div>
-                    <div>
-                      <Image
-                        src="/assets/product/product1.jpg"
-                        width={60}
-                        height={60}
-                        alt="cart"
-                      />
-                    </div>
-                    <div>
-                      <div className="text-[14px] font-semibold">
-                        Order ID: #6527XX
-                      </div>
-                      <div>Men&apos;s expeditionary Pure</div>
-                    </div>
-                  </div>
-                  <div>
-                    <RiDeleteBin6Line
-                      size={25}
-                      className="text-red-600 cursor-pointer"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="border-b">
-                <div className="px-6  py-3 grid grid-cols-4 xs:grid-cols-5 xs:px-2 xms:grid-cols-5 xms:px-2 xls:grid-cols-5 xls:px-2">
-                  <div className="flex items-center gap-3 col-span-2 xs:flex-col xs:items-start xs:col-span-3 xms:col-span-3 xls:col-span-3">
-                    <div>
-                      <Image
-                        src="/assets/product/product1.jpg"
-                        width={35}
-                        height={35}
-                        alt="cart"
-                      />
-                    </div>
-                    <div className="">
-                      <div className="text-[14px] xs:text-[12px] xms:text-[12px] xls:text-[12px]">
-                        Color: White set, with little bears
-                      </div>
-                      <div className="text-[14px]  xs:text-[12px] xms:text-[12px] xls:text-[12px]">
-                        Size: XL(130 catty -145 catty)
+            {cartList?.length > 0 ? (
+              <>
+                {cartList?.map((item, index) => (
+                  <div key={index} className="bg-tahiti-50 rounded-md mb-2">
+                    <div className="border-b py-2">
+                      <div className="py-2 px-3 flex items-center justify-between pb-3">
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center">
+                            <input
+                              type="checkbox"
+                              checked={item?.isChecked}
+                              className="w-4 h-4  bg-gray-100 border-gray-300 rounded"
+                            />
+                          </div>
+                          <div>
+                            <Image
+                              src={item?.MainPictureUrl}
+                              width={60}
+                              height={60}
+                              alt="cart"
+                            />
+                          </div>
+                          <div>
+                            {/* <div className="text-[14px] font-semibold">
+                            Order ID: #6527XX
+                          </div> */}
+                            <div onClick={()=>router.push(`/product/${item?.productId}`)} className="cursor-pointer">{item?.Title}</div>
+                          </div>
+                        </div>
+                        <div>
+                          <RiDeleteBin6Line
+                            size={25}
+                            className="text-red-600 cursor-pointer"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="text-[14px] col-span-1 flex items-center xs:text-[12px] xms:text-[12px] xls:text-[12px]">
-                    <span>3 x</span>
-                    <span> ৳955</span>
-                  </div>
-                  <div className="flex items-center gap-3 col-span-1 justify-end xs:gap-1 xms:gap-1 xls:gap-1">
-                    <div
-                      onClick={() => setIsOpen(true)}
-                      className="bg-tahiti-500 text-tahiti-50 flex items-center justify-center rounded-md px-2 cursor-pointer xs:text-[12px] xms:text-[12px] xls:text-[12px]"
-                    >
-                      Edit
+                    {item?.selected?.map((items, indexx) => (
+                      <div className="border-b">
+                        <div className="px-6  py-3 grid grid-cols-4 xs:grid-cols-5 xs:px-2 xms:grid-cols-5 xms:px-2 xls:grid-cols-5 xls:px-2">
+                          <div className="flex items-center gap-3 col-span-2 xs:flex-col xs:items-start xs:col-span-3 xms:col-span-3 xls:col-span-3">
+                            {items?.MiniImageUrl && (
+                              <div>
+                                <Image
+                                  src={items?.MiniImageUrl}
+                                  width={35}
+                                  height={35}
+                                  alt="cart"
+                                />
+                              </div>
+                            )}
+                            <div className="">
+                              {items?.Color && (
+                                <div className="text-[14px] xs:text-[12px] xms:text-[12px] xls:text-[12px]">
+                                  Color: {items?.Color}
+                                </div>
+                              )}
+                              {items?.Size && (
+                                <div className="text-[14px]  xs:text-[12px] xms:text-[12px] xls:text-[12px]">
+                                  Size: {items?.Size}
+                                </div>
+                              )}
+                              {(items?.Color || items?.Size) ? null : (
+                                <div className="text-[14px] text-red-500  xs:text-[12px] xms:text-[12px] xls:text-[12px]">
+                                 No Variation
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <div className="text-[14px] col-span-1 flex items-center xs:text-[12px] xms:text-[12px] xls:text-[12px]">
+                            <span className="font-serifs ">{items?.qty} x </span>
+                            <span className="font-serifs "> ৳ {items?.unitPrice}</span>
+                          </div>
+                          <div className="flex items-center gap-3 col-span-1 justify-end xs:gap-1 xms:gap-1 xls:gap-1">
+                          <div className="h-[20px] font-serifs xs:text-[12px] ">৳ {items?.qty*items?.unitPrice}</div>
+
+                            <div
+                              onClick={() => setIsOpen(true)}
+                              className="bg-tahiti-500 text-tahiti-50 flex items-center justify-center rounded-md px-2 cursor-pointer xs:text-[12px] xms:text-[12px] xls:text-[12px]"
+                            >
+                              Edit
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    <div>
+                      <div className="px-6  py-3 grid grid-cols-4 xs:grid-cols-5 xs:px-2 xms:grid-cols-5 xms:px-2 xls:grid-cols-5 xls:px-2">
+                        <div className="flex items-center gap-3 col-span-2 xs:col-span-3 xsm:col-span-3 xls:col-span-3">
+                          <div>Item details</div>
+                        </div>
+                        <div className="text-[14px] font-serifs  col-span-1 flex items-center">
+                          <span>{item?.totalQty} Items</span>
+                        </div>
+                        <div className="col-span-1 font-serifs  flex items-center justify-end">
+                          ৳ {item?.totalPrice}
+                        </div>
+                      </div>
                     </div>
-                    <div className="h-[20px] xs:text-[12px]">৳2865</div>
                   </div>
+                ))}
+              </>
+            ) : (
+              <div className="col-span-4 bg-white rounded-md py-10 flex items-center justify-center">
+                <div>
+                  <Image
+                    src="/assets/account/empty.png"
+                    width={120}
+                    height={120}
+                    alt="cart"
+                  />
                 </div>
               </div>
-              <div>
-                <div className="px-6  py-3 grid grid-cols-4 xs:grid-cols-5 xs:px-2 xms:grid-cols-5 xms:px-2 xls:grid-cols-5 xls:px-2">
-                  <div className="flex items-center gap-3 col-span-2 xs:col-span-3 xsm:col-span-3 xls:col-span-3">
-                    <div>Item details</div>
-                  </div>
-                  <div className="text-[14px] col-span-1 flex items-center">
-                    <span>5 Items</span>
-                  </div>
-                  <div className="col-span-1 flex items-center justify-end">
-                    ৳2865
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* <div className="col-span-4 bg-white rounded-md py-10 flex items-center justify-center">
-               <div>
-               <Image
-                        src="/assets/account/empty.png"
-                        width={120}
-                        height={120}
-                        alt="cart"
-                      />
-               </div>
-            </div> */}
+            )}
           </div>
           <div className="col-span-2 xs:mt-2 xms:mt-2 xls:mt-2 sm:mt-2 md:mt-2">
             <div className="bg-tahiti-50 rounded-md">
@@ -146,11 +191,11 @@ const Cart = () => {
               <div className="px-3">
                 <div className="flex items-center justify-between py-2">
                   <div>Product Price</div>
-                  <div className="font-semibold">৳11759</div>
+                  <div className="font-semibold font-serifs ">৳ {totalCartPrice}</div>
                 </div>
                 <div className="flex items-center justify-between py-1">
                   <div>Pay Now (70%)</div>
-                  <div className="font-semibold">৳11759</div>
+                  <div className="font-semibold font-serifs ">৳ {Math.ceil(totalCartPrice*70/100)}</div>
                 </div>
               </div>
               <div className="px-3 py-2">
@@ -159,8 +204,8 @@ const Cart = () => {
                     <div className="text-[18px] font-semibold text-center">
                       Pay after delivery
                     </div>
-                    <div className="text-[18px] text-center">
-                      <div>৳ 3528 + Shipping & Courier Charges</div>
+                    <div className="text-[18px] font-serifs  text-center">
+                      <div>৳ {Math.ceil(totalCartPrice- totalCartPrice*70/100)} + Shipping & Courier Charges</div>
                     </div>
                   </div>
                 </div>
