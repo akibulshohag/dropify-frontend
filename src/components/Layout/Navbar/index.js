@@ -5,12 +5,16 @@ import { BsFillCameraFill, BsSearch } from "react-icons/bs";
 import { FiHeart, FiShoppingCart, FiUser } from "react-icons/fi";
 import postRequest from "../../../lib/postRequest";
 import { useStatus } from "@/context/contextStatus";
+import Image from "next/image";
+import request from "@/lib/request";
 
 const Navbar = () => {
   const router = useRouter();
-  const { token} = useStatus();
+  const { token, userName, userPhone, refreshApi } = useStatus();
   const [uploadedImage, setUploadedImage] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
+  const [cartlength, setcartlength] = useState(0);
+  const [wishLength, setwishLength] = useState(0);
 
   const handleCameraClick = async () => {
     const imageInput = document.createElement("input");
@@ -49,13 +53,24 @@ const Navbar = () => {
     };
   }, []);
 
-  const loginRoute =()=>{
-    if(token){
-      router.push('/account')
-    }else{
-      router.push('/login')
+  useEffect(() => {
+    const getCartTotals = async () => {
+      let res = await request("customer/wish-cart-count");
+      if (res?.success) {
+        setcartlength(res?.data?.totalCart);
+        setwishLength(res?.data?.totalWish);
+      }
+    };
+    getCartTotals();
+  }, [refreshApi]);
+
+  const loginRoute = () => {
+    if (token) {
+      router.push("/account");
+    } else {
+      router.push("/login");
     }
-  }
+  };
 
   return (
     <div
@@ -75,15 +90,15 @@ const Navbar = () => {
         {/* <div className="w-32 h-10 relative">
            <Image src="/assets/logo/logo.png" fill priority alt='logo'/>
          </div> */}
-       
-          <div
-          onClick={()=>router.push('/')}
-            className={`text-[25px] font-extrabold text-tahiti-600 font-serif col-span-4 cursor-pointer xs:col-span-1 xms:col-span-1 xls:col-span-1 sm:col-span-1 ${
-              isScrolled ? "xs:hidden xms:hidden xls:hidden sm:hidden" : ""
-            }`}
-          >
-            Dropify
-          </div>
+
+        <div
+          onClick={() => router.push("/")}
+          className={`text-[25px] font-extrabold text-tahiti-600 font-serif col-span-4 cursor-pointer xs:col-span-1 xms:col-span-1 xls:col-span-1 sm:col-span-1 ${
+            isScrolled ? "xs:hidden xms:hidden xls:hidden sm:hidden" : ""
+          }`}
+        >
+          Dropify
+        </div>
         <div className="flex items-center w-full  col-span-5  xs:order-3 xms:order-3 xls:order-3 sm:order-3">
           <button
             onClick={handleCameraClick}
@@ -109,19 +124,40 @@ const Navbar = () => {
           }`}
         >
           <div className="relative">
-            <FiShoppingCart onClick={()=>router.push('/cart')} className="cursor-pointer" />
+            <FiShoppingCart
+              onClick={() => router.push("/cart")}
+              className="cursor-pointer"
+            />
             <div className="text-[14px] absolute top-[-12px] right-[-7px]">
-              12
+              {cartlength != 0 ? cartlength : ""}
             </div>
           </div>
           <div className="relative">
             <FiHeart className="cursor-pointer" />
             <div className="text-[14px] absolute top-[-12px] right-[-5px]">
-              1
+              {wishLength != 0 ? wishLength : ""}
             </div>
           </div>
           {/* <FiHeart className="cursor-pointer" /> */}
-          <FiUser onClick={loginRoute} className="cursor-pointer" />
+          <div>
+            {userName != "" ? (
+              <div
+                onClick={loginRoute}
+                className="flex items-center cursor-pointer"
+              >
+                <div className="border-[2px] p-[1px] rounded-full border-yellow-400">
+                  <div className="w-[30px] h-[30px] relative ">
+                    <Image src="/assets/logo/user.png" fill alt="user" />
+                  </div>
+                </div>
+                <div className="text-[14px] text-white  ml-2">{atob(userName)}</div>
+              </div>
+            ) : (
+              <div>
+                <FiUser onClick={loginRoute} className="cursor-pointer" />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -1,7 +1,126 @@
-import React from "react";
+import React,{useEffect} from "react";
 import Image from "next/image";
+import { SubmitHandler, set, useForm, Controller } from "react-hook-form";
+import { toast } from "react-toastify";
+import request from "@/lib/request";
+import { useStatus } from "@/context/contextStatus";
+import { setCookie,parseCookies } from "nookies";
+
+
 
 const Settings = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    control,
+    setValue,
+    formState: { errors },
+  } = useForm();
+
+  const{userPhone,setuserName,userName}=useStatus()
+
+  const district = [
+    `Dhaka`,
+    `Faridpur`,
+    `Gazipur`,
+    `Gopalganj`,
+    `Jamalpur`,
+    `Kishoreganj`,
+    `Madaripur`,
+    `Manikganj`,
+    `Munshiganj`,
+    `Mymensingh`,
+    `Narayanganj`,
+    `Narsingdi`,
+    `Netrokona`,
+    `Rajbari`,
+    `Shariatpur`,
+    `Sherpur`,
+    `Tangail`,
+    `Bogra`,
+    `Joypurhat`,
+    `Naogaon`,
+    `Natore`,
+    `Nawabganj`,
+    `Pabna`,
+    `Rajshahi`,
+    `Sirajgonj`,
+    `Dinajpur`,
+    `Gaibandha`,
+    `Kurigram`,
+    `Lalmonirhat`,
+    `Nilphamari`,
+    `Panchagarh`,
+    `Rangpur`,
+    `Thakurgaon`,
+    `Barguna`,
+    `Barisal`,
+    `Bhola`,
+    `Jhalokati`,
+    `Patuakhali`,
+    `Pirojpur`,
+    `Bandarban`,
+    `Brahmanbaria`,
+    `Chandpur`,
+    `Chittagong`,
+    `Comilla`,
+    `Cox's Bazar`,
+    `Feni`,
+    `Khagrachari`,
+    "Lakshmipur",
+    "Noakhali",
+    "Rangamati",
+    "Habiganj",
+    "Maulvibazar",
+    "Sunamganj",
+    "Sylhet",
+    "Bagerhat",
+    "Chuadanga",
+    "Jessore",
+    "Jhenaidah",
+    "Khulna",
+    "Kushtia",
+    "Magura",
+    "Meherpur",
+    "Narail",
+    "Satkhira",
+  ];
+
+  useEffect(() => {
+    const getUserData= async ()=>{
+      let res = await request('customer/profile-fetch') 
+      if(res?.success){
+        let encodeName = btoa('akibul islam')
+        setValue('name',res?.data?.name)
+        setValue('district',res?.data?.district)
+        setValue('city',res?.data?.city)
+        setValue('address',res?.data?.address)
+        setValue('optionalPhone',res?.data?.secondaryPhone)
+        setuserName(encodeName)
+        setCookie(null, "userName", encodeName, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: "/",
+        });
+      }
+    }
+    getUserData()
+  }, [])
+
+  console.log(userName);
+  
+
+  const onLoginSubmit = async (data) => {
+    try {
+      let res = await postRequest("landing-checkout", payLoad);
+      if (res?.success) {
+        toast(res?.message);
+      }
+    } catch (error) {
+      toast.warning(error?.message);
+    }
+  };
+
   return (
     <div className="mt-[65px] min-h-[50rem] mb-2 p-2 xs:mt-[5px] xms:mt-[5px] xls:mt-[5px] sm:mt-[5px] xs:p-0 xms:p-0 xls:p-0 sm:p-0">
       <div className="bg-tahiti-50 rounded-md p-3 shadow-sm">
@@ -9,48 +128,108 @@ const Settings = () => {
           Account Settings
         </div>
 
-        <div>
-            <div className="py-2 mt-4">
-              <Image src='/assets/logo/user.png' width={170} height={170} alt='user'/>
-            </div>
+        <form onSubmit={handleSubmit(onLoginSubmit)}>
+          <div className="py-2 mt-4">
+            <Image
+              src="/assets/logo/user.png"
+              width={170}
+              height={170}
+              alt="user"
+            />
+          </div>
           <div className="grid grid-cols-2 gap-5 py-3 xs:grid-cols-1 xms:grid-cols-1 xls:grid-cols-1">
             <div className="col-span-1">
               <div className="py-1">Name</div>
-              <input className="border py-2 rounded-sm outline-tahiti-500 w-full px-2" />
+              <input
+                className="border py-2 rounded-sm outline-tahiti-500 w-full px-2"
+                {...register("name", { required: true })}
+              />
+              {errors.name && errors.name.type === "required" && (
+                <span className="text-red-300 text-[14px]">
+                  This field is required
+                </span>
+              )}
             </div>
             <div className="col-span-1">
               <div className="py-1">Phone</div>
-              <input className="border py-2 rounded-sm outline-tahiti-500 w-full px-2" />
+              <input
+                disabled
+                defaultValue={userPhone}
+                className="border py-2 rounded-sm outline-tahiti-500 w-full px-2 cursor-not-allowed"
+              />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-5 py-3 xs:grid-cols-1 xms:grid-cols-1 xls:grid-cols-1">
             <div className="col-span-1">
               <div className="py-1">District</div>
-              <select className="border h-[42px] rounded-sm outline-tahiti-500 w-full px-2">
-                <option>Dhaka</option>
-                <option>Dhaka</option>
-                <option>Dhaka</option>
-              </select>
+              <Controller
+                name="district"
+                control={control}
+                defaultValue=""
+                rules={{ required: "District is required" }}
+                render={({ field }) => (
+                  <select
+                    {...field}
+                    className="border h-[42px] rounded-sm outline-tahiti-500 w-full px-2"
+                  >
+                    <option value="">Select District</option>
+                    {district.map((district) => (
+                      <option key={district} value={district}>
+                        {district}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              />
+              {errors.district && (
+                <span className="text-red-300 text-[14px]">
+                  {errors.district.message}
+                </span>
+              )}
             </div>
             <div className="col-span-1">
               <div className="py-1">City</div>
-              <input className="border py-2 rounded-sm outline-tahiti-500 w-full px-2" />
+              <input
+                className="border py-2 rounded-sm outline-tahiti-500 w-full px-2"
+                {...register("city", { required: true })}
+              />
+              {errors.city && errors.city.type === "required" && (
+                <span className="text-red-300 text-[14px]">
+                  This field is required
+                </span>
+              )}
             </div>
             <div className="col-span-1">
               <div className="py-1">Emergency Number</div>
-              <input className="border py-2 rounded-sm outline-tahiti-500 w-full px-2" />
+              <input
+                className="border py-2 rounded-sm outline-tahiti-500 w-full px-2"
+                {...register("optionalPhone", { required: false })}
+              />
             </div>
           </div>
           <div className="grid grid-cols-1 gap-5 py-3">
             <div className="col-span-1">
-              <div className="py-1">City</div>
-              <textarea className="border py-2 rounded-sm outline-tahiti-500 w-full px-2" />
+              <div className="py-1">Address</div>
+              <textarea
+                className="border py-2 rounded-sm outline-tahiti-500 w-full px-2"
+                {...register("address", { required: true })}
+              />
+              {errors.address && errors.address.type === "required" && (
+                <span className="text-red-300 text-[14px]">
+                  This field is required
+                </span>
+              )}
             </div>
           </div>
           <div className="flex items-center ">
-            <div className="bg-tahiti-500 px-2 py-1 rounded-md text-tahiti-50">Update</div>
+            <button
+              type="submit"
+              className="bg-tahiti-500 px-2 py-1 rounded-md text-tahiti-50"
+            >
+              Update
+            </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );

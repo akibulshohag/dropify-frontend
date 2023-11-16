@@ -14,6 +14,9 @@ function StatusProvider({ children }) {
   const [token, setToken] = useState(cookie?.token ? cookie?.token : "");
   const [accountMenu, setaccountMenu] = useState('dashboard')
   const [sideCategory, setSideCategory] = useState(false);
+  const [userName, setuserName] = useState(cookie?.userName ? cookie?.userName : "")
+  const [userPhone, setuserPhone] = useState('')
+  const [refreshApi, setrefreshApi] = useState(false)
 
 
 
@@ -25,7 +28,13 @@ function StatusProvider({ children }) {
         accountMenu,
         setaccountMenu,
         sideCategory,
-        setSideCategory
+        setSideCategory,
+        userName,
+        setuserName,
+        userPhone,
+        setuserPhone,
+        refreshApi,
+        setrefreshApi
 
       }}
     >

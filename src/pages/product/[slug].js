@@ -17,6 +17,7 @@ import request from "@/lib/request";
 import Modal from "react-modal";
 import postRequest from "@/lib/postRequest";
 import { toast } from "react-toastify";
+import { useStatus } from "@/context/contextStatus";
 
 
 const customStyles = {
@@ -39,6 +40,7 @@ const customStyles = {
 const SingleProduct = ({ data }) => {
   const router = useRouter();
   const { slug } = router.query;
+  const {refreshApi,setrefreshApi} = useStatus()
   const [selectedImage, setselectedImage] = useState("");
   const [tabChange, settabChange] = useState(1);
   const [productDetails, setproductDetails] = useState(data);
@@ -300,6 +302,7 @@ const SingleProduct = ({ data }) => {
     if (res?.success) {
       setIsOpen(true);
       setModalTab(3);
+      setrefreshApi(!refreshApi)
     }else{
       toast.error(res.message);
     }

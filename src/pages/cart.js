@@ -7,6 +7,7 @@ import request from "@/lib/request";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import postRequest from "@/lib/postRequest";
+import { useStatus } from "@/context/contextStatus";
 
 const customStyles = {
   content: {
@@ -27,6 +28,7 @@ const customStyles = {
 const Cart = () => {
   let subtitle;
   const router = useRouter();
+  const {refreshApi,setrefreshApi}= useStatus()
   const [modalIsOpen, setIsOpen] = useState(false);
   const [cartList, setcartList] = useState([]);
   const [totalCartPrice, settotalCartPrice] = useState(0);
@@ -236,6 +238,7 @@ const Cart = () => {
     if (res?.success) {
       setrenderMe(!renderMe);
       toast.success(res?.message);
+      setrefreshApi(!refreshApi)
     }
   };
 
@@ -360,6 +363,21 @@ const Cart = () => {
       toast.error(res.message);
     }
 
+  }
+
+
+  const gotoCheckout=async ()=>{
+   let data={
+    cartIds:selectedId
+   }
+   if(selectedId.length>0){
+        let res = await postRequest("customer/checkout/key",data)
+        if(res?.success){
+          router.push(`/checkout?key=${res?.data?.key}`)
+        }
+   }else{
+    toast.warning('Please Select Cart Item To Go Checkout')
+   }
   }
 
 
@@ -550,7 +568,7 @@ const Cart = () => {
                 </div>
               </div>
             </div>
-            <div className="bg-tahiti-500 py-2 mt-2 rounded-md flex items-center justify-center text-tahiti-50 text-[16px] font-semibold cursor-pointer">
+            <div onClick={()=>gotoCheckout()} className="bg-tahiti-500 py-2 mt-2 rounded-md flex items-center justify-center text-tahiti-50 text-[16px] font-semibold cursor-pointer">
               Go To Checkout
             </div>
           </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiShoppingCart } from "react-icons/fi";
 import Image from "next/image";
 import { RiDeleteBin6Line } from "react-icons/ri";
@@ -6,6 +6,10 @@ import Modal from "react-modal";
 import { HiPlus, HiMinus } from "react-icons/hi";
 import Condition from "@/components/productDetails/condition";
 import ShippingCharge from "@/components/productDetails/ShippingCharge";
+import { useRouter } from "next/router";
+import request from "@/lib/request";
+import { HiOutlineInformationCircle } from "react-icons/hi";
+import { BsDot } from "react-icons/bs";
 
 const customStyles = {
   content: {
@@ -15,7 +19,7 @@ const customStyles = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
-    borderRadius: 0,
+    borderRadius: 5,
     border: "none,",
     padding: "0px",
   },
@@ -26,20 +30,40 @@ const customStyles = {
 
 const Checkout = () => {
   let subtitle;
+  const router = useRouter();
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [modalOpen, setmodalOpen] = useState(false);
+  const [cartList, setcartList] = useState([]);
+  const [totalCartPrice, settotalCartPrice] = useState(0);
+  const key = router?.query?.key;
 
   function openModal() {
     setIsOpen(true);
   }
 
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    subtitle.style.color = "#f00";
-  }
-
   function closeModal() {
     setIsOpen(false);
   }
+  function closeModal1() {
+    setmodalOpen(false);
+  }
+
+  useEffect(() => {
+    const getCartItems = async () => {
+      let res = await request(`customer/checkout/fetch?key=${key}`);
+      if (res?.success) {
+        console.log("......res", res?.data);
+        if (res?.data.length > 0) {
+          setcartList(res?.data);
+          let total = res?.data?.reduce((a, b) => a + b?.totalPrice, 0);
+          settotalCartPrice(total);
+        }
+      }
+    };
+    getCartItems();
+  }, [router]);
+
+  console.log("....,", router?.query?.key);
 
   return (
     <div className="flex min-h-screen flex-col mt-[65px] xs:mt-[108px] xms:mt-[108px] xls:mt-[108px] sm:mt-[108px]">
@@ -132,88 +156,121 @@ const Checkout = () => {
                 </div>
               </div>
             </div>
-            <div className="bg-tahiti-50 rounded-md mb-2">
-              <div className="border-b py-2">
-                <div className="py-2 px-4 flex items-center justify-between pb-3">
-                  <div className="flex items-center gap-4">
-                    <div>
-                      <Image
-                        src="/assets/product/product1.jpg"
-                        width={60}
-                        height={60}
-                        alt="cart"
-                      />
-                    </div>
-                    <div>
-                      <div className="text-[14px] font-semibold">
+            {cartList?.length > 0 &&
+              cartList?.map((item, index) => (
+                <div key={index} className="bg-tahiti-50 rounded-md mb-2">
+                  <div className="border-b py-2">
+                    <div className="py-2 px-4 flex items-center justify-between pb-3">
+                      <div className="flex items-center gap-4">
+                        <div>
+                          <Image
+                            src={item?.MainPictureUrl}
+                            width={60}
+                            height={60}
+                            alt="cart"
+                          />
+                        </div>
+                        <div>
+                          {/* <div className="text-[14px] font-semibold">
                         Order ID: #6527XX
-                      </div>
-                      <div>Men&apos;s expeditionary Pure</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="border-b">
-                <div className="px-4  py-3 grid grid-cols-4 xs:grid-cols-5 xs:px-2 xms:grid-cols-5 xms:px-2 xls:grid-cols-5 xls:px-2">
-                  <div className="flex items-center gap-3 col-span-2 xs:col-span-3 xms:col-span-3 xls:col-span-3">
-                    <div>
-                      <Image
-                        src="/assets/product/product1.jpg"
-                        width={35}
-                        height={35}
-                        alt="cart"
-                      />
-                    </div>
-                    <div>
-                      <div className="text-[14px] xs:text-[12px] xms:text-[12px] xls:text-[12px]">
-                        Color: White set, with little bears
-                      </div>
-                      <div className="text-[14px] xs:text-[12px] xms:text-[12px] xls:text-[12px]">
-                        Size: XL(130 catty -145 catty)
+                      </div> */}
+                          <div>{item?.Title}</div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className="text-[14px] col-span-1 flex items-center xs:text-[12px] xms:text-[12px] xls:text-[12px]">
-                    <span>3 x</span>
-                    <span> ৳955</span>
-                  </div>
-                  <div className="flex items-center gap-3 col-span-1 justify-end xs:text-[12px] xms:text-[12px] xls:text-[12px]">
-                    <div className="h-[20px]">৳2865</div>
+                  {item?.selected.map((items, indexx) => (
+                    <div key={indexx} className="border-b">
+                      <div className="px-4  py-3 grid grid-cols-4 xs:grid-cols-5 xs:px-2 xms:grid-cols-5 xms:px-2 xls:grid-cols-5 xls:px-2">
+                        <div className="flex items-center gap-3 col-span-2 xs:col-span-3 xms:col-span-3 xls:col-span-3">
+                          {items?.MiniImageUrl && (
+                            <div>
+                              <Image
+                                src={items?.MiniImageUrl}
+                                width={35}
+                                height={35}
+                                alt="cart"
+                              />
+                            </div>
+                          )}
+                          <div className="">
+                            {items?.Color && (
+                              <div className="text-[14px] xs:text-[12px] xms:text-[12px] xls:text-[12px]">
+                                Color: {items?.Color}
+                              </div>
+                            )}
+                            {items?.Size && (
+                              <div className="text-[14px]  xs:text-[12px] xms:text-[12px] xls:text-[12px]">
+                                Size: {items?.Size}
+                              </div>
+                            )}
+                            {items?.Color || items?.Size ? null : (
+                              <div className="text-[14px] text-red-500  xs:text-[12px] xms:text-[12px] xls:text-[12px]">
+                                No Variation
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        <div className="text-[14px] col-span-1 font-serifs flex items-center xs:text-[12px] xms:text-[12px] xls:text-[12px]">
+                          <span className="font-serifs ">{items?.qty} x </span>
+                          <span className="font-serifs ">
+                            {" "}
+                            ৳ {items?.unitPrice}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-3 col-span-1 justify-end xs:text-[12px] xms:text-[12px] xls:text-[12px]">
+                          <div className="h-[20px] font-serifs">
+                            ৳ {items?.qty * items?.unitPrice}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <div>
+                    <div className="px-4  py-3 grid grid-cols-4 xs:grid-cols-5 xs:px-2 xms:grid-cols-5 xms:px-2 xls:grid-cols-5 xls:px-2">
+                      <div className="flex items-center gap-3 col-span-2 xs:col-span-3 xms:col-span-3 xls:col-span-3">
+                        <div>Item details</div>
+                      </div>
+                      <div className="text-[14px] font-serifs col-span-1 flex items-center">
+                        <span>{item?.totalQty} Items</span>
+                      </div>
+                      <div className="col-span-1 font-serifs flex items-center justify-end">
+                        ৳ {item?.totalPrice}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div>
-                <div className="px-4  py-3 grid grid-cols-4 xs:grid-cols-5 xs:px-2 xms:grid-cols-5 xms:px-2 xls:grid-cols-5 xls:px-2">
-                  <div className="flex items-center gap-3 col-span-2 xs:col-span-3 xms:col-span-3 xls:col-span-3">
-                    <div>Item details</div>
-                  </div>
-                  <div className="text-[14px] col-span-1 flex items-center">
-                    <span>5 Items</span>
-                  </div>
-                  <div className="col-span-1 flex items-center justify-end">
-                    ৳2865
-                  </div>
-                </div>
-              </div>
-            </div>
+              ))}
           </div>
           <div className="col-span-2 xs:mb-2 xms:mb-2 xls:mb-2 sm:mb-2">
             <div className="bg-tahiti-50 rounded-md">
               <div className="px-3">
                 <div className="flex items-center justify-between py-2">
                   <div>Product Price</div>
-                  <div className="font-semibold">৳11759</div>
+                  <div className="font-semibold font-serifs">
+                    ৳ {totalCartPrice}
+                  </div>
                 </div>
               </div>
               <div className="px-3 py-2">
                 <div className="bg-tahiti-300 flex items-center justify-center py-3 rounded-md">
                   <div className="">
-                    <div className="text-[18px] font-semibold text-center">
-                      70% Payment -৳65422
+                    <div className="text-[18px] font-semibold text-center font-serifs">
+                      70% Payment -৳ {Math.ceil((totalCartPrice * 70) / 100)}
                     </div>
-                    <div className="text-[16px] text-center">
+                    <div
+                      onClick={() => setmodalOpen(true)}
+                      className="text-[16px] text-center font-serifs flex items-center cursor-pointer"
+                    >
                       <div>
-                        Pay on Delivery ৳28038 + Shipping & Courier Charges
+                        Pay on Delivery ৳{" "}
+                        {Math.ceil(
+                          totalCartPrice - (totalCartPrice * 70) / 100
+                        )}{" "}
+                        + Shipping & Courier Charges
+                      </div>
+                      <div>
+                        <HiOutlineInformationCircle className="ml-2 text-[18px]" />
                       </div>
                     </div>
                     <div className="flex mt-4 sm:hidden xls:hidden xms:hidden xs:hidden">
@@ -253,6 +310,7 @@ const Checkout = () => {
         onRequestClose={closeModal}
         style={customStyles}
         contentLabel="Example Modal"
+        ariaHideApp={false}
       >
         <div className=" max-w-[600px] max-h-[600px] overflow-y-auto left-side  xs:max-w-[300px] xs:max-h-[400px] xms:max-w-[310px] xms:max-h-[400px] xls:max-w-[370px] xls:max-h-[400px] sm:max-h-[500px]">
           <div className="relative overflow-y-auto left-side">
@@ -278,6 +336,69 @@ const Checkout = () => {
               </div>
             </div>
           </div>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={modalOpen}
+        // onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal1}
+        style={customStyles}
+        contentLabel="Example Modal"
+        ariaHideApp={false}
+      >
+        <div className=" w-[450px] max-w-[600px] max-h-[600px] overflow-y-auto left-side  xs:max-w-[300px] xs:max-h-[400px] xms:max-w-[310px] xms:max-h-[400px] xls:max-w-[370px] xls:max-h-[400px] sm:max-h-[500px]">
+          <div className="px-3 py-3 border-b font-medium">
+            Delivery & Courier Charges
+          </div>
+          <div>
+            <div className="py-3 px-3">
+              <div className="flex pb-2">
+                <BsDot className="text-[20px]" />
+                <span className="text-[14px] pl-1 text-justify w-[94%] font-medium">
+                  Delivery Charge: ৳ 650 / 850 Per Kg <br />{" "}
+                  <span className="text-[12px] text-red-500">
+                    পণ্য বাংলাদেশে আসার পর পণ্যের ক্যাটাগরীর উপর নির্ভর করে
+                    চূড়ান্ত শিপিং চার্জ নির্ধারণ করা হবে।
+                  </span>
+                </span>
+              </div>
+              <div className="flex pb-2">
+                <BsDot className="text-[20px]" />
+                <span className="text-[14px] pl-1 text-justify w-[94%] font-medium">
+                  China Courier Charge.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-end justify-end px-3 py-2">
+            <div
+              onClick={() => setmodalOpen(false)}
+              className="bg-tahiti-500 text-tahiti-50 text-[14px] py-2 px-4 rounded-md cursor-pointer"
+            >
+              Ok
+            </div>
+          </div>
+
+          {/* <div className="relative overflow-y-auto left-side">
+            <div className="border-b">Delivery & Courier Charges</div>
+            <div className="fixed bottom-0 w-full bg-white border-t">
+              <div className="pb-2 px-2">
+                <div className="flex items-center justify-between mt-2 gap-3">
+                  <div
+                    onClick={() => setIsOpen(false)}
+                    className="bg-red-700 text-tahiti-50 text-[14px] py-2 px-4 rounded-md cursor-pointer"
+                  >
+                    Deney
+                  </div>
+                  <div className="bg-tahiti-500 text-tahiti-50 text-[14px] py-2 px-4 rounded-md flex items-center justify-center w-full cursor-pointer">
+                    Accept & Place Order
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> */}
         </div>
       </Modal>
     </div>
