@@ -15,7 +15,7 @@ function StatusProvider({ children }) {
   const [accountMenu, setaccountMenu] = useState('dashboard')
   const [sideCategory, setSideCategory] = useState(false);
   const [userName, setuserName] = useState(cookie?.userName ? cookie?.userName : "")
-  const [userPhone, setuserPhone] = useState('')
+  const [userPhone, setuserPhone] = useState(cookie?.userPhone ? cookie?.userPhone : "")
   const [refreshApi, setrefreshApi] = useState(false)
 
 

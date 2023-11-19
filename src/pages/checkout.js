@@ -10,6 +10,11 @@ import { useRouter } from "next/router";
 import request from "@/lib/request";
 import { HiOutlineInformationCircle } from "react-icons/hi";
 import { BsDot } from "react-icons/bs";
+import { useStatus } from "@/context/contextStatus";
+import { toast } from "react-toastify";
+import postRequest from "@/lib/postRequest";
+import { setCookie, parseCookies } from "nookies";
+
 
 const customStyles = {
   content: {
@@ -31,11 +36,87 @@ const customStyles = {
 const Checkout = () => {
   let subtitle;
   const router = useRouter();
+  const { userPhone,setrefreshApi,refreshApi ,setuserName} = useStatus();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalOpen, setmodalOpen] = useState(false);
   const [cartList, setcartList] = useState([]);
   const [totalCartPrice, settotalCartPrice] = useState(0);
+  const [name, setname] = useState("");
+  const [district, setdistrict] = useState("");
+  const [city, setcity] = useState("");
+  const [address, setaddress] = useState("");
+  const [optionalPhone, setoptionalPhone] = useState("");
+  const [orderNote, setorderNote] = useState("");
+  const [deleiveryMethod, setdeleiveryMethod] = useState("");
   const key = router?.query?.key;
+
+
+  const districtList = [
+    `Dhaka`,
+    `Faridpur`,
+    `Gazipur`,
+    `Gopalganj`,
+    `Jamalpur`,
+    `Kishoreganj`,
+    `Madaripur`,
+    `Manikganj`,
+    `Munshiganj`,
+    `Mymensingh`,
+    `Narayanganj`,
+    `Narsingdi`,
+    `Netrokona`,
+    `Rajbari`,
+    `Shariatpur`,
+    `Sherpur`,
+    `Tangail`,
+    `Bogra`,
+    `Joypurhat`,
+    `Naogaon`,
+    `Natore`,
+    `Nawabganj`,
+    `Pabna`,
+    `Rajshahi`,
+    `Sirajgonj`,
+    `Dinajpur`,
+    `Gaibandha`,
+    `Kurigram`,
+    `Lalmonirhat`,
+    `Nilphamari`,
+    `Panchagarh`,
+    `Rangpur`,
+    `Thakurgaon`,
+    `Barguna`,
+    `Barisal`,
+    `Bhola`,
+    `Jhalokati`,
+    `Patuakhali`,
+    `Pirojpur`,
+    `Bandarban`,
+    `Brahmanbaria`,
+    `Chandpur`,
+    `Chittagong`,
+    `Comilla`,
+    `Cox's Bazar`,
+    `Feni`,
+    `Khagrachari`,
+    "Lakshmipur",
+    "Noakhali",
+    "Rangamati",
+    "Habiganj",
+    "Maulvibazar",
+    "Sunamganj",
+    "Sylhet",
+    "Bagerhat",
+    "Chuadanga",
+    "Jessore",
+    "Jhenaidah",
+    "Khulna",
+    "Kushtia",
+    "Magura",
+    "Meherpur",
+    "Narail",
+    "Satkhira",
+  ];
 
   function openModal() {
     setIsOpen(true);
@@ -52,7 +133,6 @@ const Checkout = () => {
     const getCartItems = async () => {
       let res = await request(`customer/checkout/fetch?key=${key}`);
       if (res?.success) {
-        console.log("......res", res?.data);
         if (res?.data.length > 0) {
           setcartList(res?.data);
           let total = res?.data?.reduce((a, b) => a + b?.totalPrice, 0);
@@ -63,7 +143,63 @@ const Checkout = () => {
     getCartItems();
   }, [router]);
 
-  console.log("....,", router?.query?.key);
+  useEffect(() => {
+    const getUserData = async () => {
+      let res = await request("customer/profile-fetch");
+      if (res?.success) {
+        setname(res?.data?.name);
+        setdistrict(res?.data?.district);
+        setaddress(res?.data?.address);
+        setcity(res?.data?.city);
+        setoptionalPhone(res?.data?.secondaryPhone);
+      }
+    };
+    getUserData();
+  }, []);
+
+  const confirmOrder = async () => {
+    if (name && district && city && address) {
+      let value1 = cartList.map((item) => {
+        return item?.cartId 
+      });
+  
+      let data = {
+        name: name,
+        district: district,
+        city: city,
+        address:address,
+        secondaryPhone:optionalPhone,
+        cartIds: value1,
+        price: totalCartPrice,
+        note:orderNote
+      };
+
+      let res = await postRequest(`order/place-order`,data);
+      if(res?.success){
+        console.log('......res?',res?.data?.orderId);
+        closeModal()
+        setrefreshApi(!refreshApi)
+        let encodeName = btoa(res?.data?.userName);
+        setuserName(encodeName)
+        setCookie(null, "userName", encodeName, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: "/",
+        });
+        const queryString = res?.data?.orderId.join(',');
+        router.push(`payment/${queryString}`)
+      
+      }
+
+  console.log('.......data',data);
+
+    }else{
+      toast.warning("All field required");
+    }
+
+    
+
+  };
+
 
   return (
     <div className="flex min-h-screen flex-col mt-[65px] xs:mt-[108px] xms:mt-[108px] xls:mt-[108px] sm:mt-[108px]">
@@ -89,7 +225,11 @@ const Checkout = () => {
                     <div className="py-1">
                       Name <span className="text-red-600"> *</span>
                     </div>
-                    <input className="border py-2 rounded-sm outline-tahiti-500 w-full px-2" />
+                    <input
+                      value={name}
+                      onChange={(e) => setname(e.target.value)}
+                      className="border py-2 rounded-sm outline-tahiti-500 w-full px-2"
+                    />
                   </div>
                   <div className="col-span-1">
                     <div className="py-1">
@@ -97,6 +237,7 @@ const Checkout = () => {
                     </div>
                     <input
                       disabled
+                      defaultValue={atob(userPhone)}
                       className="border py-2 rounded-sm outline-tahiti-500 w-full px-2"
                     />
                   </div>
@@ -104,16 +245,27 @@ const Checkout = () => {
                 <div className="grid grid-cols-2 gap-5 py-3 xs:grid-cols-1 xms:grid-cols-1 xls:grid-cols-1">
                   <div className="col-span-1">
                     <div className="py-1">Emergency Phone (optional)</div>
-                    <input className="border py-2 rounded-sm outline-tahiti-500 w-full px-2" />
+                    <input
+                      value={optionalPhone}
+                      onChange={(e) => setoptionalPhone(e.target.value)}
+                      className="border py-2 rounded-sm outline-tahiti-500 w-full px-2"
+                    />
                   </div>
                   <div className="col-span-1">
                     <div className="py-1">
                       District <span className="text-red-600"> *</span>
                     </div>
-                    <select className="border h-[42px] rounded-sm outline-tahiti-500 w-full px-2">
-                      <option>Dhaka</option>
-                      <option>Dhaka</option>
-                      <option>Dhaka</option>
+                    <select
+                      value={district}
+                      onChange={(e) => setdistrict(e.target.value)}
+                      className="border h-[42px] rounded-sm outline-tahiti-500 w-full px-2"
+                    >
+                      <option value="">Select District</option>
+                      {districtList.map((district) => (
+                        <option key={district} value={district}>
+                          {district}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -122,26 +274,34 @@ const Checkout = () => {
                     <div className="py-1">
                       City / Upazila <span className="text-red-600"> *</span>
                     </div>
-                    <input className="border py-2 rounded-sm outline-tahiti-500 w-full px-2" />
+                    <input
+                      value={city}
+                      onChange={(e) => setcity(e.target.value)}
+                      className="border py-2 rounded-sm outline-tahiti-500 w-full px-2"
+                    />
                   </div>
                   <div className="col-span-1">
                     <div className="py-1">
                       Address <span className="text-red-600"> *</span>
                     </div>
-                    <input className="border py-2 rounded-sm outline-tahiti-500 w-full px-2" />
+                    <input
+                      value={address}
+                      onChange={(e) => setaddress(e.target.value)}
+                      className="border py-2 rounded-sm outline-tahiti-500 w-full px-2"
+                    />
                   </div>
                 </div>
-                <div className="grid grid-cols-1 gap-5 py-3">
+                {/* <div className="grid grid-cols-1 gap-5 py-3">
                   <div className="col-span-1">
                     <div className="py-1">
                       Delivery Method <span className="text-red-600"> *</span>
                     </div>
-                    <select className="border h-[42px] rounded-sm outline-tahiti-500 w-full px-2">
-                      <option>Office Collection</option>
-                      <option>RedX</option>
+                    <select value={deleiveryMethod} onChange={(e)=>setdeleiveryMethod(e.target.value)}className="border h-[42px] rounded-sm outline-tahiti-500 w-full px-2">
+                      <option value={'officeCollection'}>Office Collection</option>
+                      <option value={'redx'}>RedX</option>
                     </select>
                   </div>
-                </div>
+                </div> */}
                 <div className="grid grid-cols-1 gap-5 py-3">
                   <div className="col-span-1">
                     <div className="py-1">
@@ -151,7 +311,11 @@ const Checkout = () => {
                         instruction about your order.)
                       </span>
                     </div>
-                    <textarea className="border py-2 rounded-sm outline-tahiti-500 w-full px-2" />
+                    <textarea
+                      value={orderNote}
+                      onChange={(e) => setorderNote(e.target.value)}
+                      className="border py-2 rounded-sm outline-tahiti-500 w-full px-2"
+                    />
                   </div>
                 </div>
               </div>
@@ -329,7 +493,7 @@ const Checkout = () => {
                   >
                     Deney
                   </div>
-                  <div className="bg-tahiti-500 text-tahiti-50 text-[14px] py-2 px-4 rounded-md flex items-center justify-center w-full cursor-pointer">
+                  <div onClick={() => confirmOrder()}className="bg-tahiti-500 text-tahiti-50 text-[14px] py-2 px-4 rounded-md flex items-center justify-center w-full cursor-pointer">
                     Accept & Place Order
                   </div>
                 </div>

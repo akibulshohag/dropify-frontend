@@ -139,25 +139,19 @@ const Navbar = () => {
             </div>
           </div>
           {/* <FiHeart className="cursor-pointer" /> */}
-          <div>
             {userName != "" ? (
               <div
                 onClick={loginRoute}
                 className="flex items-center cursor-pointer"
               >
-                <div className="border-[2px] p-[1px] rounded-full border-yellow-400">
-                  <div className="w-[30px] h-[30px] relative ">
+                  <div className="w-[30px] h-[30px] relative border-[2px] p-[1px] rounded-full border-yellow-400">
                     <Image src="/assets/logo/user.png" fill alt="user" />
                   </div>
-                </div>
-                <div className="text-[14px] text-white  ml-2">{atob(userName)}</div>
+                <span className="text-[14px] text-white  ml-2">{atob(userName)}</span>
               </div>
             ) : (
-              <div>
                 <FiUser onClick={loginRoute} className="cursor-pointer" />
-              </div>
             )}
-          </div>
         </div>
       </div>
     </div>
