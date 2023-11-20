@@ -176,7 +176,6 @@ const Checkout = () => {
 
       let res = await postRequest(`order/place-order`,data);
       if(res?.success){
-        console.log('......res?',res?.data?.orderId);
         closeModal()
         setrefreshApi(!refreshApi)
         let encodeName = btoa(res?.data?.userName);
@@ -190,7 +189,6 @@ const Checkout = () => {
       
       }
 
-  console.log('.......data',data);
 
     }else{
       toast.warning("All field required");
@@ -358,17 +356,17 @@ const Checkout = () => {
                             </div>
                           )}
                           <div className="">
-                            {items?.Color && (
+                            {items?.key1 && (
                               <div className="text-[14px] xs:text-[12px] xms:text-[12px] xls:text-[12px]">
-                                Color: {items?.Color}
+                                {items?.key1}: {items?.value1}
                               </div>
                             )}
-                            {items?.Size && (
+                            {items?.key2 && (
                               <div className="text-[14px]  xs:text-[12px] xms:text-[12px] xls:text-[12px]">
-                                Size: {items?.Size}
+                                {items?.key2}: {items?.value2}
                               </div>
                             )}
-                            {items?.Color || items?.Size ? null : (
+                            {items?.key1 || items?.key2 ? null : (
                               <div className="text-[14px] text-red-500  xs:text-[12px] xms:text-[12px] xls:text-[12px]">
                                 No Variation
                               </div>

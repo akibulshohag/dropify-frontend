@@ -7,7 +7,7 @@ export default async function postRequest(url, data, token = null) {
   const cookies = parseCookies();
   
   const config = {
-    headers: { Authorization: `${token ? token || "" : cookies?.token || ""}` },
+    headers: { Authorization: `${token ? token || "" : cookies?.dropToken || ""}` },
   };
 
   try {

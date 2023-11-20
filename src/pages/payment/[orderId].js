@@ -1,8 +1,36 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import { RiCheckboxCircleFill } from "react-icons/ri";
 import Image from "next/image";
+import { useRouter } from 'next/router';
+import postRequest from "@/lib/postRequest";
 
 const PaymentList = () => {
+const router = useRouter();
+const { orderId } = router?.query;
+
+const orderIds = orderId ? orderId.split(',') : [];
+const [paymentInfoList, setpaymentInfoList] = useState([])
+const [totalPrice, settotalPrice] = useState(0)
+
+
+useEffect(() => {
+
+   const getPaymentInfo= async()=>{
+      let data ={
+        orderId:orderIds
+      }
+      let res =await postRequest('customer/payment-info',data)
+      if(res?.success){
+        setpaymentInfoList(res?.data)
+        let total = res?.data?.reduce((a, b) => a + b?.price, 0);
+        settotalPrice(total);
+      }
+   }
+   getPaymentInfo()
+
+}, [router])
+
+
   return (
     <div className="mt-[65px] min-h-[40rem] xs:mt-[5px] xms:mt-[5px] xls:mt-[5px] sm:mt-[5px]">
       <div className="p-2">
@@ -31,30 +59,32 @@ const PaymentList = () => {
                   Payable
                 </div>
               </div>
-              <div className="grid grid-cols-5  bg-tahiti-50 rounded-md border-b hover:bg-[#EEEEEE]">
-                <div className="flex items-center justify-center col-span-1 font-semibold text-[13px] border-r py-2">
-                  Order Id
+              {paymentInfoList?.length >0 && paymentInfoList.map((item,index)=>
+              <div key={index} className="grid grid-cols-5  bg-tahiti-50 rounded-md border-b hover:bg-[#EEEEEE]">
+                <div className="flex items-center justify-center font-serifs col-span-1 font-semibold text-[13px] text-tahiti-500 border-r py-2">
+                  #{item?.orderId}
                 </div>
-                <div className="flex items-center justify-center col-span-1 font-semibold text-[13px] border-r py-2">
-                  Subtotal
+                <div className="flex items-center justify-center font-serifs col-span-1 font-semibold text-[13px] border-r py-2">
+                  {item?.price}
                 </div>
-                <div className="flex items-center justify-center col-span-1 font-semibold text-[13px] border-r py-2">
-                  Discount
+                <div className="flex items-center justify-center font-serifs col-span-1 font-semibold text-[13px] border-r py-2">
+                  0
                 </div>
-                <div className="flex items-center justify-center col-span-1 font-semibold text-[13px] border-r py-2">
-                  Percentage
+                <div className="flex items-center justify-center font-serifs col-span-1 font-semibold text-[13px] border-r py-2">
+                  70%
                 </div>
-                <div className="flex items-center justify-center col-span-1 font-semibold text-[13px]  py-2">
-                  Payable
+                <div className="flex items-center justify-center font-serifs col-span-1 font-semibold text-[13px]  py-2">
+                  {item?.price*70/100}
                 </div>
               </div>
+              )}
               <div className="grid grid-cols-5  bg-tahiti-50 rounded-md border-b hover:bg-[#EEEEEE]">
                 <div className="flex items-center justify-center col-span-1 font-semibold text-[13px] border-r py-2"></div>
                 <div className="flex items-center justify-center col-span-1 font-semibold text-[13px] border-r py-2"></div>
                 <div className="flex items-center justify-center col-span-1 font-semibold text-[13px] border-r py-2"></div>
                 <div className="flex items-center justify-center col-span-1 font-semibold text-[13px] border-r py-2"></div>
-                <div className="flex items-center justify-center col-span-1 font-semibold text-[13px]  py-2">
-                  Payable
+                <div className="flex items-center justify-center font-serifs col-span-1 font-semibold text-[13px]  py-2">
+                  {totalPrice*70/100}
                 </div>
               </div>
             </div>
@@ -100,7 +130,7 @@ const PaymentList = () => {
                 PAY
               </div>
               <div className="bg-tahiti-50 font-serifs rounded-3xl py-[2px] px-2 text-[13px]">
-              ৳ 2280
+              ৳ {totalPrice*70/100}
               </div>
             </div>
           </div>

@@ -7,7 +7,7 @@ export default async function deleteRequest(url, token = null) {
   const cookies = parseCookies();
 
   const config = {
-    headers: { Authorization: `${token ? token||'' : cookies?.token||''}` },
+    headers: { Authorization: `${token ? token||'' : cookies?.dropToken||''}` },
   };
 
   try {

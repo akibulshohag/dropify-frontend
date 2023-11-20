@@ -11,7 +11,7 @@ function StatusProvider({ children }) {
    const cookie = parseCookies();
 
 
-  const [token, setToken] = useState(cookie?.token ? cookie?.token : "");
+  const [token, setToken] = useState(cookie?.dropToken ? cookie?.dropToken : "");
   const [accountMenu, setaccountMenu] = useState('dashboard')
   const [sideCategory, setSideCategory] = useState(false);
   const [userName, setuserName] = useState(cookie?.userName ? cookie?.userName : "")

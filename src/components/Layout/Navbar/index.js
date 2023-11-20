@@ -72,6 +72,7 @@ const Navbar = () => {
     }
   };
 
+
   return (
     <div
       className={`h-[65px] bg-tahiti-500 fixed inset-0 z-20   ${

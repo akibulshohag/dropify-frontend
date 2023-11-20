@@ -8,7 +8,7 @@ import { useStatus } from "@/context/contextStatus";
 
 const Login = () => {
   const router = useRouter()
-  const{ setToken} = useStatus()
+  const{ setToken,setrefreshApi,refreshApi} = useStatus()
   const [phone, setphone] = useState("");
   const [otp, setotp] = useState("");
   const [isOtp, setisOtp] = useState(false);
@@ -49,12 +49,15 @@ const Login = () => {
      }
      let res =await postRequest('customer/login-step2',data)
      if(res?.success){
+
+      console.log('.....res',res);
       toast(res?.message)
       setToken(res?.data)
-      setCookie(null, "token", res?.data, {
+      setCookie(null, "dropToken", res?.data, {
         maxAge: 30 * 24 * 60 * 60,
         path: "/",
       });
+      setrefreshApi(!refreshApi)
       router.push('/account')
      }else{
       toast.warning(res?.message) 

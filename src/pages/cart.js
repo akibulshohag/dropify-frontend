@@ -201,8 +201,10 @@ const Cart = () => {
     if (variationArr.length > 0) {
       pro = variationArr?.map((item) => {
         return {
-          Color: item?.Color,
-          Size: item?.Size,
+          key1: item?.key1,
+          value1:item?.value1,
+          key2:item?.key2,
+          value2: item?.value2,
           unitPrice:
             qtyRangePrice == null
               ? Math.ceil(item?.unitPrice)
@@ -460,17 +462,17 @@ const Cart = () => {
                               </div>
                             )}
                             <div className="">
-                              {items?.Color && (
+                              {items?.key1 && (
                                 <div className="text-[14px] xs:text-[12px] xms:text-[12px] xls:text-[12px]">
-                                  Color: {items?.Color}
+                                  {items?.key1}: {items?.value1}
                                 </div>
                               )}
-                              {items?.Size && (
+                              {items?.key2 && (
                                 <div className="text-[14px]  xs:text-[12px] xms:text-[12px] xls:text-[12px]">
-                                  Size: {items?.Size}
+                                  {items?.key2}: {items?.value2}
                                 </div>
                               )}
-                              {items?.Color || items?.Size ? null : (
+                              {items?.key1 || items?.key2 ? null : (
                                 <div className="text-[14px] text-red-500  xs:text-[12px] xms:text-[12px] xls:text-[12px]">
                                   No Variation
                                 </div>
@@ -607,17 +609,17 @@ const Cart = () => {
 
           <div className="flex items-center justify-between">
             <div>
-              {itemsObj?.Color && (
+              {itemsObj?.key1 && (
                 <div className="text-[14px] xs:text-[12px] xms:text-[12px] xls:text-[12px]">
-                  Color: {itemsObj?.Color}
+                  {itemsObj?.key1}: {itemsObj?.value1}
                 </div>
               )}
-              {itemsObj?.Size && (
+              {itemsObj?.key2 && (
                 <div className="text-[14px]  xs:text-[12px] xms:text-[12px] xls:text-[12px]">
-                  Size: {itemsObj?.Size}
+                  {itemsObj?.key2}: {itemsObj?.value2}
                 </div>
               )}
-              {itemsObj?.Color || itemsObj?.Size ? null : (
+              {itemsObj?.key1 || itemsObj?.key2 ? null : (
                 <div className="text-[14px]   xs:text-[12px] xms:text-[12px] xls:text-[12px] pr-3">
                   {singleItem?.Title}
                 </div>

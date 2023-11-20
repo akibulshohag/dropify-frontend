@@ -257,11 +257,15 @@ const SingleProduct = ({ data }) => {
     }
     let pro;
 
-    if (productDetails?.Variation1.length > 0) {
+    if (productDetails?.Variation2.length > 0) {
+      
+    } else if (productDetails?.Variation1.length > 0) {
       pro = selectedProduct?.map((item) => {
         return {
-          Color: item?.Value,
-          Size: "",
+          key1:item?.PropertyName,
+          value1: item?.Value,
+          key2:"",
+          value2: "",
           unitPrice:
             qtyRangePrice == null
               ? Math.ceil(item?.Price+(item?.Price*10/100))
@@ -270,7 +274,6 @@ const SingleProduct = ({ data }) => {
           MiniImageUrl: item?.MiniImageUrl,
         };
       });
-    } else if (productDetails?.Variation2.length > 0) {
     } else {
       pro = [
         {
