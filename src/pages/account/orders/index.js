@@ -128,7 +128,7 @@ const Orders = () => {
                       </div>
                     </div>
                     <div className="flex items-center gap-3 col-span-1  text-[13px]">
-                      <div className=" text-[13px] bg-tahiti-500 text-white py-1 px-3 rounded-sm cursor-pointer">
+                      <div onClick={()=>router.push(`/account/orders/${item?.orderId}`)} className=" text-[13px] bg-tahiti-500 text-white py-1 px-3 rounded-sm cursor-pointer">
                         View
                       </div>
                       <div onClick={()=>router.push(`/payment/${item?.orderId}`)} className=" text-[13px] bg-tahiti-500 text-white py-1 px-3 rounded-sm cursor-pointer">

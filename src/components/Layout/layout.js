@@ -11,7 +11,7 @@ import ProfileMenuPhone from '@/components/Layout/ProfileMenuPhone'
 const Layout = ({ children }) => {
   const router = useRouter();
 
-  const pagesWithoutSideCategory = ["/account", "/account/orders","/account/settings","/account/payments","/account/delivery","/account/orders/[orderId]"];
+  const pagesWithoutSideCategory = ["/account", "/account/orders","/account/settings","/account/payments","/account/delivery","/account/orders/[orderId]","/payment/[orderId]"];
   const shouldHideSideCategory = pagesWithoutSideCategory.includes(
     router.pathname
   );
