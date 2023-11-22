@@ -59,6 +59,9 @@ const Navbar = () => {
       if (res?.success) {
         setcartlength(res?.data?.totalCart);
         setwishLength(res?.data?.totalWish);
+      } else{
+        setcartlength(0);
+        setwishLength(0);
       }
     };
     getCartTotals();
@@ -71,6 +74,14 @@ const Navbar = () => {
       router.push("/login");
     }
   };
+
+  const wishRoute=()=>{
+    if (token) {
+      router.push("/wishlist");
+    } else {
+      router.push("/login");
+    }
+  }
 
 
   return (
@@ -133,7 +144,7 @@ const Navbar = () => {
               {cartlength != 0 ? cartlength : ""}
             </div>
           </div>
-          <div className="relative">
+          <div onClick={() => wishRoute()} className="relative">
             <FiHeart className="cursor-pointer" />
             <div className="text-[14px] absolute top-[-12px] right-[-5px]">
               {wishLength != 0 ? wishLength : ""}

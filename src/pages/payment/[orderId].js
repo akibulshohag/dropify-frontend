@@ -8,7 +8,7 @@ const PaymentList = () => {
   const router = useRouter();
   const { orderId } = router?.query;
 
-  const orderIds = orderId ? orderId.split(",") : [];
+  const orderIds = orderId ? orderId.split("DABCZXY") : [];
   const [paymentInfoList, setpaymentInfoList] = useState([]);
   const [totalPrice, settotalPrice] = useState(0);
 

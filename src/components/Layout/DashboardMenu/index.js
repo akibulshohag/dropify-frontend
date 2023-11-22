@@ -5,10 +5,12 @@ import { TbTruckDelivery, TbLogout } from "react-icons/tb";
 import { FiSettings } from "react-icons/fi";
 import { useStatus } from "@/context/contextStatus";
 import { useRouter } from "next/router";
+import { destroyCookie, parseCookies } from "nookies";
+
 
 const SideCategoryWeb = () => {
   const router = useRouter();
-  const { accountMenu, setaccountMenu } = useStatus();
+  const { accountMenu, setaccountMenu,setuserName,setuserPhone,setToken,setrefreshApi,refreshApi,userPhone,userName } = useStatus();
 
   const changeRoute = (routeLink) => {
     if (routeLink == "dashboard") {
@@ -29,16 +31,37 @@ const SideCategoryWeb = () => {
     }
   };
 
+
+  const handleLogout = () => {
+    setToken(null);
+    setuserName('');
+    setuserPhone('')
+    destroyCookie({}, "dropToken", {
+      path: "/",
+    });
+    destroyCookie({}, "userName", {
+      path: "/",
+    });
+    destroyCookie({}, "userPhone", {
+      path: "/",
+    });
+    setrefreshApi(!refreshApi)
+    router.push("/");
+  };
+
   return (
     <div className="min-h-screen fixed bg-tahiti-50 mt-[65px] xs:hidden xms:hidden xls:hidden sm:hidden md:w-[200px] lg:fixed lg:w-[200px]  xl:fixed xl:w-[250px]  xxl:w-[250px] xs:mt-[99px]  xms:mt-[99px] xls:mt-[99px] sm:mt-[99px]  ">
       <div className="py-4 mt-[10px] border-b-[3px]">
         <div className="flex items-center justify-center">
           <div className="w-[70px] h-[70px] bg-[#AAAAAA] text-white rounded-full flex items-center justify-center">
-            A
+            {(atob(userName)).charAt(0)}
           </div>
         </div>
-        <div className="text-center text-[16px] font-semibold py-3 text-[#AAAAAA]">
-          01789088779
+        <div className="text-center text-[16px] font-serifs font-semibold mt-3 text-[#AAAAAA]">
+          {atob(userName)}
+        </div>
+        <div className="text-center text-[16px] font-serifs font-semibold py-1 text-[#AAAAAA]">
+          {atob(userPhone)}
         </div>
       </div>
       <div className="">
@@ -107,11 +130,11 @@ const SideCategoryWeb = () => {
           </div>
           <div className="text-[15px] ml-3">Settings</div>
         </div>
-        <div className="flex items-center py-4 border-b border-b-[#f5f2f2]  pl-3 hover:bg-[#F2F2F2] cursor-pointer">
+        <div onClick={handleLogout} className="flex items-center py-4 border-b border-b-[#f5f2f2]  pl-3 hover:bg-[#F2F2F2] cursor-pointer">
           <div className="text-[20px]">
             <TbLogout />
           </div>
-          <div className="text-[15px] ml-3">Logout</div>
+          <div  className="text-[15px] ml-3">Logout</div>
         </div>
       </div>
     </div>

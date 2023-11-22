@@ -19,7 +19,6 @@ import postRequest from "@/lib/postRequest";
 import { toast } from "react-toastify";
 import { useStatus } from "@/context/contextStatus";
 
-
 const customStyles = {
   content: {
     top: "50%",
@@ -40,7 +39,7 @@ const customStyles = {
 const SingleProduct = ({ data }) => {
   const router = useRouter();
   const { slug } = router.query;
-  const {refreshApi,setrefreshApi} = useStatus()
+  const { refreshApi, setrefreshApi,token } = useStatus();
   const [selectedImage, setselectedImage] = useState("");
   const [tabChange, settabChange] = useState(1);
   const [productDetails, setproductDetails] = useState(data);
@@ -59,10 +58,12 @@ const SingleProduct = ({ data }) => {
   const [ModalTab, setModalTab] = useState(0);
   const [nonVariation, setnonVariation] = useState(null);
   const [selectedProduct, setselectedProduct] = useState([]);
+  const [wishStatus, setwishStatus] = useState(data?.wishStatus);
 
   function closeModal() {
     setIsOpen(false);
   }
+
 
   useEffect(() => {
     if (productDetails) {
@@ -258,17 +259,16 @@ const SingleProduct = ({ data }) => {
     let pro;
 
     if (productDetails?.Variation2.length > 0) {
-      
     } else if (productDetails?.Variation1.length > 0) {
       pro = selectedProduct?.map((item) => {
         return {
-          key1:item?.PropertyName,
+          key1: item?.PropertyName,
           value1: item?.Value,
-          key2:"",
+          key2: "",
           value2: "",
           unitPrice:
             qtyRangePrice == null
-              ? Math.ceil(item?.Price+(item?.Price*10/100))
+              ? Math.ceil(item?.Price + (item?.Price * 10) / 100)
               : Math.ceil(qtyRangePrice),
           qty: item?.qty,
           MiniImageUrl: item?.MiniImageUrl,
@@ -301,16 +301,48 @@ const SingleProduct = ({ data }) => {
     };
 
     let res = await postRequest("cart/add", data);
-    console.log('......res',res);
+    console.log("......res", res);
     if (res?.success) {
       setIsOpen(true);
       setModalTab(3);
-      setrefreshApi(!refreshApi)
-    }else{
+      setrefreshApi(!refreshApi);
+    } else {
       toast.error(res.message);
     }
 
     console.log(data);
+  };
+
+  const addWish = async () => {
+    if(!token){
+      toast.warning('Login First')
+      return;
+    }
+
+    const data = {
+      productId: productDetails?.productId,
+    };
+
+    let res = await postRequest("customer/wishlist/add",data);
+    if (res.success) {
+      setwishStatus(true)
+      setrefreshApi(!refreshApi);
+    }
+  };
+  const removeWish = async () => {
+    if(!token){
+      toast.warning('Login First')
+      return;
+    }
+    const data = {
+      productId: productDetails?.productId,
+    };
+
+    let res = await postRequest("customer/wishlist/remove",data);
+    if (res.success) {
+      setwishStatus(false)
+      setrefreshApi(!refreshApi);
+    }
   };
 
   return (
@@ -608,8 +640,12 @@ const SingleProduct = ({ data }) => {
                         Buy Now
                       </div>
                     </div>
-                    <div className=" border-[3px] flex items-center justify-center col-span-1 py-2 rounded-md cursor-pointer">
-                      <BsFillHeartFill className=" text-[20px]" />
+                    <div onClick={()=>{wishStatus ? removeWish(): addWish()}} className=" border-[3px] flex items-center justify-center col-span-1 py-2 rounded-md cursor-pointer">
+                      <BsFillHeartFill
+                        className={`text-[20px] ${
+                          wishStatus ? "text-red-600" : ""
+                        }`}
+                      />
                     </div>
                   </div>
                   <div className="mt-5">
@@ -844,7 +880,10 @@ const SingleProduct = ({ data }) => {
                 >
                   Shop More
                 </div>
-                <div onClick={()=>router.push('/cart')} className="bg-tahiti-500 text-tahiti-50 text-[14px] py-2 px-4 rounded-md">
+                <div
+                  onClick={() => router.push("/cart")}
+                  className="bg-tahiti-500 text-tahiti-50 text-[14px] py-2 px-4 rounded-md"
+                >
                   Go To Cart
                 </div>
               </div>
@@ -876,9 +915,8 @@ const SingleProduct = ({ data }) => {
 export default SingleProduct;
 
 export async function getServerSideProps(context) {
-  let products = await request(
-    `product/single-details?productId=${context.query.slug}`
-  );
+  let tokenn = context.req?.cookies?.dropToken? context.req?.cookies?.dropToken:''
+  let products = await request(`product/single-details?productId=${context.query.slug}`,tokenn);
 
   return {
     props: {

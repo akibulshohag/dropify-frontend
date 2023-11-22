@@ -39,7 +39,7 @@ const Orders = () => {
 
 
   const gotoPayment=()=>{
-    const queryString = selectedId.join(',');
+    const queryString = selectedId.join('DABCZXY');
     router.push(`/payment/${queryString}`)
   }
 

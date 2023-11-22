@@ -337,8 +337,10 @@ const Cart = () => {
     if (newArr.length > 0) {
       pro = newArr?.map((item) => {
         return {
-          Color: item?.Color,
-          Size: item?.Size,
+          key1: item?.key1,
+          value1: item?.value1,
+          key2:item?.key2,
+          value2:item?.value2,
           unitPrice:
           getQtyPrice == null
               ? Math.ceil(item?.unitPrice)

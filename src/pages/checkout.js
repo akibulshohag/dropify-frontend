@@ -184,7 +184,7 @@ const Checkout = () => {
           maxAge: 30 * 24 * 60 * 60,
           path: "/",
         });
-        const queryString = res?.data?.orderId.join(',');
+        const queryString = res?.data?.orderId.join('DABCZXY');
         router.push(`payment/${queryString}`)
       
       }

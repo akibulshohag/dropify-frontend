@@ -1,7 +1,20 @@
 import React from "react";
 import Image from "next/image";
+import { Chart } from "react-google-charts";
 
 const Account = () => {
+  const data = [
+    ["Task", "Hours per Day"],
+    ["pending", 4],
+    ["processing", 3],
+    ["completed", 2],
+    ["cancelled", 1],
+  ];
+
+  const options = {
+    legend: "none",
+  };
+
   return (
     <div className="mt-[65px] min-h-[40rem] xs:mt-[5px] xms:mt-[5px] xls:mt-[5px] sm:mt-[5px]">
       <div className="p-2 xs:p-0 xms:p-0 xls:p-0 sm:p-0">
@@ -72,7 +85,17 @@ const Account = () => {
               </div>
             </div>
           </div>
-          <div className="col-span-1 bg-white"></div>
+          <div className="col-span-1 bg-white flex items-center justify-center">
+            <div className="flex items-center justify-center">
+              <Chart
+                chartType="PieChart"
+                options={options}
+                data={data}
+                width={"300px"}
+                height={"300px"}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

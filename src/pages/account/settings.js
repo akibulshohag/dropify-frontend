@@ -17,7 +17,7 @@ const Settings = () => {
     formState: { errors },
   } = useForm();
 
-  const { userPhone, setuserName, userName,setuserPhone } = useStatus();
+  const { userPhone, setuserName, userName,setuserPhone} = useStatus();
   const [renderMe, setrenderMe] = useState(false)
 
   const district = [
@@ -88,6 +88,8 @@ const Settings = () => {
   ];
 
   useEffect(() => {
+
+
     const getUserData = async () => {
       let res = await request("customer/profile-fetch");
       if (res?.success) {
