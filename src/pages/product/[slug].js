@@ -277,8 +277,10 @@ const SingleProduct = ({ data }) => {
     } else {
       pro = [
         {
-          Color: "",
-          Size: "",
+          key1: "",
+          value1: "",
+          key2: "",
+          value2: "",
           unitPrice:
             qtyRangePrice == null
               ? Math.ceil(nonVariation?.Price)
