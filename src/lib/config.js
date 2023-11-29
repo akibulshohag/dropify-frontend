@@ -3,7 +3,7 @@
 
 // export const hostname = `http://192.168.0.242:4311`;
 
-export const hostname = `http://167.172.71.87:4311`;
+export const hostname = `http://194.233.90.154:4311`;
 
 // const hostname =
 //   process.env.NODE_ENV === "development"
