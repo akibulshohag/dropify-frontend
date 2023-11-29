@@ -267,6 +267,12 @@ const SingleProduct = () => {
       setModalTab(1);
       return;
     }
+
+    if(!token){
+      toast.warning('Login First')
+      return
+    }
+
     let pro;
 
     if (productDetails?.Variation2.length > 0) {
