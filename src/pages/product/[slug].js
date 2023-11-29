@@ -36,13 +36,13 @@ const customStyles = {
   },
 };
 
-const SingleProduct = ({ data }) => {
+const SingleProduct = () => {
   const router = useRouter();
   const { slug } = router.query;
   const { refreshApi, setrefreshApi,token } = useStatus();
   const [selectedImage, setselectedImage] = useState("");
   const [tabChange, settabChange] = useState(1);
-  const [productDetails, setproductDetails] = useState(data);
+  const [productDetails, setproductDetails] = useState(null);
   const [productVariation, setproductVariation] = useState([]);
   const [variationId, setvariationId] = useState("");
   const [isVideo, setisVideo] = useState(false);
@@ -58,11 +58,22 @@ const SingleProduct = ({ data }) => {
   const [ModalTab, setModalTab] = useState(0);
   const [nonVariation, setnonVariation] = useState(null);
   const [selectedProduct, setselectedProduct] = useState([]);
-  const [wishStatus, setwishStatus] = useState(data?.wishStatus);
+  const [wishStatus, setwishStatus] = useState();
 
   function closeModal() {
     setIsOpen(false);
   }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await request(`product/single-details?productId=${router.query.slug}`);
+      if(res?.success){
+        setproductDetails(res?.data)
+        setwishStatus(res?.data?.wishStatus)
+      }
+    };
+    fetchData();
+  }, [router.query.slug]);
 
 
   useEffect(() => {
@@ -916,13 +927,3 @@ const SingleProduct = ({ data }) => {
 
 export default SingleProduct;
 
-export async function getServerSideProps(context) {
-  let tokenn = context.req?.cookies?.dropToken? context.req?.cookies?.dropToken:''
-  let products = await request(`product/single-details?productId=${context.query.slug}`,tokenn);
-
-  return {
-    props: {
-      data: products?.data || null,
-    },
-  };
-}
