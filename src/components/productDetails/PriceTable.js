@@ -1,7 +1,11 @@
 import React from "react";
 import Image from "next/image";
+import { useStatus } from "@/context/contextStatus";
+
 
 const PriceTable = ({totalQty,totalPrice}) => {
+  const {offerCampaign } = useStatus();
+
   
   return (
     <div>
@@ -55,8 +59,9 @@ const PriceTable = ({totalQty,totalPrice}) => {
               >
                 Product Price
               </th>
+              
               <td className="px-6 py-3 border-l border-r text-tahiti-800 font-semibold">
-                ৳{totalPrice}
+                ৳{offerCampaign?.isValid ?(totalPrice- totalPrice*offerCampaign?.percent/100) :totalPrice}
               </td>
             </tr>
             <tr className="bg-white border-b text-left dark:bg-gray-900 dark:border-gray-700 cursor-pointer hover:bg-[#F0F0F0]">
@@ -78,7 +83,7 @@ const PriceTable = ({totalQty,totalPrice}) => {
                 Total Cost
               </th>
               <td className="px-6 py-3 border-l border-r text-tahiti-800 font-semibold">
-                ৳{totalPrice} + Shipping & Courier Charges
+                ৳{offerCampaign?.isValid ?(totalPrice- totalPrice*offerCampaign?.percent/100) :totalPrice} + Shipping & Courier Charges
               </td>
             </tr>
             <tr className="bg-white border-b text-left dark:bg-gray-900 dark:border-gray-700 cursor-pointer hover:bg-[#F0F0F0]">
@@ -89,7 +94,7 @@ const PriceTable = ({totalQty,totalPrice}) => {
                 Pay now (70%)
               </th>
               <td className="px-6 py-3 border-l border-r text-tahiti-800 font-semibold">
-                ৳{Math.ceil(totalPrice*70/100)}
+                ৳{offerCampaign?.isValid? (totalPrice*70/100 - (totalPrice*70/100)*offerCampaign?.percent/100) : Math.ceil(totalPrice*70/100)}
               </td>
             </tr>
             <tr className="bg-white border-b text-left dark:bg-gray-900 dark:border-gray-700 cursor-pointer hover:bg-[#F0F0F0]">
@@ -100,7 +105,7 @@ const PriceTable = ({totalQty,totalPrice}) => {
                 Pay on Delivery
               </th>
               <td className="px-6 py-3 border-l border-r text-tahiti-800 font-semibold">
-                ৳{Math.ceil(totalPrice -(totalPrice*70/100)) } + Shipping & Courier Charges
+                ৳{offerCampaign?.isValid ? ((totalPrice -(totalPrice*70/100)) - (totalPrice -(totalPrice*70/100))*offerCampaign?.percent/100 ) : Math.ceil(totalPrice -(totalPrice*70/100)) } + Shipping & Courier Charges
               </td>
             </tr>
           </tbody>

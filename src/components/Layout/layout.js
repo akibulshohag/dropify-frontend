@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment,useEffect } from "react";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 import SideCategoryWeb from "./SideCategoryWeb";
@@ -7,14 +7,32 @@ import DashboardMenu from "./DashboardMenu";
 import BottomNavbar from "./BottomNavbar/BottomNavbar";
 import LeftCategoryPhone from '@/components/Layout/LeftCategoryPhone/RsLeftMenu'
 import ProfileMenuPhone from '@/components/Layout/ProfileMenuPhone'
+import request from "@/lib/request";
+import { useStatus } from "@/context/contextStatus";
 
 const Layout = ({ children }) => {
   const router = useRouter();
+  const {setpriceInc,setofferCampaign} = useStatus()
 
   const pagesWithoutSideCategory = ["/account", "/account/orders","/account/settings","/account/payments","/account/delivery","/account/orders/[orderId]","/payment/[orderId]"];
   const shouldHideSideCategory = pagesWithoutSideCategory.includes(
     router.pathname
   );
+
+  useEffect(() => {
+    const priceInc=async()=>{
+       let res =await request('platform/get-price-increase')
+       if(res?.success){
+        setpriceInc(res?.data?.priceInc)
+       }
+       let res1 = await request('platform/get-offer')
+       if(res1?.success){
+        setofferCampaign(res1?.data)
+       }
+    }
+    priceInc()
+  }, [])
+  
 
   return (
     <div className="font-body">

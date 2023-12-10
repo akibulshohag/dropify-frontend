@@ -28,7 +28,7 @@ const customStyles = {
 const Cart = () => {
   let subtitle;
   const router = useRouter();
-  const {refreshApi,setrefreshApi}= useStatus()
+  const {refreshApi,setrefreshApi,offerCampaign}= useStatus()
   const [modalIsOpen, setIsOpen] = useState(false);
   const [cartList, setcartList] = useState([]);
   const [totalCartPrice, settotalCartPrice] = useState(0);
@@ -546,10 +546,26 @@ const Cart = () => {
                     ৳ {totalCartPrice}
                   </div>
                 </div>
+                {offerCampaign?.isValid &&
+                <div className="flex items-center justify-between py-2">
+                  <div>{offerCampaign?.name} {offerCampaign?.percent}%</div>
+                  <div className="font-semibold font-serifs ">
+                    -৳ {Math.floor(totalCartPrice*offerCampaign?.percent/100)}
+                  </div>
+                </div>
+                 }
+                {offerCampaign?.isValid &&
+                <div className="flex items-center justify-between py-2">
+                  <div>Fianl Price</div>
+                  <div className="font-semibold font-serifs ">
+                    ৳ {Math.floor(totalCartPrice- (totalCartPrice*offerCampaign?.percent/100))}
+                  </div>
+                </div>
+                 }
                 <div className="flex items-center justify-between py-1">
                   <div>Pay Now (70%)</div>
                   <div className="font-semibold font-serifs ">
-                    ৳ {Math.ceil((totalCartPrice * 70) / 100)}
+                    ৳ {offerCampaign?.isValid ? Math.ceil(totalCartPrice*70/100 - (totalCartPrice*70/100)*offerCampaign?.percent/100) : Math.ceil((totalCartPrice * 70) / 100)}
                   </div>
                 </div>
               </div>
@@ -562,7 +578,7 @@ const Cart = () => {
                     <div className="text-[18px] font-serifs  text-center">
                       <div>
                         ৳{" "}
-                        {Math.ceil(
+                        {offerCampaign?.isValid ? Math.floor((totalCartPrice -(totalCartPrice*70/100)) - (totalCartPrice -(totalCartPrice*70/100))*offerCampaign?.percent/100 ): Math.ceil(
                           totalCartPrice - (totalCartPrice * 70) / 100
                         )}{" "}
                         + Shipping & Courier Charges

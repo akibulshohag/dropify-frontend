@@ -39,7 +39,8 @@ const customStyles = {
 const SingleProduct = () => {
   const router = useRouter();
   const { slug } = router.query;
-  const { refreshApi, setrefreshApi,token } = useStatus();
+  const { refreshApi, setrefreshApi, token, priceInc, offerCampaign } =
+    useStatus();
   const [selectedImage, setselectedImage] = useState("");
   const [tabChange, settabChange] = useState(1);
   const [productDetails, setproductDetails] = useState(null);
@@ -66,37 +67,34 @@ const SingleProduct = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await request(`product/single-details?productId=${router.query.slug}`);
-      if(res?.success){
-        setproductDetails(res?.data)
-        setwishStatus(res?.data?.wishStatus)
+      const res = await request(
+        `product/single-details?productId=${router.query.slug}`
+      );
+      if (res?.success) {
+        setproductDetails(res?.data);
+        setwishStatus(res?.data?.wishStatus);
+        if (res?.data) {
+          setselectedImage(res?.data?.MainPictureUrl);
+        }
+
+        if (res?.data?.Variation2.length > 0) {
+        } else if (res?.data?.Variation1.length > 0) {
+          setproductVariation(res?.data?.Variation1);
+          let value = res?.data?.Variation1.filter(
+            (item) => item?.Vid == res?.data?.Variation1[0]?.Vid
+          );
+          settableVariation([...value]);
+          setpropertyName(value[0]?.PropertyName);
+          setvalues(value[0]?.Value);
+          setvariationId(value[0]?.Vid);
+        } else {
+          let nonVariation = { Price: res?.data?.Price, qty: 1 };
+          setnonVariation(nonVariation);
+        }
       }
     };
     fetchData();
   }, [router.query.slug]);
-
-
-  useEffect(() => {
-    if (productDetails) {
-      setselectedImage(productDetails?.MainPictureUrl);
-    }
-
-    if (productDetails?.Variation2.length > 0) {
-      console.log("d2222");
-    } else if (productDetails?.Variation1.length > 0) {
-      setproductVariation(productDetails?.Variation1);
-      let value = productDetails?.Variation1.filter(
-        (item) => item?.Vid == productDetails?.Variation1[0]?.Vid
-      );
-      settableVariation([...value]);
-      setpropertyName(value[0]?.PropertyName);
-      setvalues(value[0]?.Value);
-      setvariationId(value[0]?.Vid);
-    } else {
-      let nonVariation = { Price: productDetails?.Price, qty: 1 };
-      setnonVariation(nonVariation);
-    }
-  }, [productDetails]);
 
   const selectVariation = (val) => {
     setvariationId(val?.Vid);
@@ -114,8 +112,6 @@ const SingleProduct = () => {
   };
 
   useEffect(() => {
-    console.log("...dddss");
-
     let totalQuantity;
     if (productDetails?.Variation1?.length > 0) {
       totalQuantity = productVariation.reduce((a, b) => a + b?.qty, 0);
@@ -157,7 +153,7 @@ const SingleProduct = () => {
       let value = productDetails?.QuantityRanges.filter(
         (a) => a.MinQuantity == quantityrange
       );
-      getQtyPrice = value[0]?.Price + (value[0]?.Price * 10) / 100;
+      getQtyPrice = value[0]?.Price + (value[0]?.Price * priceInc) / 100;
       setqtyRangePrice(getQtyPrice);
     }
 
@@ -169,7 +165,7 @@ const SingleProduct = () => {
         (a, b) =>
           a +
           (qtyRangePrice == null
-            ? Math.ceil(b?.Price + (b?.Price * 10) / 100) * b?.qty
+            ? Math.ceil(b?.Price + (b?.Price * priceInc) / 100) * b?.qty
             : Math.ceil(getQtyPrice) * b?.qty),
         0
       );
@@ -177,8 +173,9 @@ const SingleProduct = () => {
     } else {
       let totalPrice =
         qtyRangePrice == null
-          ? Math.ceil(nonVariation?.Price + (nonVariation?.Price * 10) / 100) *
-            nonVariation?.qty
+          ? Math.ceil(
+              nonVariation?.Price + (nonVariation?.Price * priceInc) / 100
+            ) * nonVariation?.qty
           : Math.ceil(getQtyPrice) * nonVariation?.qty;
       settotalPrice(totalPrice);
     }
@@ -268,9 +265,9 @@ const SingleProduct = () => {
       return;
     }
 
-    if(!token){
-      toast.warning('Login First')
-      return
+    if (!token) {
+      toast.warning("Login First");
+      return;
     }
 
     let pro;
@@ -285,7 +282,7 @@ const SingleProduct = () => {
           value2: "",
           unitPrice:
             qtyRangePrice == null
-              ? Math.ceil(item?.Price + (item?.Price * 10) / 100)
+              ? Math.ceil(item?.Price + (item?.Price * priceInc) / 100)
               : Math.ceil(qtyRangePrice),
           qty: item?.qty,
           MiniImageUrl: item?.MiniImageUrl,
@@ -333,8 +330,8 @@ const SingleProduct = () => {
   };
 
   const addWish = async () => {
-    if(!token){
-      toast.warning('Login First')
+    if (!token) {
+      toast.warning("Login First");
       return;
     }
 
@@ -342,24 +339,24 @@ const SingleProduct = () => {
       productId: productDetails?.productId,
     };
 
-    let res = await postRequest("customer/wishlist/add",data);
+    let res = await postRequest("customer/wishlist/add", data);
     if (res.success) {
-      setwishStatus(true)
+      setwishStatus(true);
       setrefreshApi(!refreshApi);
     }
   };
   const removeWish = async () => {
-    if(!token){
-      toast.warning('Login First')
+    if (!token) {
+      toast.warning("Login First");
       return;
     }
     const data = {
       productId: productDetails?.productId,
     };
 
-    let res = await postRequest("customer/wishlist/remove",data);
+    let res = await postRequest("customer/wishlist/remove", data);
     if (res.success) {
-      setwishStatus(false)
+      setwishStatus(false);
       setrefreshApi(!refreshApi);
     }
   };
@@ -384,7 +381,7 @@ const SingleProduct = () => {
                   setisVideo={setisVideo}
                 />
                 <div className="col-span-3">
-                  {/* <Campaign /> */}
+                  {offerCampaign?.isValid && <Campaign />}
                   {productDetails?.QuantityRanges?.length > 0 && (
                     <div className="grid grid-cols-3 gap-3 mt-3">
                       {productDetails?.QuantityRanges?.map((item, index) => (
@@ -394,15 +391,37 @@ const SingleProduct = () => {
                             item?.MinQuantity == qtyRange
                               ? "bg-tahiti-500 text-white"
                               : "bg-[#F4F4F4] text-black"
-                          }  h-[80px] rounded-md  flex items-center justify-center`}
+                          }  py-2 rounded-md  flex items-center justify-center`}
                         >
                           <div className="">
-                            <div className="text-[18px] font-semibold text-center">
-                              ৳
-                              {Math.ceil(
-                                item?.Price + (item?.Price * 10) / 100
-                              )}
-                            </div>
+                            {offerCampaign?.isValid ? (
+                              <div className="text-[18px] font-semibold text-center font-serifs">
+                                ৳
+                                {Math.ceil(
+                                  item?.Price + (item?.Price * priceInc) / 100
+                                ) -
+                                  (Math.ceil(
+                                    item?.Price + (item?.Price * priceInc) / 100
+                                  ) *
+                                    offerCampaign?.percent) /
+                                    100}
+                              </div>
+                            ) : (
+                              <div className="text-[18px] font-semibold text-center font-serifs">
+                                ৳
+                                {Math.ceil(
+                                  item?.Price + (item?.Price * priceInc) / 100
+                                )}
+                              </div>
+                            )}
+                            {offerCampaign?.isValid && (
+                              <div className="text-[14px] line-through text-center font-serifs">
+                                ৳
+                                {Math.ceil(
+                                  item?.Price + (item?.Price * priceInc) / 100
+                                )}
+                              </div>
+                            )}
                             <div className="text-[16px] text-center">
                               {item?.MinQuantity} or more
                             </div>
@@ -513,18 +532,46 @@ const SingleProduct = () => {
                                 >
                                   {items?.Value}
                                 </th>
-                                <td className="px-6 py-2 border-l border-r text-tahiti-800 font-semibold">
-                                  ৳{" "}
-                                  {qtyRangePrice == null
-                                    ? Math.ceil(
-                                        items?.Price + (items?.Price * 10) / 100
-                                      )
-                                    : Math.ceil(qtyRangePrice)}{" "}
-                                  <br />
-                                  {/* <span className="text-[13px] text-gray-400 line-through">
-                                ৳ 719
-                             </span> */}
-                                </td>
+                                {offerCampaign?.isValid ? (
+                                  <td className="px-6 py-2 border-l border-r text-tahiti-800 font-semibold">
+                                    ৳{" "}
+                                    {qtyRangePrice == null
+                                      ? Math.ceil(
+                                          items?.Price +
+                                            (items?.Price * priceInc) / 100
+                                        ) -
+                                        (Math.ceil(
+                                          items?.Price +
+                                            (items?.Price * priceInc) / 100
+                                        ) *
+                                          offerCampaign?.percent) /
+                                          100
+                                      : Math.ceil(qtyRangePrice) -
+                                        (Math.ceil(qtyRangePrice) *
+                                          offerCampaign?.percent) /
+                                          100}{" "}
+                                    <br />
+                                    <span className="text-[11px] text-gray-400 line-through">
+                                      ৳{" "}
+                                      {qtyRangePrice == null
+                                        ? Math.ceil(
+                                            items?.Price +
+                                              (items?.Price * priceInc) / 100
+                                          )
+                                        : Math.ceil(qtyRangePrice)}
+                                    </span>
+                                  </td>
+                                ) : (
+                                  <td className="px-6 py-2 border-l border-r text-tahiti-800 font-semibold">
+                                    ৳{" "}
+                                    {qtyRangePrice == null
+                                      ? Math.ceil(
+                                          items?.Price +
+                                            (items?.Price * priceInc) / 100
+                                        )
+                                      : Math.ceil(qtyRangePrice)}{" "}
+                                  </td>
+                                )}
                                 <td className="px-4 py-2">
                                   {items?.qty == 0 ? (
                                     <div>
@@ -587,19 +634,44 @@ const SingleProduct = () => {
 
                         <tbody>
                           <tr className="bg-white border-b dark:bg-gray-900 dark:border-gray-700 cursor-pointer hover:bg-[#F0F0F0]">
-                            <td className="px-6 py-2 border-l border-r text-tahiti-800 font-semibold">
-                              ৳{" "}
-                              {qtyRangePrice == null
-                                ? Math.ceil(
-                                    nonVariation?.Price +
-                                      (nonVariation?.Price * 10) / 100
-                                  )
-                                : Math.ceil(qtyRangePrice)}{" "}
-                              <br />
-                              {/* <span className="text-[13px] text-gray-400 line-through">
-                                ৳ 719
-                             </span> */}
-                            </td>
+                            {offerCampaign?.isValid ? (
+                              <td className="px-6 py-2 border-l border-r text-tahiti-800 font-semibold">
+                                ৳{" "}
+                                {qtyRangePrice == null
+                                  ? Math.ceil(
+                                      nonVariation?.Price +
+                                        (nonVariation?.Price * priceInc) / 100
+                                    ) -
+                                    ( Math.ceil(
+                                      nonVariation?.Price +
+                                        (nonVariation?.Price * priceInc) / 100
+                                    )  * offerCampaign?.percent) /
+                                      100
+                                  : qtyRangePrice -
+                                    (qtyRangePrice * offerCampaign?.percent) /
+                                      100}{" "}
+                                <br />
+                                <span className="text-[11px] text-gray-400 line-through">
+                                  ৳{" "}
+                                  {qtyRangePrice == null
+                                    ? Math.ceil(
+                                        nonVariation?.Price +
+                                          (nonVariation?.Price * priceInc) / 100
+                                      )
+                                    : Math.ceil(qtyRangePrice)}
+                                </span>
+                              </td>
+                            ) : (
+                              <td className="px-6 py-2 border-l border-r text-tahiti-800 font-semibold">
+                                ৳{" "}
+                                {qtyRangePrice == null
+                                  ? Math.ceil(
+                                      nonVariation?.Price +
+                                        (nonVariation?.Price * priceInc) / 100
+                                    )
+                                  : Math.ceil(qtyRangePrice)}{" "}
+                              </td>
+                            )}
                             <td className="px-4 py-2">
                               {nonVariation?.qty == 0 ? (
                                 <div>
@@ -659,7 +731,12 @@ const SingleProduct = () => {
                         Buy Now
                       </div>
                     </div>
-                    <div onClick={()=>{wishStatus ? removeWish(): addWish()}} className=" border-[3px] flex items-center justify-center col-span-1 py-2 rounded-md cursor-pointer">
+                    <div
+                      onClick={() => {
+                        wishStatus ? removeWish() : addWish();
+                      }}
+                      className=" border-[3px] flex items-center justify-center col-span-1 py-2 rounded-md cursor-pointer"
+                    >
                       <BsFillHeartFill
                         className={`text-[20px] ${
                           wishStatus ? "text-red-600" : ""
@@ -901,7 +978,7 @@ const SingleProduct = () => {
                 </div>
                 <div
                   onClick={() => router.push("/cart")}
-                  className="bg-tahiti-500 text-tahiti-50 text-[14px] py-2 px-4 rounded-md"
+                  className="bg-tahiti-500 text-tahiti-50 text-[14px] py-2 px-4 rounded-md cursor-pointer"
                 >
                   Go To Cart
                 </div>
@@ -932,4 +1009,3 @@ const SingleProduct = () => {
 };
 
 export default SingleProduct;
-

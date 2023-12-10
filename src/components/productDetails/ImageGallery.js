@@ -45,7 +45,7 @@ const ImageGallery = ({
         :null} */}
 
           <div className="relative w-full h-[500px]">
-            <Image src={`${selectedImage ? selectedImage :'/assets/product/product1.jpg'}`} fill alt="mainImage" />
+            <Image src={`${selectedImage}`} fill alt="mainImage" />
           </div>
         </div>
       ) : (

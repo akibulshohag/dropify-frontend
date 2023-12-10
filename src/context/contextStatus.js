@@ -17,6 +17,8 @@ function StatusProvider({ children }) {
   const [userName, setuserName] = useState(cookie?.userName ? cookie?.userName : "")
   const [userPhone, setuserPhone] = useState(cookie?.userPhone ? cookie?.userPhone : "")
   const [refreshApi, setrefreshApi] = useState(false)
+  const [priceInc, setpriceInc] = useState(0)
+  const [offerCampaign, setofferCampaign] = useState(null)
 
 
 
@@ -34,7 +36,11 @@ function StatusProvider({ children }) {
         userPhone,
         setuserPhone,
         refreshApi,
-        setrefreshApi
+        setrefreshApi,
+        priceInc,
+        setpriceInc,
+        offerCampaign,
+        setofferCampaign
 
       }}
     >

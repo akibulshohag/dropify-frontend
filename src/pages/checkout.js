@@ -36,7 +36,7 @@ const customStyles = {
 const Checkout = () => {
   let subtitle;
   const router = useRouter();
-  const { userPhone,setrefreshApi,refreshApi ,setuserName} = useStatus();
+  const { userPhone,setrefreshApi,refreshApi ,setuserName,offerCampaign} = useStatus();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalOpen, setmodalOpen] = useState(false);
   const [cartList, setcartList] = useState([]);
@@ -413,12 +413,28 @@ const Checkout = () => {
                     ৳ {totalCartPrice}
                   </div>
                 </div>
+                {offerCampaign?.isValid &&
+                <div className="flex items-center justify-between py-2">
+                  <div>{offerCampaign?.name} {offerCampaign?.percent}%</div>
+                  <div className="font-semibold font-serifs ">
+                    -৳ {Math.floor(totalCartPrice*offerCampaign?.percent/100)}
+                  </div>
+                </div>
+                 }
+                {offerCampaign?.isValid &&
+                <div className="flex items-center justify-between py-2">
+                  <div>Fianl Price</div>
+                  <div className="font-semibold font-serifs ">
+                    ৳ {Math.floor(totalCartPrice- (totalCartPrice*offerCampaign?.percent/100))}
+                  </div>
+                </div>
+                 }
               </div>
               <div className="px-3 py-2">
                 <div className="bg-tahiti-300 flex items-center justify-center py-3 rounded-md">
                   <div className="">
                     <div className="text-[18px] font-semibold text-center font-serifs">
-                      70% Payment -৳ {Math.ceil((totalCartPrice * 70) / 100)}
+                      70% Payment -৳ {offerCampaign?.isValid ? Math.ceil(totalCartPrice*70/100 - (totalCartPrice*70/100)*offerCampaign?.percent/100) : Math.ceil((totalCartPrice * 70) / 100)}
                     </div>
                     <div
                       onClick={() => setmodalOpen(true)}
@@ -426,7 +442,7 @@ const Checkout = () => {
                     >
                       <div>
                         Pay on Delivery ৳{" "}
-                        {Math.ceil(
+                        {offerCampaign?.isValid ? Math.floor((totalCartPrice -(totalCartPrice*70/100)) - (totalCartPrice -(totalCartPrice*70/100))*offerCampaign?.percent/100 ): Math.ceil(
                           totalCartPrice - (totalCartPrice * 70) / 100
                         )}{" "}
                         + Shipping & Courier Charges
