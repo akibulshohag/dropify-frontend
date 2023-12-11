@@ -15,7 +15,6 @@ import { toast } from "react-toastify";
 import postRequest from "@/lib/postRequest";
 import { setCookie, parseCookies } from "nookies";
 
-
 const customStyles = {
   content: {
     top: "50%",
@@ -36,7 +35,8 @@ const customStyles = {
 const Checkout = () => {
   let subtitle;
   const router = useRouter();
-  const { userPhone,setrefreshApi,refreshApi ,setuserName,offerCampaign} = useStatus();
+  const { userPhone, setrefreshApi, refreshApi, setuserName, offerCampaign } =
+    useStatus();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [modalOpen, setmodalOpen] = useState(false);
   const [cartList, setcartList] = useState([]);
@@ -48,8 +48,10 @@ const Checkout = () => {
   const [optionalPhone, setoptionalPhone] = useState("");
   const [orderNote, setorderNote] = useState("");
   const [deleiveryMethod, setdeleiveryMethod] = useState("");
+  const [couponCode, setCouponCode] = useState("");
+  const [couponData, setcouponData] = useState(null);
+  const [renderMe, setrenderMe] = useState(false)
   const key = router?.query?.key;
-
 
   const districtList = [
     `Dhaka`,
@@ -141,7 +143,7 @@ const Checkout = () => {
       }
     };
     getCartItems();
-  }, [router]);
+  }, [router,renderMe]);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -160,44 +162,57 @@ const Checkout = () => {
   const confirmOrder = async () => {
     if (name && district && city && address) {
       let value1 = cartList.map((item) => {
-        return item?.cartId 
+        return item?.cartId;
       });
-  
+
       let data = {
         name: name,
         district: district,
         city: city,
-        address:address,
-        secondaryPhone:optionalPhone,
+        address: address,
+        secondaryPhone: optionalPhone,
         cartIds: value1,
         price: totalCartPrice,
-        note:orderNote
+        note: orderNote,
       };
 
-      let res = await postRequest(`order/place-order`,data);
-      if(res?.success){
-        closeModal()
-        setrefreshApi(!refreshApi)
+      let res = await postRequest(`order/place-order`, data);
+      if (res?.success) {
+        closeModal();
+        setrefreshApi(!refreshApi);
         let encodeName = btoa(res?.data?.userName);
-        setuserName(encodeName)
+        setuserName(encodeName);
         setCookie(null, "userName", encodeName, {
           maxAge: 30 * 24 * 60 * 60,
           path: "/",
         });
-        const queryString = res?.data?.orderId.join('DABCZXY');
-        router.push(`payment/${queryString}`)
-      
+        const queryString = res?.data?.orderId.join("DABCZXY");
+        router.push(`payment/${queryString}`);
       }
-
-
-    }else{
+    } else {
       toast.warning("All field required");
     }
-
-    
-
   };
 
+  const usePromo = async () => {
+    if (couponCode !== "") {
+      try {
+        let res = await request(`promo/detail?promoCode=${couponCode}`);
+        if (res?.success) {
+          if (totalCartPrice >= res?.data?.minAmount) {
+            settotalCartPrice(totalCartPrice - res?.data?.discount);
+            setcouponData(res?.data);
+          } else {
+            toast.warning(`Minimum Amount ${res?.data?.minAmount}`);
+          }
+        } else {
+          toast.warning("Promo Not Found");
+          setcouponData(null)
+          setrenderMe(!renderMe)
+        }
+      } catch (error) {}
+    }
+  };
 
   return (
     <div className="flex min-h-screen flex-col mt-[65px] xs:mt-[108px] xms:mt-[108px] xls:mt-[108px] sm:mt-[108px]">
@@ -413,28 +428,56 @@ const Checkout = () => {
                     ৳ {totalCartPrice}
                   </div>
                 </div>
-                {offerCampaign?.isValid &&
-                <div className="flex items-center justify-between py-2">
-                  <div>{offerCampaign?.name} {offerCampaign?.percent}%</div>
-                  <div className="font-semibold font-serifs ">
-                    -৳ {Math.floor(totalCartPrice*offerCampaign?.percent/100)}
+                {offerCampaign?.isValid && (
+                  <div className="flex items-center justify-between py-2">
+                    <div>
+                      {offerCampaign?.name} {offerCampaign?.percent}%
+                    </div>
+                    <div className="font-semibold font-serifs ">
+                      -৳{" "}
+                      {Math.floor(
+                        (totalCartPrice * offerCampaign?.percent) / 100
+                      )}
+                    </div>
                   </div>
-                </div>
-                 }
-                {offerCampaign?.isValid &&
-                <div className="flex items-center justify-between py-2">
-                  <div>Fianl Price</div>
-                  <div className="font-semibold font-serifs ">
-                    ৳ {Math.floor(totalCartPrice- (totalCartPrice*offerCampaign?.percent/100))}
+                )}
+                {couponData !== null && (
+                  <div className="flex items-center justify-between py-2">
+                    <div>
+                      Promo Discount
+                    </div>
+                    <div className="font-semibold font-serifs ">
+                      -৳{" "}
+                      {couponData?.discount}
+                    </div>
                   </div>
-                </div>
-                 }
+                )}
+                {/* {!offerCampaign?.isValid && ( */}
+                  <div className="flex items-center justify-between py-2">
+                    <div>Fianl Price</div>
+                    <div className="font-semibold font-serifs ">
+                      ৳{" "}
+                      {offerCampaign?.isValid?   Math.floor(
+                        totalCartPrice -
+                          (totalCartPrice * offerCampaign?.percent) / 100
+                      ) : totalCartPrice}
+                    </div>
+                  </div>
+                {/* )} */}
               </div>
               <div className="px-3 py-2">
                 <div className="bg-tahiti-300 flex items-center justify-center py-3 rounded-md">
                   <div className="">
                     <div className="text-[18px] font-semibold text-center font-serifs">
-                      70% Payment -৳ {offerCampaign?.isValid ? Math.ceil(totalCartPrice*70/100 - (totalCartPrice*70/100)*offerCampaign?.percent/100) : Math.ceil((totalCartPrice * 70) / 100)}
+                      70% Payment -৳{" "}
+                      {offerCampaign?.isValid
+                        ? Math.floor(
+                            (totalCartPrice * 70) / 100 -
+                              (((totalCartPrice * 70) / 100) *
+                                offerCampaign?.percent) /
+                                100
+                          )
+                        : Math.floor((totalCartPrice * 70) / 100)}
                     </div>
                     <div
                       onClick={() => setmodalOpen(true)}
@@ -442,9 +485,18 @@ const Checkout = () => {
                     >
                       <div>
                         Pay on Delivery ৳{" "}
-                        {offerCampaign?.isValid ? Math.floor((totalCartPrice -(totalCartPrice*70/100)) - (totalCartPrice -(totalCartPrice*70/100))*offerCampaign?.percent/100 ): Math.ceil(
-                          totalCartPrice - (totalCartPrice * 70) / 100
-                        )}{" "}
+                        {offerCampaign?.isValid
+                          ? Math.floor(
+                              totalCartPrice -
+                                (totalCartPrice * 70) / 100 -
+                                ((totalCartPrice -
+                                  (totalCartPrice * 70) / 100) *
+                                  offerCampaign?.percent) /
+                                  100
+                            )
+                          : Math.ceil(
+                              totalCartPrice - (totalCartPrice * 70) / 100
+                            )}{" "}
                         + Shipping & Courier Charges
                       </div>
                       <div>
@@ -457,12 +509,13 @@ const Checkout = () => {
                           type="text"
                           className="rounded-l-md h-10 w-full  px-3 bg-gray-200 outline-none placeholder:text-sm placeholder:text-gray-400"
                           placeholder="If you have a Promo Code, Enter Here..."
-                          //   onChange={(event) => handleChange(event.target.value)}
+                          value={couponCode}
+                          onChange={(event) =>
+                            setCouponCode(event.target.value)
+                          }
                         />
                       </div>
-                      <div
-                      //    onClick={() => handlePromo()}
-                      >
+                      <div onClick={() => usePromo()}>
                         <button className="bg-tahiti-500 px-4 h-10 text-white font-semibold tracking-wide text-sm rounded-tr-md rounded-br-md">
                           Apply
                         </button>
@@ -507,7 +560,10 @@ const Checkout = () => {
                   >
                     Deney
                   </div>
-                  <div onClick={() => confirmOrder()}className="bg-tahiti-500 text-tahiti-50 text-[14px] py-2 px-4 rounded-md flex items-center justify-center w-full cursor-pointer">
+                  <div
+                    onClick={() => confirmOrder()}
+                    className="bg-tahiti-500 text-tahiti-50 text-[14px] py-2 px-4 rounded-md flex items-center justify-center w-full cursor-pointer"
+                  >
                     Accept & Place Order
                   </div>
                 </div>

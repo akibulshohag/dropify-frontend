@@ -67,7 +67,7 @@ const ProfileMenuPhone = () => {
           </div>
           <div className="text-[15px] ml-3">Orders</div>
         </div>
-        <div
+        {/* <div
           onClick={() => changeRoute("payments")}
           className={`${
             accountMenu == "payments"
@@ -79,8 +79,8 @@ const ProfileMenuPhone = () => {
             <BiDollar />
           </div>
           <div className="text-[15px] ml-3">Payments</div>
-        </div>
-        <div
+        </div> */}
+        {/* <div
           onClick={() => changeRoute("delivery")}
           className={`${
             accountMenu == "delivery"
@@ -92,7 +92,7 @@ const ProfileMenuPhone = () => {
             <TbTruckDelivery />
           </div>
           <div className="text-[15px] ml-3">Delivery</div>
-        </div>
+        </div> */}
         <div
           onClick={() => changeRoute("settings")}
           className={`${

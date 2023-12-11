@@ -90,12 +90,12 @@ const Slider = ({banner,slider}) => {
               </div>
             ))}
             <div className="hidden group-hover:block">
-              <div className="button-prev-slide w-[30px] h-full bg-[#282e326f] grid justify-center place-items-center absolute top-0 z-50 left-[0px] cursor-pointer">
+              <div className="button-prev-slide w-[30px] h-full bg-[#282e326f] grid justify-center place-items-center absolute top-0 z-10 left-[0px] cursor-pointer">
                 <BiChevronLeft size={30} className="text-[#8EBB4F]" />
               </div>
             </div>
             <div className="hidden group-hover:block">
-              <div className="button-next-slide w-[30px] h-full bg-[#282e326f]  grid justify-center place-items-center absolute top-0  z-50 right-[0px] cursor-pointer">
+              <div className="button-next-slide w-[30px] h-full bg-[#282e326f]  grid justify-center place-items-center absolute top-0  z-10 right-[0px] cursor-pointer">
                 <BiChevronRight size={30} className="text-[#8EBB4F]" />
               </div>
             </div>

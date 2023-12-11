@@ -15,6 +15,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [cartlength, setcartlength] = useState(0);
   const [wishLength, setwishLength] = useState(0);
+  const [searchKey, setsearchKey] = useState("")
 
   const handleCameraClick = async () => {
     const imageInput = document.createElement("input");
@@ -83,6 +84,16 @@ const Navbar = () => {
     }
   }
 
+  const gotoSearch=()=>{
+    if (searchKey !== ""){
+
+      let encode = btoa(searchKey)
+
+      router.push(`/search?key=${encode}`);
+      setsearchKey("")
+    }
+  }
+
 
   return (
     <div
@@ -123,10 +134,12 @@ const Navbar = () => {
               placeholder="Search by keyword link"
               className="h-10 w-full text-black px-3 bg-white outline-none placeholder:text-black placeholder:text-[14px] xs:h-9"
               type="text"
+              value={searchKey}
+              onChange={(e)=>setsearchKey(e.target.value)}
             />
           </div>
 
-          <div className="flex items-center h-10 bg-black rounded-r-3xl py-2 px-6 cursor-pointer z-30 xs:h-9">
+          <div onClick={()=>gotoSearch()} className="flex items-center h-10 bg-black rounded-r-3xl py-2 px-6 cursor-pointer z-30 xs:h-9">
             <BsSearch className="text-tahiti-700" />
           </div>
         </div>

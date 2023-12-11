@@ -328,6 +328,87 @@ const SingleProduct = () => {
 
     console.log(data);
   };
+  const buyNow = async () => {
+    if (productDetails?.QuantityRanges.length > 0) {
+      if (productDetails?.QuantityRanges[0]?.MinQuantity - 1 >= totalQty) {
+        setIsOpen(true);
+        setModalTab(0);
+        return;
+      }
+    } else if (2 >= totalQty) {
+      setIsOpen(true);
+      setModalTab(0);
+      return;
+    }
+
+    if (1000 >= totalPrice) {
+      setIsOpen(true);
+      setModalTab(1);
+      return;
+    }
+
+    if (!token) {
+      toast.warning("Login First");
+      return;
+    }
+
+    let pro;
+
+    if (productDetails?.Variation2.length > 0) {
+    } else if (productDetails?.Variation1.length > 0) {
+      pro = selectedProduct?.map((item) => {
+        return {
+          key1: item?.PropertyName,
+          value1: item?.Value,
+          key2: "",
+          value2: "",
+          unitPrice:
+            qtyRangePrice == null
+              ? Math.ceil(item?.Price + (item?.Price * priceInc) / 100)
+              : Math.ceil(qtyRangePrice),
+          qty: item?.qty,
+          MiniImageUrl: item?.MiniImageUrl,
+        };
+      });
+    } else {
+      pro = [
+        {
+          key1: "",
+          value1: "",
+          key2: "",
+          value2: "",
+          unitPrice:
+            qtyRangePrice == null
+              ? Math.ceil(nonVariation?.Price)
+              : Math.ceil(qtyRangePrice),
+          qty: nonVariation?.qty,
+          MiniImageUrl: "",
+        },
+      ];
+    }
+
+    let data = {
+      productId: productDetails?.productId,
+      QuantityRanges:
+        productDetails?.QuantityRanges.length > 0
+          ? productDetails?.QuantityRanges
+          : [],
+      selected: pro,
+      totalQty: totalQty,
+      totalPrice: totalPrice,
+    };
+
+    let res = await postRequest("order/buyNow", data);
+  
+    if (res?.success) {
+      router.push(`/checkout?key=${res?.data?.key}`)
+      setrefreshApi(!refreshApi);
+    } else {
+      toast.error(res.message);
+    }
+
+    console.log(data);
+  };
 
   const addWish = async () => {
     if (!token) {
@@ -725,7 +806,7 @@ const SingleProduct = () => {
                         Add To Cart
                       </div>
                     </div>
-                    <div className="bg-tahiti-500 flex items-center justify-center col-span-3 py-2 rounded-md cursor-pointer">
+                    <div onClick={() => buyNow()}className="bg-tahiti-500 flex items-center justify-center col-span-3 py-2 rounded-md cursor-pointer">
                       <BsBagCheck className="text-tahiti-50 text-[20px] mr-4" />
                       <div className="text-white font-bold text-[18px]">
                         Buy Now
@@ -986,22 +1067,6 @@ const SingleProduct = () => {
             </div>
           )}
 
-          {/* <div className="flex items-center justify-between mt-2">
-            <div className="bg-red-700 text-tahiti-50 text-[14px] py-2 px-4 rounded-md">
-              Delete
-            </div>
-            <div className="flex items-center gap-3">
-              <div
-                onClick={() => setIsOpen(false)}
-                className="bg-[#AAAAAA] text-tahiti-50 text-[14px] py-2 px-4 rounded-md cursor-pointer"
-              >
-                Cancel
-              </div>
-              <div className="bg-tahiti-500 text-tahiti-50 text-[14px] py-2 px-4 rounded-md">
-                Update
-              </div>
-            </div>
-          </div> */}
         </div>
       </Modal>
     </div>
