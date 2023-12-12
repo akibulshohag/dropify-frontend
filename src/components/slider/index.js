@@ -1,12 +1,10 @@
-import React from "react";
+import { hostname } from "@/lib/config";
 import Image from "next/image";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { BiChevronLeft, BiChevronRight, BiInfoCircle } from "react-icons/bi";
-import { hostname } from "@/lib/config";
 
 const Slider = ({banner,slider}) => {
   let slider1 = [{}, {}];
@@ -75,21 +73,21 @@ const Slider = ({banner,slider}) => {
             }}
           >
             {slider?.map((item, index) => (
-              <div key={index} className="cursor-pointer">
-                <SwiperSlide>
-                  <div className="relative w-full h-[450px] xs:h-[150px] xms:h-[170px] xls:h-[200px] sm:h-[280px] md:h-[220px] lg:h-[270px] z-0">
+              // <div  className="cursor-pointer">
+                <SwiperSlide key={`slider-${index}`}>
+                  <div className="relative w-full h-[450px] xs:h-[150px] xms:h-[170px] xls:h-[200px] sm:h-[280px] md:h-[220px] lg:h-[270px] z-0 cursor-pointer">
                     <Image
                     className="rounded-sm"
                       src={`${hostname}/${item?.image}`}
                       fill
                       alt="banner"
-                      loading="lazy"
+                      priority
                     />
                   </div>
                 </SwiperSlide>
-              </div>
+              // </div>
             ))}
-            <div className="hidden group-hover:block">
+            {/* <div className="hidden group-hover:block">
               <div className="button-prev-slide w-[30px] h-full bg-[#282e326f] grid justify-center place-items-center absolute top-0 z-10 left-[0px] cursor-pointer">
                 <BiChevronLeft size={30} className="text-[#8EBB4F]" />
               </div>
@@ -98,7 +96,7 @@ const Slider = ({banner,slider}) => {
               <div className="button-next-slide w-[30px] h-full bg-[#282e326f]  grid justify-center place-items-center absolute top-0  z-10 right-[0px] cursor-pointer">
                 <BiChevronRight size={30} className="text-[#8EBB4F]" />
               </div>
-            </div>
+            </div> */}
           </Swiper>
         </div>
         <div className="col-span-1 xs:hidden xms:hidden xls:hidden sm:hidden ">
@@ -162,9 +160,9 @@ const Slider = ({banner,slider}) => {
             // }}
           >
             {banner?.map((item, index) => (
-              <div className="cursor-pointer" key={index}>
-                <SwiperSlide>
-                  <div className="relative w-full h-[450px] col-span-1 z-0 md:h-[220px] lg:h-[270px]">
+              // <div className="cursor-pointer" >
+                <SwiperSlide key={`banner-${index}`}>
+                  <div className="relative w-full h-[450px] col-span-1 z-0 md:h-[220px] lg:h-[270px] cursor-pointer">
                     <Image
                     className="rounded-sm"
                       src={`${hostname}/${item?.image}`}
@@ -174,7 +172,7 @@ const Slider = ({banner,slider}) => {
                     />
                   </div>
                 </SwiperSlide>
-              </div>
+              // </div>
             ))}
           </Swiper>
         </div>

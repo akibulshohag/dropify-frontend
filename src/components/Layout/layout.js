@@ -48,6 +48,7 @@ const Layout = ({ children }) => {
 
 
   useEffect(() => {
+    console.log('.call');
     const priceInc=async()=>{
        let res =await request('platform/get-price-increase')
        if(res?.success){
@@ -89,7 +90,7 @@ const Layout = ({ children }) => {
         onRequestClose={closeModal}
         style={customStyles}
         contentLabel="Example Modal"
-        // ariaHideApp={false}
+        ariaHideApp={false}
       >
         <div className=" w-[500px] xs:max-w-[300px] xs:max-h-[400px] xms:max-w-[310px] xms:max-h-[400px] xls:max-w-[370px] xls:max-h-[400px] sm:max-h-[500px]">
          

@@ -31,7 +31,7 @@ const ShopWiseProduct = () => {
       if (res?.success) {
         setproductList(res?.data);
         setloading(false);
-        settotalCount(Math.ceil(res?.totalFound / itemsPerPage));
+        settotalCount(Math.ceil(res?.totalProduct / itemsPerPage));
       } else {
         setproductList([]);
         setloading(false);

@@ -19,10 +19,10 @@ const LandingCategory = () => {
       <div className="bg-tahiti-50 mt-2 h-[130px] flex group rounded-sm">
         <Swiper
           spaceBetween={5}
-          autoplay={{
-            delay: 4000,
-            disableOnInteraction: false,
-          }}
+          // autoplay={{
+          //   delay: 4000,
+          //   disableOnInteraction: false,
+          // }}
           pagination={{
             clickable: true,
             dynamicBullets: false,
@@ -76,8 +76,7 @@ const LandingCategory = () => {
           }}
         >
           {homeCategory?.map((item, index) => (
-            <div className="" key={index}>
-              <SwiperSlide>
+              <SwiperSlide key={item?.categoryName}>
                 <div onClick={()=>router.push(`/shop/${item?.categorySlug}`)} className=" border-r border-r-tahiti-600 grid items-center justify-center h-full px-1 cursor-pointer">
                   <div className="flex items-center justify-center">
                     <Image
@@ -92,7 +91,6 @@ const LandingCategory = () => {
                   </div>
                 </div>
               </SwiperSlide>
-            </div>
           ))}
           <div className="hidden group-hover:block">
             <div className="button-prev-slide w-[30px] h-[30px] bg-tahiti-500 rounded-full grid justify-center place-items-center absolute top-[40%] z-50 left-[2px] cursor-pointer">
