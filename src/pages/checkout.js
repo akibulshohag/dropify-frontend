@@ -194,7 +194,7 @@ const Checkout = () => {
     }
   };
 
-  const usePromo = async () => {
+  const getPromo = async () => {
     if (couponCode !== "") {
       try {
         let res = await request(`promo/detail?promoCode=${couponCode}`);
