@@ -515,7 +515,7 @@ const Checkout = () => {
                           }
                         />
                       </div>
-                      <div onClick={() => usePromo()}>
+                      <div onClick={() => getPromo()}>
                         <button className="bg-tahiti-500 px-4 h-10 text-white font-semibold tracking-wide text-sm rounded-tr-md rounded-br-md">
                           Apply
                         </button>
