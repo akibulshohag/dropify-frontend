@@ -1,8 +1,34 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import Image from "next/image";
 import { Chart } from "react-google-charts";
+import request from "@/lib/request";
 
 const Account = () => {
+
+  const [dashboardList, setdashboardList] = useState(null)
+  const [charData, setcharData] = useState([])
+
+
+  useEffect(() => {
+    const gerData= async()=>{
+      let res =await request('customer/dashboard')
+      if(res?.success){
+        setdashboardList(res?.data)
+        setcharData([
+          ["Task", "Hours per Day"],
+          ["pending", res?.data?.pending],
+          ["processing", res?.data?.processing],
+          ["completed", res?.data?.delivered],
+          ["cancelled", res?.data?.cancelled],
+        ])
+      }
+    }
+
+    gerData()
+  }, [])
+  
+
+
   const data = [
     ["Task", "Hours per Day"],
     ["pending", 4],
@@ -36,7 +62,7 @@ const Account = () => {
                     />
                   </div>
                   <div className="pt-2">
-                    <div className="text-[20px] font-bold">0</div>
+                    <div className="text-[20px] font-bold">{dashboardList?.pending ?dashboardList?.pending:0 }</div>
                     <div className="text-[16px] font-medium">Pending</div>
                   </div>
                 </div>
@@ -50,7 +76,7 @@ const Account = () => {
                     />
                   </div>
                   <div className="pt-2">
-                    <div className="text-[20px] font-bold">0</div>
+                    <div className="text-[20px] font-bold">{dashboardList?.processing ?dashboardList?.processing:0 }</div>
                     <div className="text-[16px] font-medium">Processing</div>
                   </div>
                 </div>
@@ -64,7 +90,7 @@ const Account = () => {
                     />
                   </div>
                   <div className="pt-2">
-                    <div className="text-[20px] font-bold">0</div>
+                    <div className="text-[20px] font-bold">{dashboardList?.delivered ?dashboardList?.delivered:0 }</div>
                     <div className="text-[16px] font-medium">Completed</div>
                   </div>
                 </div>
@@ -78,7 +104,7 @@ const Account = () => {
                     />
                   </div>
                   <div className="pt-2">
-                    <div className="text-[20px] font-bold">0</div>
+                    <div className="text-[20px] font-bold">{dashboardList?.cancelled ?dashboardList?.cancelled:0 }</div>
                     <div className="text-[16px] font-medium">Cancelled</div>
                   </div>
                 </div>
@@ -90,7 +116,7 @@ const Account = () => {
               <Chart
                 chartType="PieChart"
                 options={options}
-                data={data}
+                data={charData}
                 width={"300px"}
                 height={"300px"}
               />
