@@ -1,8 +1,12 @@
 import Image from "next/image";
 import { useState,useEffect } from "react";
+import { useRouter } from "next/router";
+import { useStatus } from "@/context/contextStatus";
 
 const Footer = () => {
 
+  const router = useRouter()
+  const {token} = useStatus()
   const [year,setYear] = useState('')
     useEffect(() => {
         let year = new Date();
@@ -79,21 +83,21 @@ const Footer = () => {
           </div>
           <div className="col-span-3">
             <div className="text-[18px] font-bold">CUSTOMER</div>
-            <div className="text-[15px]">Account</div>
-            <div className="text-[15px]">Cart</div>
-            <div className="text-[15px]">Wishlist</div>
-            <div className="text-[15px]">Shipping Charge</div>
+            <div onClick={()=>token ? router.push('/account') :router.push('/login')} className="text-[15px] cursor-pointer">Account</div>
+            <div onClick={()=>token ? router.push('/cart') :router.push('/login')} className="text-[15px] cursor-pointer">Cart</div>
+            <div onClick={()=>token ? router.push('/wishlist') :router.push('/login')} className="text-[15px] cursor-pointer">Wishlist</div>
+            <div onClick={()=>router.push('/custom-and-shipping-charge')} className="text-[15px] cursor-pointer">Shipping Charge</div>
             <div className="text-[15px]">Retail Purchase</div>
-            <div className="text-[15px]">FAQ</div>
+            <div onClick={()=>router.push('/faq')} className="text-[15px] cursor-pointer">FAQ</div>
           </div>
           <div className="col-span-3">
             <div className="text-[18px] font-bold">INFORMATION</div>
-            <div className="text-[15px]">About us</div>
-            <div className="text-[15px]">Contact Us</div>
-            <div className="text-[15px]">Privacy Policy</div>
-            <div className="text-[15px]">Returns & Refund</div>
-            <div className="text-[15px]">Terms & Conditions</div>
-            <div className="text-[15px]">Secured Payment</div>
+            <div onClick={()=>router.push('/about')} className="text-[15px] cursor-pointer">About us</div>
+            <div  className="text-[15px] cursor-pointer">Contact Us</div>
+            <div onClick={()=>router.push('/privacy-policy')} className="text-[15px] cursor-pointer">Privacy Policy</div>
+            <div onClick={()=>router.push('/return-and-refund-policy')} className="text-[15px] cursor-pointer">Returns & Refund</div>
+            <div onClick={()=>router.push('/terms-conditions')} className="text-[15px] cursor-pointer">Terms & Conditions</div>
+            <div onClick={()=>router.push('/secured-payment')} className="text-[15px] cursor-pointer">Secured Payment</div>
           </div>
           <div className="col-span-3">
             <div className="text-[18px] font-bold">MOBILE APPS</div>
