@@ -42,13 +42,15 @@ const Layout = ({ children }) => {
   const shouldHideSideCategory = pagesWithoutSideCategory.includes(
     router.pathname
   );
+
+  const showPopUpImage = ['/'].includes(router.pathname);
+
   function closeModal() {
     setIsOpen(false);
   }
 
 
   useEffect(() => {
-    console.log('.call');
     const priceInc=async()=>{
        let res =await request('platform/get-price-increase')
        if(res?.success){
@@ -61,13 +63,13 @@ const Layout = ({ children }) => {
        let res2 = await request('content/get-popup?device=web')
        if(res2?.success){
          setpopUpImage(res2?.data?.image)
-        if(res2?.data?.isActive){
+        if(res2?.data?.isActive && showPopUpImage){
           setIsOpen(true)
         }
        }
     }
     priceInc()
-  }, [])
+  }, [1])
   
 
   return (
