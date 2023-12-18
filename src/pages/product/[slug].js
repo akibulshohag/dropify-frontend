@@ -672,9 +672,9 @@ const SingleProduct = () => {
                                         -
                                       </button>
                                       <input
-                                        type="text"
+                                        type="number"
                                         pattern="\d*"
-                                        inputMode="numeric"
+                                        inputMode="number"
                                         value={items.qty}
                                         onChange={(e) =>
                                           inputQty(e.target.value, index, items)

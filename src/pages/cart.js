@@ -654,6 +654,7 @@ const Cart = () => {
                     <HiMinus className="text-[20px]" />
                   </button>
                   <input
+                    type="number"
                     value={itemsObj?.qty}
                     onChange={(e) => inputQty(e.target.value)}
                     className="outline-none w-[70px] h-[30px] text-center border-t-[2px] border-b-[2px] border-tahiti-500 text-[14px]"

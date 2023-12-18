@@ -48,3 +48,8 @@ body {
 ul{
    list-style-type: disc;
 }
+
+input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+         -webkit-appearance: none;
+      }
