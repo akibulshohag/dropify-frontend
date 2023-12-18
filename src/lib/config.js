@@ -1,9 +1,9 @@
 // export const hostname = `https://mail-service.b2gsoft.xyz`;
 // export const imagePath = 'https://api.courier.b2gsoft.xyz'
 
-export const hostname = `http://192.168.0.242:4311`;
+// export const hostname = `http://192.168.0.242:4311`;
 
-// export const hostname = `http://194.233.90.154:4311`;
+export const hostname = `http://194.233.90.154:4311`;
 
 // const hostname =
 //   process.env.NODE_ENV === "development"
