@@ -50,7 +50,7 @@ const Checkout = () => {
   const [deleiveryMethod, setdeleiveryMethod] = useState("");
   const [couponCode, setCouponCode] = useState("");
   const [couponData, setcouponData] = useState(null);
-  const [renderMe, setrenderMe] = useState(false)
+  const [renderMe, setrenderMe] = useState(false);
   const key = router?.query?.key;
 
   const districtList = [
@@ -143,7 +143,7 @@ const Checkout = () => {
       }
     };
     getCartItems();
-  }, [router,renderMe]);
+  }, [router, renderMe]);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -172,9 +172,23 @@ const Checkout = () => {
         address: address,
         secondaryPhone: optionalPhone,
         cartIds: value1,
-        price: totalCartPrice,
+        // price: totalCartPrice,
         note: orderNote,
+        priceWithoutDiscount: cartList?.reduce((a, b) => a + b?.totalPrice, 0),
+        priceWithDiscount: offerCampaign?.isValid
+        ? Math.floor(
+            totalCartPrice -
+              (totalCartPrice * offerCampaign?.percent) / 100
+          )
+        : totalCartPrice,
+        discount: {
+          promoName:couponData !==null ?  couponData?.name :"",
+          promoDiscount:couponData !==null?  couponData?.discount :0,
+          campaignName:offerCampaign?.isValid?  offerCampaign?.name : "",
+          campaignDiscount:offerCampaign?.isValid ? offerCampaign?.discount :0,
+        },
       };
+
 
       let res = await postRequest(`order/place-order`, data);
       if (res?.success) {
@@ -207,8 +221,8 @@ const Checkout = () => {
           }
         } else {
           toast.warning("Promo Not Found");
-          setcouponData(null)
-          setrenderMe(!renderMe)
+          setcouponData(null);
+          setrenderMe(!renderMe);
         }
       } catch (error) {}
     }
@@ -425,7 +439,7 @@ const Checkout = () => {
                 <div className="flex items-center justify-between py-2">
                   <div>Product Price</div>
                   <div className="font-semibold font-serifs">
-                    ৳ {totalCartPrice}
+                    ৳ {cartList?.reduce((a, b) => a + b?.totalPrice, 0)}
                   </div>
                 </div>
                 {offerCampaign?.isValid && (
@@ -443,26 +457,25 @@ const Checkout = () => {
                 )}
                 {couponData !== null && (
                   <div className="flex items-center justify-between py-2">
-                    <div>
-                      Promo Discount
-                    </div>
+                    <div>Promo Discount</div>
                     <div className="font-semibold font-serifs ">
-                      -৳{" "}
-                      {couponData?.discount}
+                      -৳ {couponData?.discount}
                     </div>
                   </div>
                 )}
                 {/* {!offerCampaign?.isValid && ( */}
-                  <div className="flex items-center justify-between py-2">
-                    <div>Fianl Price</div>
-                    <div className="font-semibold font-serifs ">
-                      ৳{" "}
-                      {offerCampaign?.isValid?   Math.floor(
-                        totalCartPrice -
-                          (totalCartPrice * offerCampaign?.percent) / 100
-                      ) : totalCartPrice}
-                    </div>
+                <div className="flex items-center justify-between py-2">
+                  <div>Fianl Price</div>
+                  <div className="font-semibold font-serifs ">
+                    ৳{" "}
+                    {offerCampaign?.isValid
+                      ? Math.floor(
+                          totalCartPrice -
+                            (totalCartPrice * offerCampaign?.percent) / 100
+                        )
+                      : totalCartPrice}
                   </div>
+                </div>
                 {/* )} */}
               </div>
               <div className="px-3 py-2">

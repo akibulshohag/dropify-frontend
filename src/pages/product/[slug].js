@@ -588,7 +588,7 @@ const SingleProduct = () => {
                               <tr>
                                 <th
                                   scope="col"
-                                  className="px-6 py-3 min-w-[200px]"
+                                  className="px-6 py-3 min-w-[200px] md:min-w-[0px]"
                                 >
                                   {tableVariation[0]?.PropertyName}
                                 </th>
@@ -874,7 +874,7 @@ const SingleProduct = () => {
                   From The Same Seller
                 </div>
                 <div className="py-4">
-                  <div className="grid grid-cols-5 gap-3 px-4">
+                  <div className="grid grid-cols-5 gap-3 px-4 md:grid-cols-3">
                     <ProductCard productList={productDetails?.VendorItems} />
                   </div>
                 </div>

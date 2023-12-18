@@ -44,7 +44,7 @@ const ImageGallery = ({
         </div>
         :null} */}
 
-          <div className="relative w-full h-[500px]">
+          <div className="relative w-full h-[500px] md:h-[300px]">
             <Image src={`${selectedImage}`} fill alt="mainImage" />
           </div>
         </div>
@@ -60,12 +60,12 @@ const ImageGallery = ({
         </div>
       )}
       <div className="py-3 pr-2">
-        <div className="grid grid-cols-5 gap-2">
+        <div className="grid grid-cols-5 gap-2 md:grid-cols-3">
           {data?.Videos?.Url ? (
             <div className="bg-gray-300 p-2 flex items-center justify-center  border border-tahiti-800 ">
               <div
                 onClick={() => selectVideo(data?.Videos?.Url)}
-                className="w-full h-[50px] relative flex items-center justify-center cursor-pointer "
+                className="w-full h-[50px]  relative flex items-center justify-center cursor-pointer "
               >
                
                 <Image
