@@ -247,6 +247,12 @@ const SingleProduct = () => {
   };
 
   const addToCart = async () => {
+
+    if (!token) {
+      toast.warning("Login First");
+      return;
+    }
+
     if (productDetails?.QuantityRanges.length > 0) {
       if (productDetails?.QuantityRanges[0]?.MinQuantity - 1 >= totalQty) {
         setIsOpen(true);
@@ -265,10 +271,7 @@ const SingleProduct = () => {
       return;
     }
 
-    if (!token) {
-      toast.warning("Login First");
-      return;
-    }
+   
 
     let pro;
 
@@ -329,6 +332,12 @@ const SingleProduct = () => {
     console.log(data);
   };
   const buyNow = async () => {
+
+    if (!token) {
+      toast.warning("Login First");
+      return;
+    }
+
     if (productDetails?.QuantityRanges.length > 0) {
       if (productDetails?.QuantityRanges[0]?.MinQuantity - 1 >= totalQty) {
         setIsOpen(true);
@@ -347,10 +356,7 @@ const SingleProduct = () => {
       return;
     }
 
-    if (!token) {
-      toast.warning("Login First");
-      return;
-    }
+    
 
     let pro;
 
