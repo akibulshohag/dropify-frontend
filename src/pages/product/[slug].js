@@ -449,17 +449,17 @@ const SingleProduct = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col mt-[65px] xs:mt-[95px]">
-      <div className="p-2">
-        <div className="grid grid-cols-4 gap-2">
+    <div className="flex min-h-screen flex-col mt-[65px] xs:mt-[95px] xms:mt-[95px] xls:mt-[95px]">
+      <div className="p-2 xs:p-0 xms:p-0 xls:p-0">
+        <div className="grid grid-cols-4 gap-2 xs:grid-cols-1 xs:gap-0 xms:grid-cols-1 xms:gap-0 xls:grid-cols-1 xls:gap-0">
           <div className="col-span-3 ">
             <div className="bg-tahiti-50 rounded-sm">
               <div className=" py-4 pl-4 border-b">
-                <h1 className="text-[18px] font-bold">
+                <h1 className="text-[18px] font-bold xs:text-[14px] xms:text-[14px] xls:text-[14px]">
                   {productDetails?.Title}
                 </h1>
               </div>
-              <div className="grid grid-cols-5 gap-8 p-4">
+              <div className="grid grid-cols-5 gap-8 p-4 xs:grid-cols-1 xs:p-1 xs:gap-0 xms:grid-cols-1 xms:p-1 xms:gap-0 xls:grid-cols-1 xls:p-1 xls:gap-0">
                 <ImageGallery
                   data={productDetails}
                   setselectedImage={setselectedImage}
@@ -482,7 +482,7 @@ const SingleProduct = () => {
                         >
                           <div className="">
                             {offerCampaign?.isValid ? (
-                              <div className="text-[18px] font-semibold text-center font-serifs">
+                              <div className="text-[18px] font-semibold text-center font-serifs xs:text-[12px]">
                                 ৳
                                 {Math.ceil(
                                   item?.Price + (item?.Price * priceInc) / 100
@@ -494,7 +494,7 @@ const SingleProduct = () => {
                                     100}
                               </div>
                             ) : (
-                              <div className="text-[18px] font-semibold text-center font-serifs">
+                              <div className="text-[18px] font-semibold text-center font-serifs xs:text-[14px]">
                                 ৳
                                 {Math.ceil(
                                   item?.Price + (item?.Price * priceInc) / 100
@@ -502,14 +502,14 @@ const SingleProduct = () => {
                               </div>
                             )}
                             {offerCampaign?.isValid && (
-                              <div className="text-[14px] line-through text-center font-serifs">
+                              <div className="text-[14px] line-through text-center font-serifs xs:text-[12px]">
                                 ৳
                                 {Math.ceil(
                                   item?.Price + (item?.Price * priceInc) / 100
                                 )}
                               </div>
                             )}
-                            <div className="text-[16px] text-center">
+                            <div className="text-[16px] text-center xs:text-[12px]">
                               {item?.MinQuantity} or more
                             </div>
                           </div>
@@ -523,7 +523,7 @@ const SingleProduct = () => {
                         <div className="text-[18px] font-semibold">
                           {propertyName}: {values}
                         </div>
-                        <div className="flex items-center flex-wrap gap-2 pr-5 py-2">
+                        <div className="flex items-center flex-wrap gap-2 pr-5 py-2 xs:pr-0">
                           {productVariation?.map((item, index) => (
                             <>
                               {item?.MiniImageUrl ? (
@@ -538,7 +538,7 @@ const SingleProduct = () => {
                                     style.subImages
                                   }`}
                                 >
-                                  <div className="w-[55px] h-[55px] relative flex items-center justify-center cursor-pointer ">
+                                  <div className="w-[55px] h-[55px] relative flex items-center justify-center cursor-pointer xs:w-[50px] xs:h-[50px]">
                                     <Image
                                       className="object-fill rounded-md"
                                       src={item?.MiniImageUrl}
@@ -568,7 +568,7 @@ const SingleProduct = () => {
                                         item?.Vid == variationId
                                           ? "bg-tahiti-500 text-white"
                                           : "bg-[#F4F4F4] text-black"
-                                      } px-2 py-4 rounded-md `}
+                                      } px-2 py-4 rounded-md xs:py-2`}
                                     >
                                       {item?.Value}
                                     </div>
@@ -587,14 +587,14 @@ const SingleProduct = () => {
                         </div>
                       </div>
                       {/* <SizeChart tableVariation={tableVariation} /> */}
-                      <div className="relative overflow-x-auto border max-h-[250px] sm:rounded-lg left-side">
-                        <table className="w-full text-sm text-center text-gray-500 dark:text-gray-400 border">
+                      <div className=" border max-h-[250px] sm:rounded-lg left-side">
+                        <table className="w-full text-sm text-center text-gray-500 border">
                           {tableVariation?.length > 0 && (
-                            <thead className="text-xs text-gray-700 uppercase bg-[#eee9e9] dark:bg-gray-700 dark:text-gray-400">
+                            <thead className="text-xs text-gray-700 uppercase bg-[#eee9e9]">
                               <tr>
                                 <th
                                   scope="col"
-                                  className="px-6 py-3 min-w-[200px] md:min-w-[0px]"
+                                  className="px-6 py-3  md:min-w-[0px] xs:px-2 xs:max-w-[120px]"
                                 >
                                   {tableVariation[0]?.PropertyName}
                                 </th>
@@ -611,16 +611,16 @@ const SingleProduct = () => {
                             {tableVariation.map((items, index) => (
                               <tr
                                 key={index}
-                                className="bg-white border-b dark:bg-gray-900 dark:border-gray-700 cursor-pointer hover:bg-[#F0F0F0]"
+                                className="bg-white border-b cursor-pointer hover:bg-[#F0F0F0]"
                               >
                                 <th
                                   scope="row"
-                                  className="px-6 py-2 text-gray-900 font-semibold whitespace-nowrap dark:text-white"
+                                  className="px-6 py-2 text-gray-900 font-semibold whitespace-nowrap  xs:px-2 xs:max-w-[120px] xs:overflow-x-scroll"
                                 >
                                   {items?.Value}
                                 </th>
                                 {offerCampaign?.isValid ? (
-                                  <td className="px-6 py-2 border-l border-r text-tahiti-800 font-semibold">
+                                  <td className="px-6 py-2 border-l border-r text-tahiti-800 font-semibold xs:px-2">
                                     ৳{" "}
                                     {qtyRangePrice == null
                                       ? Math.ceil(
@@ -808,13 +808,13 @@ const SingleProduct = () => {
                       className="bg-tahiti-500 flex items-center justify-center col-span-3 py-2 rounded-md cursor-pointer"
                     >
                       <AiOutlineShoppingCart className="text-tahiti-50 text-[20px] mr-4" />
-                      <div className="text-white font-bold text-[18px]">
+                      <div className="text-white font-bold text-[18px] xs:text-[14px]">
                         Add To Cart
                       </div>
                     </div>
                     <div onClick={() => buyNow()}className="bg-tahiti-500 flex items-center justify-center col-span-3 py-2 rounded-md cursor-pointer">
                       <BsBagCheck className="text-tahiti-50 text-[20px] mr-4" />
-                      <div className="text-white font-bold text-[18px]">
+                      <div className="text-white font-bold text-[18px] xs:text-[14px]">
                         Buy Now
                       </div>
                     </div>
@@ -880,7 +880,7 @@ const SingleProduct = () => {
                   From The Same Seller
                 </div>
                 <div className="py-4">
-                  <div className="grid grid-cols-5 gap-3 px-4 md:grid-cols-3">
+                  <div className="grid grid-cols-5 gap-3 px-4 xs:grid-cols-2 xs:gap-2 xs:px-1 xms:grid-cols-2 xms:gap-2 xms:px-1 xls:grid-cols-2 xls:gap-2 xls:px-1 md:grid-cols-3">
                     <ProductCard productList={productDetails?.VendorItems} />
                   </div>
                 </div>
@@ -895,9 +895,9 @@ const SingleProduct = () => {
                       tabChange == 1
                         ? " bg-tahiti-500 text-white"
                         : " text-black"
-                    } border-tahiti-500 rounded-md text-[18px] font-semibold`}
+                    } border-tahiti-500 rounded-md text-[18px] font-semibold xs:text-[14px] xms:text-[14px] xls:text-[14px]`}
                   >
-                    Specification
+                    Description
                   </button>
                 </div>
                 <div>
@@ -907,12 +907,12 @@ const SingleProduct = () => {
                       tabChange == 2
                         ? " bg-tahiti-500 text-white"
                         : "text-black"
-                    } border-tahiti-500 rounded-md text-[18px] font-semibold `}
+                    } border-tahiti-500 rounded-md text-[18px] font-semibold xs:text-[14px] xms:text-[14px] xls:text-[14px]`}
                   >
-                    Description
+                    Specification
                   </button>
                 </div>
-                <div>
+                {/* <div>
                   <button
                     className={`py-3 px-4 border ${
                       tabChange == 3
@@ -922,27 +922,28 @@ const SingleProduct = () => {
                   >
                     Seller Info
                   </button>
-                </div>
+                </div> */}
               </div>
-              <div className="px-10 py-2">
-                {tabChange == 1 ? (
+              <div className="px-10 py-2 xs:px-2 xms:px-2 xls:px-2">
+                {tabChange == 2 ? (
                   <div className="border ">
                     {productDetails?.specs?.map((item, index) => (
-                      <div key={index} className="grid grid-cols-2 rounded-sm ">
-                        <div className="flex items-center justify-center py-2 bg-[#E9EFF0] font-semibold border-r">
+                      <div key={index} className="grid grid-cols-2 rounded-sm xs:grid-cols-1 xms:grid-cols-1 xls:grid-cols-1 ">
+                        <div className="col-span-1 flex items-center justify-center py-2 bg-[#E9EFF0] font-semibold border-r px-2">
                           {Object.keys(item)}
                         </div>
                         <div
-                          className={`flex items-center justify-center py-2 px-1 text-center hover:bg-[#EEEEEE] border-b ${
+                          className={`col-span-1 flex items-center justify-center py-2 px-2 text-center hover:bg-[#EEEEEE] border-b overflow-x-auto  ${
                             index % 2 == 0 ? "bg-[#f8f8f8]" : "bg-tahiti-50"
                           }`}
                         >
-                          {Object.values(item).toLocaleString()}
+                          
+                          {Object.values(item).toString()}
                         </div>
                       </div>
                     ))}
                   </div>
-                ) : tabChange == 2 ? (
+                ) : tabChange == 1 ? (
                   <div className="">
                     <div
                       dangerouslySetInnerHTML={{
@@ -954,7 +955,7 @@ const SingleProduct = () => {
               </div>
             </div>
           </div>
-          <div className="">
+          <div className="xs:mt-2">
             <div className="bg-tahiti-50 py-3 rounded-sm">
               <div className="flex items-center justify-center py-1">
                 <FaHome className="text-[40px] text-tahiti-500 flex items-center justify-center" />

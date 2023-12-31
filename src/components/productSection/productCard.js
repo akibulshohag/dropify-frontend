@@ -19,7 +19,7 @@ const ProductCard = ({ productList }) => {
             <div className="">
               <Image
                 priority={true}
-                className="object-cover w-full h-[220px] hover:scale-95 duration-500"
+                className="object-cover w-full h-[220px] hover:scale-95 duration-500 xs:h-[150px]"
                 src={item?.image}
                 // fill
                 width={250}

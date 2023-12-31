@@ -44,7 +44,7 @@ const ImageGallery = ({
         </div>
         :null} */}
 
-          <div className="relative w-full h-[500px] md:h-[300px]">
+          <div className="relative w-full h-[500px] xs:h-[300px] xms:h-[350px] xls:h-[400px] md:h-[350px]">
             <Image src={`${selectedImage}`} fill alt="mainImage" />
           </div>
         </div>
@@ -60,12 +60,12 @@ const ImageGallery = ({
         </div>
       )}
       <div className="py-3 pr-2">
-        <div className="grid grid-cols-5 gap-2 md:grid-cols-3">
+        <div className="grid grid-cols-5 gap-2  xs:grid-cols-none xs:flex xs:flex-row xs:overflow-y-auto xms:grid-cols-none xms:flex xms:flex-row xms:overflow-y-auto xls:grid-cols-none xls:flex xls:flex-row xls:overflow-y-auto md:grid-cols-3">
           {data?.Videos?.Url ? (
             <div className="bg-gray-300 p-2 flex items-center justify-center  border border-tahiti-800 ">
               <div
                 onClick={() => selectVideo(data?.Videos?.Url)}
-                className="w-full h-[50px]  relative flex items-center justify-center cursor-pointer "
+                className="w-full h-[50px]  relative flex items-center justify-center cursor-pointer xs:w-[50px] xs:h-[40px] xms:w-[50px] xms:h-[40px] xls:w-[50px] xls:h-[40px]"
               >
                
                 <Image
@@ -96,7 +96,7 @@ const ImageGallery = ({
             >
               <div
                 onClick={() => handleImage(item)}
-                className="w-full h-[60px] relative flex items-center justify-center cursor-pointer"
+                className="w-full h-[60px] relative flex items-center justify-center cursor-pointer xs:w-[50px] xs:h-[50px] xms:w-[50px] xms:h-[50px] xls:w-[50px] xls:h-[50px]"
               >
                 <Image
                   className="object-cover"
