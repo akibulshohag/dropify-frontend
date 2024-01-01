@@ -77,7 +77,7 @@ const Layout = ({ children }) => {
       <Navbar />
       <div className="flex">
         {!shouldHideSideCategory ? <SideCategoryWeb /> : <DashboardMenu />}
-        <div className="flex-1 overflow-auto ml-[250px] xs:ml-0 xms:ml-0 xls:ml-0 sm:ml-0 md:ml-[200px] lg:ml-[200px]">
+        <div className="flex-1 overflow-auto ml-[250px] xs:ml-0 xms:ml-0 xls:ml-0 sm:ml-0 md:ml-[0px]  lg:ml-[0px]">
         {!shouldHideSideCategory ? '' : <ProfileMenuPhone />}
 
           <Fragment>{children}</Fragment>
