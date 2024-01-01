@@ -19,7 +19,7 @@ const SideCategoryWeb = () => {
   }
 
   return (
-    <div className="w-[250px] min-h-screen bg-tahiti-50 max-h-[100vh] mt-[65px] fixed xs:mt-[95px] xs:hidden xms:hidden xls:hidden sm:hidden md:w-[200px] lg:w-[200px]">
+    <div className="w-[250px] min-h-screen bg-tahiti-50 max-h-[100vh] mt-[65px] fixed xs:mt-[95px] xs:hidden xms:hidden xls:hidden sm:hidden md:w-[0px] md:hidden lg:hidden ">
       {childCategoryTab == 0 ? (
         <div className="  max-h-[93vh] overflow-y-auto left-side">
           
