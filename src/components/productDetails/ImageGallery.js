@@ -34,7 +34,7 @@ const ImageGallery = ({
 
 
   return (
-    <div className="col-span-2 ">
+    <div className="col-span-2 md:col-span-3 lg:col-span-3">
       {!isVideo ? (
         <div className="">
           {/* <Zoom img={selectedImage} zoomScale={3} height={450} width={450} /> */}
@@ -44,7 +44,7 @@ const ImageGallery = ({
         </div>
         :null} */}
 
-          <div className="relative w-full h-[500px] xs:h-[300px] xms:h-[350px] xls:h-[400px] md:h-[350px]">
+          <div className="relative w-full h-[500px] xs:h-[300px] xms:h-[350px] xls:h-[400px] sm:h-[600px] md:h-[450px] lg:h-[450px]">
             <Image src={`${selectedImage}`} fill alt="mainImage" />
           </div>
         </div>
@@ -60,12 +60,12 @@ const ImageGallery = ({
         </div>
       )}
       <div className="py-3 pr-2">
-        <div className="grid grid-cols-5 gap-2  xs:grid-cols-none xs:flex xs:flex-row xs:overflow-y-auto xms:grid-cols-none xms:flex xms:flex-row xms:overflow-y-auto xls:grid-cols-none xls:flex xls:flex-row xls:overflow-y-auto md:grid-cols-3">
+        <div className="grid grid-cols-5 gap-2  xs:grid-cols-none xs:flex xs:flex-row xs:overflow-y-auto xms:grid-cols-none xms:flex xms:flex-row xms:overflow-y-auto xls:grid-cols-none xls:flex xls:flex-row xls:overflow-y-auto sm:grid-cols-none sm:flex sm:flex-row sm:overflow-y-auto md:grid-cols-6">
           {data?.Videos?.Url ? (
             <div className="bg-gray-300 p-2 flex items-center justify-center  border border-tahiti-800 ">
               <div
                 onClick={() => selectVideo(data?.Videos?.Url)}
-                className="w-full h-[50px]  relative flex items-center justify-center cursor-pointer xs:w-[50px] xs:h-[40px] xms:w-[50px] xms:h-[40px] xls:w-[50px] xls:h-[40px]"
+                className="w-full h-[50px]  relative flex items-center justify-center cursor-pointer xs:w-[50px] xs:h-[40px] xms:w-[50px] xms:h-[40px] xls:w-[50px] xls:h-[40px] sm:w-[40px] sm:h-[40px] "
               >
                
                 <Image
@@ -96,7 +96,8 @@ const ImageGallery = ({
             >
               <div
                 onClick={() => handleImage(item)}
-                className="w-full h-[60px] relative flex items-center justify-center cursor-pointer xs:w-[50px] xs:h-[50px] xms:w-[50px] xms:h-[50px] xls:w-[50px] xls:h-[50px]"
+                className="w-full h-[60px] relative flex items-center justify-center cursor-pointer xs:w-[50px] xs:h-[50px] xms:w-[50px] xms:h-[50px] xls:w-[50px] xls:h-[50px]
+                sm:w-[60px] sm:h-[60px] "
               >
                 <Image
                   className="object-cover"

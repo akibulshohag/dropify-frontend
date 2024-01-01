@@ -1,23 +1,22 @@
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import ImageGallery from "@/components/productDetails/ImageGallery";
 import Campaign from "@/components/productDetails/Campaign";
-import SizeChart from "@/components/productDetails/SizeChart";
+import ImageGallery from "@/components/productDetails/ImageGallery";
 import PriceTable from "@/components/productDetails/PriceTable";
-import { AiOutlineShoppingCart } from "react-icons/ai";
-import { BsBagCheck, BsFillHeartFill, BsHeart, BsDot } from "react-icons/bs";
-import { MdOutlineContentCopy } from "react-icons/md";
-import { FaHome } from "react-icons/fa";
-import ProductCard from "@/components/productSection/productCard";
-import Conditions from "@/components/productDetails/condition";
 import ShippingCharge from "@/components/productDetails/ShippingCharge";
-import { useRouter } from "next/router";
-import style from "@/styles/productDetails.module.css";
-import request from "@/lib/request";
-import Modal from "react-modal";
-import postRequest from "@/lib/postRequest";
-import { toast } from "react-toastify";
+import Conditions from "@/components/productDetails/condition";
+import ProductCard from "@/components/productSection/productCard";
 import { useStatus } from "@/context/contextStatus";
+import postRequest from "@/lib/postRequest";
+import request from "@/lib/request";
+import style from "@/styles/productDetails.module.css";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { AiOutlineShoppingCart } from "react-icons/ai";
+import { BsBagCheck, BsFillHeartFill } from "react-icons/bs";
+import { FaHome } from "react-icons/fa";
+import { MdOutlineContentCopy } from "react-icons/md";
+import Modal from "react-modal";
+import { toast } from "react-toastify";
 
 const customStyles = {
   content: {
@@ -78,6 +77,14 @@ const SingleProduct = () => {
         }
 
         if (res?.data?.Variation2.length > 0) {
+          setproductVariation(res?.data?.Variation1);
+          let value = res?.data?.Variation2.filter(
+            (item) => item?.parent?.Vid == res?.data?.Variation1[0]?.Vid
+          );
+          settableVariation([...value]);
+          setpropertyName(res?.data?.Variation1[0]?.PropertyName);
+          setvalues(res?.data?.Variation1[0]?.Value);
+          setvariationId(res?.data?.Variation1[0]?.Vid);
         } else if (res?.data?.Variation1.length > 0) {
           setproductVariation(res?.data?.Variation1);
           let value = res?.data?.Variation1.filter(
@@ -103,6 +110,10 @@ const SingleProduct = () => {
       setselectedImage(val?.ImageUrl);
     }
     if (productDetails?.Variation2.length > 0) {
+      let value = productDetails?.Variation2.filter(
+        (item) => item?.parent?.Vid == val?.Vid
+      );
+      settableVariation(value);
     } else if (productDetails?.Variation1.length > 0) {
       let value = productDetails?.Variation1.filter(
         (item) => item?.Vid == val?.Vid
@@ -113,7 +124,11 @@ const SingleProduct = () => {
 
   useEffect(() => {
     let totalQuantity;
-    if (productDetails?.Variation1?.length > 0) {
+    if(productDetails?.Variation2?.length > 0){
+      totalQuantity = productVariation.reduce((a, b) => a + b?.qty, 0);
+      settotalQty(totalQuantity);
+    }
+    else if (productDetails?.Variation1?.length > 0) {
       totalQuantity = productVariation.reduce((a, b) => a + b?.qty, 0);
       settotalQty(totalQuantity);
     } else {
@@ -158,6 +173,17 @@ const SingleProduct = () => {
     }
 
     if (productDetails?.Variation2.length > 0) {
+      let fillter = productDetails?.Variation2?.filter((a) => a?.qty > 0);
+      setselectedProduct(fillter);
+      let totalPrice = fillter.reduce(
+        (a, b) =>
+          a +
+          (qtyRangePrice == null
+            ? Math.ceil(b?.Price + (b?.Price * priceInc) / 100) * b?.qty
+            : Math.ceil(getQtyPrice) * b?.qty),
+        0
+      );
+      settotalPrice(totalPrice);
     } else if (productDetails?.Variation1.length > 0) {
       let fillter = productVariation?.filter((a) => a?.qty > 0);
       setselectedProduct(fillter);
@@ -188,11 +214,16 @@ const SingleProduct = () => {
       i === index ? { ...item, qty: item.qty - 1 } : item
     );
     settableVariation(arr1);
-    let findIndex = arrP?.findIndex((item) => item?.Vid == val?.Vid);
-    if (findIndex > -1) {
-      arrP[findIndex].qty -= 1;
+    if(productDetails?.Variation2.length>0){
+
+    } else {
+      let findIndex = arrP?.findIndex((item) => item?.Vid == val?.Vid);
+      if (findIndex > -1) {
+        arrP[findIndex].qty -= 1;
+      }
+      setproductVariation(arrP);
     }
-    setproductVariation(arrP);
+    
   };
 
   const addQty = (val, index) => {
@@ -202,11 +233,16 @@ const SingleProduct = () => {
       i === index ? { ...item, qty: item.qty + 1 } : item
     );
     settableVariation(arr1);
-    let findIndex = arrP?.findIndex((item) => item?.Vid == val?.Vid);
-    if (findIndex > -1) {
-      arrP[findIndex].qty += 1;
+    if(productDetails?.Variation2.length>0){
+
+    } else{
+      let findIndex = arrP?.findIndex((item) => item?.Vid == val?.Vid);
+      if (findIndex > -1) {
+        arrP[findIndex].qty += 1;
+      }
+      setproductVariation(arrP);
     }
-    setproductVariation(arrP);
+    
   };
 
   const inputQty = (val, index, items) => {
@@ -216,11 +252,16 @@ const SingleProduct = () => {
       i === index ? { ...item, qty: Number(val) } : item
     );
     settableVariation(arr1);
-    let findIndex = arrP?.findIndex((item) => item?.Vid == items?.Vid);
-    if (findIndex > -1) {
-      arrP[findIndex].qty = Number(val);
+    if(productDetails?.Variation2.length>0){
+
+    } else{
+      let findIndex = arrP?.findIndex((item) => item?.Vid == items?.Vid);
+      if (findIndex > -1) {
+        arrP[findIndex].qty = Number(val);
+      }
+      setproductVariation(arrP);
     }
-    setproductVariation(arrP);
+    
   };
 
   const addNonQty = async () => {
@@ -449,17 +490,17 @@ const SingleProduct = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col mt-[65px] xs:mt-[95px] xms:mt-[95px] xls:mt-[95px]">
+    <div className="flex min-h-screen flex-col mt-[65px] xs:mt-[95px] xms:mt-[95px] xls:mt-[95px] sm:mt-[100px]">
       <div className="p-2 xs:p-0 xms:p-0 xls:p-0">
-        <div className="grid grid-cols-4 gap-2 xs:grid-cols-1 xs:gap-0 xms:grid-cols-1 xms:gap-0 xls:grid-cols-1 xls:gap-0">
+        <div className="grid grid-cols-4 gap-2 xs:grid-cols-1 xs:gap-0 xms:grid-cols-1 xms:gap-0 xls:grid-cols-1 xls:gap-0 sm:grid-cols-1 sm:gap-0 md:grid-cols-1 md:gap-0">
           <div className="col-span-3 ">
             <div className="bg-tahiti-50 rounded-sm">
               <div className=" py-4 pl-4 border-b">
-                <h1 className="text-[18px] font-bold xs:text-[14px] xms:text-[14px] xls:text-[14px]">
+                <h1 className="text-[18px] font-bold xs:text-[14px] xms:text-[14px] xls:text-[14px] sm:text-[14px]">
                   {productDetails?.Title}
                 </h1>
               </div>
-              <div className="grid grid-cols-5 gap-8 p-4 xs:grid-cols-1 xs:p-1 xs:gap-0 xms:grid-cols-1 xms:p-1 xms:gap-0 xls:grid-cols-1 xls:p-1 xls:gap-0">
+              <div className="grid grid-cols-5 gap-8 p-4 xs:grid-cols-1 xs:p-1 xs:gap-0 xms:grid-cols-1 xms:p-1 xms:gap-0 xls:grid-cols-1 xls:p-1 xls:gap-0 sm:grid-cols-1 sm:p-1 sm:gap-0 md:grid-cols-6 md:p-1 md:gap-3 lg:grid-cols-6 lg:p-1 lg:gap-3">
                 <ImageGallery
                   data={productDetails}
                   setselectedImage={setselectedImage}
@@ -467,7 +508,7 @@ const SingleProduct = () => {
                   isVideo={isVideo}
                   setisVideo={setisVideo}
                 />
-                <div className="col-span-3">
+                <div className="col-span-3 md:col-span-3 lg:col-span-3">
                   {offerCampaign?.isValid && <Campaign />}
                   {productDetails?.QuantityRanges?.length > 0 && (
                     <div className="grid grid-cols-3 gap-3 mt-3">
@@ -880,7 +921,7 @@ const SingleProduct = () => {
                   From The Same Seller
                 </div>
                 <div className="py-4">
-                  <div className="grid grid-cols-5 gap-3 px-4 xs:grid-cols-2 xs:gap-2 xs:px-1 xms:grid-cols-2 xms:gap-2 xms:px-1 xls:grid-cols-2 xls:gap-2 xls:px-1 md:grid-cols-3">
+                  <div className="grid grid-cols-5 gap-3 px-4 xs:grid-cols-2 xs:gap-2 xs:px-1 xms:grid-cols-2 xms:gap-2 xms:px-1 xls:grid-cols-2 xls:gap-2 xls:px-1 sm:grid-cols-3 sm:gap-2 sm:px-2 md:grid-cols-4">
                     <ProductCard productList={productDetails?.VendorItems} />
                   </div>
                 </div>
